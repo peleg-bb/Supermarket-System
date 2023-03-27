@@ -7,7 +7,7 @@ public class Shift {
     private LocalDate date;
     private Integer id;
     private shift_type type;
-    private enum shift_type {
+    public enum shift_type {
         MORNING,
         EVENING
     }

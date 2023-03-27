@@ -23,21 +23,19 @@ public class PersonnelManager {
         this.employees = employees;
     }
 
-    public boolean assign_to_shift(Integer ID, Shift shift, String role) {
-        String branch = shift.getBranch();
-        if (check_employee_availability(ID, shift, role)) {
-            schedules.get(branch).assign_shift(ID, shift, role);
+    public boolean assign_to_shift(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
+        if (check_employee_availability(ID, date, type, branch, role)) {
+            schedules.get(branch).assign_shift(ID, date, type, role);
             return true;
         }
         return false;
     }
 
-    public boolean remove_shift(Integer ID, Shift shift, String role) {
-        String branch = shift.getBranch();
-        if (!schedules.get(branch).is_assigned(ID, shift, role)) {
+    public boolean remove_shift(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
+        if (!schedules.get(branch).is_assigned(ID, date, type, role)) {
             return false;
         }
-        schedules.get(branch).remove_shift(ID, shift, role);
+        schedules.get(branch).remove_shift(ID, date, type, role);
         return true;
     }
 
@@ -60,16 +58,12 @@ public class PersonnelManager {
         return employees.get(id).remove_role(role);
     }
 
-    public boolean confirm_shift(Shift shift) {
-        if (shift.getShift_manager() != null) {
-            return true;
-        }
-        return false;
+    public boolean confirm_shift(LocalDate date, Shift.shift_type type, String branch) {
+        return schedules.get(branch).confirm_shift(date, type);
     }
 
-    private boolean check_employee_availability(Integer ID, Shift shift, String role) {
-        String branch = shift.getBranch();
-        if (schedules.get(branch).check_employee_availability(shift, ID) && check_employee_role(ID, role)) {
+    private boolean check_employee_availability(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
+        if (schedules.get(branch).check_employee_availability(date, type, ID) && check_employee_role(ID, role)) {
             return true;
         }
         return false;

@@ -14,8 +14,8 @@ public class WorkerService {
         worker = new Worker(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date, schedules);
     }
 
-    public boolean available_to_shift(Shift shift) {
-        return worker.available_to_shift(shift);
+    public boolean available_to_shift(LocalDate date, String branch, Shift.shift_type type) {
+        return worker.available_to_shift(date, branch, type);
     }
 
     public boolean add_role(String role) {

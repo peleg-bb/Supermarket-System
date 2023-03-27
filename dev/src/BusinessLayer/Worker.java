@@ -29,10 +29,9 @@ public class Worker {
         roles = new LinkedList<>();
     }
 
-    public boolean available_to_shift(Shift shift) {
-        String branch = shift.getBranch();
-        if (check_manager_constraint(shift, branch)) {
-            schedules.get(branch).add_availability(shift, this.id);
+    public boolean available_to_shift(LocalDate date, String branch, Shift.shift_type type) {
+        if (check_manager_constraint(date, branch, type)) {
+            schedules.get(branch).add_availability(date, type, this.id);
             return true;
         }
         else {
@@ -40,8 +39,8 @@ public class Worker {
         }
     }
 
-    private boolean check_manager_constraint(Shift shift, String branch) {
-        return schedules.get(branch).check_manager_constraint(shift, this.id);
+    private boolean check_manager_constraint(LocalDate date, String branch, Shift.shift_type type) {
+        return schedules.get(branch).check_manager_constraint(date, type, this.id);
     }
 
     public boolean add_role(String role) {
