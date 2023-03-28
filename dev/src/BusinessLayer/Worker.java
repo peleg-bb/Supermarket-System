@@ -3,18 +3,20 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
+
 
 public class Worker {
-    private String name;
-    private Integer id;
-    private Integer bank_account;
-    private Integer salary;
-    private String family_status;
-    private boolean is_student;
-    private String terms_of_employment;
-    private LocalDate employment_start_date;
-    private Schedules schedules;
-    private List<String> roles;
+    protected String name;
+    protected Integer id;
+    protected Integer bank_account;
+    protected Integer salary;
+    protected String family_status;
+    protected boolean is_student;
+    protected String terms_of_employment;
+    protected LocalDate employment_start_date;
+    protected Schedules schedules;
+    protected List<String> roles;
 
     public Worker(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Schedules schedules) {
         this.name = name;

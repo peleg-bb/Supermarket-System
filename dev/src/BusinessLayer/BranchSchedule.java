@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
+
 
 public class BranchSchedule {
     private Map<LocalDate, List<Shift>> shifts;
@@ -12,13 +14,6 @@ public class BranchSchedule {
     private Map<Shift, List<Integer>> employees_available_shift;
     private Map<Shift, List<Integer>> manager_constraints;
     private String branch;
-
-//    public Schedule(Map<Shift, Map<String, List<Integer>>> finished_shifts, Map<Shift, List<Integer>> employees_available_shift, Map<Shift, List<Integer>> manager_constraints, String branch) {
-//        this.finished_shifts = finished_shifts;
-//        this.employees_available_shift = employees_available_shift;
-//        this.manager_constraints = manager_constraints;
-//        this.branch = branch;
-//    }
 
     public BranchSchedule(String branch, LocalDate week_first_date) {
         this.branch = branch;
@@ -104,22 +99,6 @@ public class BranchSchedule {
         shifts.put(weeks_first_date.plusDays(4), thu_shifts);
     }
 
-    public Map<Shift, Map<String, List<Integer>>> getShifts() {
-        return finished_shifts;
-    }
-
-    public Map<Shift, List<Integer>> getEmployees_available_shift() {
-        return employees_available_shift;
-    }
-
-    public Map<Shift, List<Integer>> getManager_constraints() {
-        return manager_constraints;
-    }
-
-    public String getBranch() {
-        return branch;
-    }
-
     public void add_availability(LocalDate date, Shift.shift_type type, Integer ID) {
         List<Shift> date_shifts = shifts.get(date);
         for (Shift shift: date_shifts) {
@@ -154,10 +133,6 @@ public class BranchSchedule {
         return true;
     }
 
-//    public boolean check_employee_availability(Shift shift, Integer ID) {
-//        return employees_available_shift.get(shift).contains(ID);
-//    }
-
     public boolean check_employee_availability(LocalDate date, Shift.shift_type type, Integer ID) {
         List<Shift> date_shifts = shifts.get(date);
         for (Shift shift: date_shifts) {
@@ -168,10 +143,6 @@ public class BranchSchedule {
         return false;
     }
 
-//    public void assign_shift(Integer ID, Shift shift, String role) {
-//        finished_shifts.get(shift).get(role).add(ID);
-//    }
-
     public void assign_shift(Integer ID, LocalDate date, Shift.shift_type type, String role) {
         List<Shift> date_shifts = shifts.get(date);
         for (Shift shift: date_shifts) {
@@ -180,10 +151,6 @@ public class BranchSchedule {
             }
         }
     }
-
-//    public boolean is_assigned(Integer ID, Shift shift, String role) {
-//        return finished_shifts.get(shift).get(role).contains(ID);
-//    }
 
     public boolean is_assigned(Integer ID, LocalDate date, Shift.shift_type type, String role) {
         List<Shift> date_shifts = shifts.get(date);
@@ -212,6 +179,17 @@ public class BranchSchedule {
                     return true;
                 }
                 return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean assign_shift_manager(LocalDate date, Shift.shift_type type, Integer id) {
+        List<Shift> date_shifts = shifts.get(date);
+        for (Shift shift: date_shifts) {
+            if (shift.getType() == type) {
+                shift.setShift_manager(id);
+                return true;
             }
         }
         return false;

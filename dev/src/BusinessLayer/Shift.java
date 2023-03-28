@@ -2,6 +2,8 @@ package BusinessLayer;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Date;
+
 
 public class Shift {
     private LocalDate date;
@@ -11,11 +13,11 @@ public class Shift {
         MORNING,
         EVENING
     }
-    private Worker shift_manager;
+    private Integer shift_manager;
     private List<String> events;
     private String branch;
 
-    public Shift(LocalDate date, String name, shift_type type, Worker shift_manager, List<String> events, String branch) {
+    public Shift(LocalDate date, String name, shift_type type, Integer shift_manager, List<String> events, String branch) {
         this.date = date;
         this.name = name;
         this.type = type;
@@ -24,27 +26,15 @@ public class Shift {
         this.branch = branch;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public shift_type getType() {
         return type;
     }
 
-    public Worker getShift_manager() {
+    public Integer getShift_manager() {
         return shift_manager;
     }
 
-    public List<String> getEvents() {
-        return events;
-    }
-
-    public String getBranch() {
-        return branch;
+    public void setShift_manager(Integer id) {
+        shift_manager = id;
     }
 }
