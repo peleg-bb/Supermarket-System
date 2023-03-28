@@ -9,11 +9,11 @@ public class PersonnelManager {
     private Integer id;
     private String terms_of_employment;
     private LocalDate employment_start_date;
-    private Map<String, Schedule> schedules;
+    private Schedules schedules;
     private Map<String, List<Worker>> roles_employees;
     private Map<Integer, Worker> employees;
 
-    public PersonnelManager(String name, Integer id, String terms_of_employment, LocalDate employment_start_date, Map<String, Schedule> schedules, Map<String, List<Worker>> roles_employees, Map<Integer, Worker> employees) {
+    public PersonnelManager(String name, Integer id, String terms_of_employment, LocalDate employment_start_date, Schedules schedules, Map<String, List<Worker>> roles_employees, Map<Integer, Worker> employees) {
         this.name = name;
         this.id = id;
         this.terms_of_employment = terms_of_employment;
@@ -25,21 +25,21 @@ public class PersonnelManager {
 
     public boolean assign_to_shift(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
         if (check_employee_availability(ID, date, type, branch, role)) {
-            schedules.get(branch).assign_shift(ID, date, type, role);
+            schedules.getBranchScheduleMap().get(branch).assign_shift(ID, date, type, role);
             return true;
         }
         return false;
     }
 
     public boolean remove_shift(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
-        if (!schedules.get(branch).is_assigned(ID, date, type, role)) {
+        if (!schedules.getBranchScheduleMap().get(branch).is_assigned(ID, date, type, role)) {
             return false;
         }
-        schedules.get(branch).remove_shift(ID, date, type, role);
+        schedules.getBranchScheduleMap().get(branch).remove_shift(ID, date, type, role);
         return true;
     }
 
-    public boolean add_employee(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Map<String, Schedule> schedules) {
+    public boolean add_employee(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Schedules schedules) {
         Worker employee = new Worker(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date, schedules);
         employees.put(id, employee);
         return true;
@@ -59,11 +59,11 @@ public class PersonnelManager {
     }
 
     public boolean confirm_shift(LocalDate date, Shift.shift_type type, String branch) {
-        return schedules.get(branch).confirm_shift(date, type);
+        return schedules.getBranchScheduleMap().get(branch).confirm_shift(date, type);
     }
 
     private boolean check_employee_availability(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
-        if (schedules.get(branch).check_employee_availability(date, type, ID) && check_employee_role(ID, role)) {
+        if (schedules.getBranchScheduleMap().get(branch).check_employee_availability(date, type, ID) && check_employee_role(ID, role)) {
             return true;
         }
         return false;
@@ -71,5 +71,10 @@ public class PersonnelManager {
 
     private boolean check_employee_role(Integer ID, String role) {
         return roles_employees.get(role).contains(employees.get(ID));
+    }
+
+    public void create_schedule(String branch, LocalDate week_first_day) {
+        BranchSchedule schedule = new BranchSchedule(branch, week_first_day);
+        schedules.add_schedule(branch, schedule);
     }
 }

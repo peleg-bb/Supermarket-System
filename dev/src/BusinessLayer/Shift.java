@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Shift {
     private LocalDate date;
-    private Integer id;
+    private String name;
     private shift_type type;
     public enum shift_type {
         MORNING,
@@ -15,9 +15,9 @@ public class Shift {
     private List<String> events;
     private String branch;
 
-    public Shift(LocalDate date, Integer id, shift_type type, Worker shift_manager, List<String> events, String branch) {
+    public Shift(LocalDate date, String name, shift_type type, Worker shift_manager, List<String> events, String branch) {
         this.date = date;
-        this.id = id;
+        this.name = name;
         this.type = type;
         this.shift_manager = shift_manager;
         this.events = events;
@@ -28,8 +28,8 @@ public class Shift {
         return date;
     }
 
-    public Integer getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
     public shift_type getType() {

@@ -13,10 +13,10 @@ public class Worker {
     private boolean is_student;
     private String terms_of_employment;
     private LocalDate employment_start_date;
-    private Map<String, Schedule> schedules;
+    private Schedules schedules;
     private List<String> roles;
 
-    public Worker(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Map<String, Schedule> schedules) {
+    public Worker(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Schedules schedules) {
         this.name = name;
         this.id = id;
         this.bank_account = bank_account;
@@ -31,7 +31,7 @@ public class Worker {
 
     public boolean available_to_shift(LocalDate date, String branch, Shift.shift_type type) {
         if (check_manager_constraint(date, branch, type)) {
-            schedules.get(branch).add_availability(date, type, this.id);
+            schedules.getBranchScheduleMap().get(branch).add_availability(date, type, this.id);
             return true;
         }
         else {
@@ -40,7 +40,7 @@ public class Worker {
     }
 
     private boolean check_manager_constraint(LocalDate date, String branch, Shift.shift_type type) {
-        return schedules.get(branch).check_manager_constraint(date, type, this.id);
+        return schedules.getBranchScheduleMap().get(branch).check_manager_constraint(date, type, this.id);
     }
 
     public boolean add_role(String role) {
@@ -57,5 +57,9 @@ public class Worker {
         }
         roles.remove(role);
         return true;
+    }
+
+    public List<String> getRoles() {
+        return roles;
     }
 }
