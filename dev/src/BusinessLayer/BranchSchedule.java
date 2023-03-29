@@ -14,9 +14,12 @@ public class BranchSchedule {
     private Map<Shift, List<Integer>> manager_constraints;
     private String branch;
 
-    public BranchSchedule(String branch, LocalDate week_first_date) {
+    public BranchSchedule(String branch) {
         this.branch = branch;
-        initialize_shifts(week_first_date);
+        shifts = new HashMap<>();
+        finished_shifts = new HashMap<>();
+        employees_available_shift = new HashMap<>();
+        manager_constraints = new HashMap<>();
     }
 
     private Map<String, List<Integer>> shift_roles() {
@@ -31,7 +34,7 @@ public class BranchSchedule {
     }
 
     /* Initializing all of the week's basic data */
-    private void initialize_shifts(LocalDate weeks_first_date) {
+    public void initialize_shifts(LocalDate weeks_first_date) {
         shifts = new HashMap<>();
         finished_shifts = new HashMap<>();
         employees_available_shift = new HashMap<>();
@@ -76,19 +79,19 @@ public class BranchSchedule {
         finished_shifts.put(thu_evening, shift_roles());
         employees_available_shift.put(thu_evening, new LinkedList<>());
         manager_constraints.put(thu_evening, new LinkedList<>());
-        List<Shift> sun_shifts = new LinkedList<Shift>();
+        List<Shift> sun_shifts = new LinkedList<>();
         sun_shifts.add(sun_morning);
         sun_shifts.add(sun_evening);
-        List<Shift> mon_shifts = new LinkedList<Shift>();
+        List<Shift> mon_shifts = new LinkedList<>();
         mon_shifts.add(mon_morning);
         mon_shifts.add(mon_evening);
-        List<Shift> tue_shifts = new LinkedList<Shift>();
+        List<Shift> tue_shifts = new LinkedList<>();
         tue_shifts.add(tue_morning);
         tue_shifts.add(tue_evening);
-        List<Shift> wed_shifts = new LinkedList<Shift>();
+        List<Shift> wed_shifts = new LinkedList<>();
         wed_shifts.add(wed_morning);
         wed_shifts.add(wed_evening);
-        List<Shift> thu_shifts = new LinkedList<Shift>();
+        List<Shift> thu_shifts = new LinkedList<>();
         thu_shifts.add(thu_morning);
         thu_shifts.add(thu_evening);
         shifts.put(weeks_first_date, sun_shifts);

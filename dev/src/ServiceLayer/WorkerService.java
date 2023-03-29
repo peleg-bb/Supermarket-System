@@ -1,18 +1,15 @@
 package ServiceLayer;
 
-import BusinessLayer.BranchSchedule;
-import BusinessLayer.Schedules;
 import BusinessLayer.Shift;
 import BusinessLayer.Worker;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 public class WorkerService {
     Worker worker;
 
-    public WorkerService(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Schedules schedules) {
-        worker = new Worker(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date, schedules);
+    public WorkerService(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
+        worker = new Worker(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date);
     }
 
     public boolean available_to_shift(LocalDate date, String branch, Shift.shift_type type) {

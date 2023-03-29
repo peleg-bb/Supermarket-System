@@ -11,21 +11,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WorkerTest {
 
-    private BranchSchedule branchSchedule;
+    private Branch branch;
     private Worker worker;
 
     @BeforeEach
     void setUp() {
-        branchSchedule = new BranchSchedule("Be'er Sheva", LocalDate.of(2023,3,26));
-        Schedules schedules = new Schedules();
-        schedules.add_schedule("Be'er Sheva", branchSchedule);
-        worker = new Worker("Ron Hadad", 123456789, 3366998, 30, "Single", true, "Commited to one year", LocalDate.of(2023, 3, 26), schedules);
+        branch = new Branch("Be'er Sheva", "Be'er Sheva", 7, 8);
+        branch.create_schedule(LocalDate.of(2023, 3, 26));
+        worker = new Worker("Ron Hadad", 123456789, 3366998, 30, "Single", true, "Commited to one year", LocalDate.of(2023, 3, 26));
+        worker.add_qualified_branch("Be'er Sheva", branch);
     }
 
     @Test
     void available_to_shift() {
         worker.available_to_shift(LocalDate.of(2023, 3, 26), "Be'er Sheva", Shift.shift_type.MORNING);
-        assertEquals(1, branchSchedule.get_availability_per_shift(LocalDate.of(2023, 3, 26), Shift.shift_type.MORNING).size());
+        assertEquals(1, branch.get_availability_per_shift(LocalDate.of(2023, 3, 26), Shift.shift_type.MORNING).size());
     }
 
     @Test

@@ -1,9 +1,6 @@
 package BusinessLayer;
 import java.time.LocalDate;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Date;
+import java.util.*;
 
 
 public class Worker {
@@ -15,10 +12,10 @@ public class Worker {
     protected boolean is_student;
     protected String terms_of_employment;
     protected LocalDate employment_start_date;
-    protected Schedules schedules;
+    protected Map<String, Branch> qualified_branches;
     protected List<String> roles;
 
-    public Worker(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Schedules schedules) {
+    public Worker(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
         this.name = name;
         this.id = id;
         this.bank_account = bank_account;
@@ -27,13 +24,13 @@ public class Worker {
         this.is_student = is_student;
         this.terms_of_employment = terms_of_employment;
         this.employment_start_date = employment_start_date;
-        this.schedules = schedules;
         roles = new LinkedList<>();
+        qualified_branches = new HashMap<>();
     }
 
     public boolean available_to_shift(LocalDate date, String branch, Shift.shift_type type) {
-        if (check_manager_constraint(date, branch, type)) {
-            schedules.getBranchScheduleMap().get(branch).add_availability(date, type, this.id);
+        if (qualified_branches.containsKey(branch) && check_manager_constraint(date, branch, type)) {
+            qualified_branches.get(branch).add_availability(date, type, this.id);
             return true;
         }
         else {
@@ -41,8 +38,18 @@ public class Worker {
         }
     }
 
+    public boolean add_qualified_branch(String branch_name, Branch branch) {
+        if (qualified_branches.containsKey(branch_name)) {
+            return false;
+        }
+        else {
+            qualified_branches.put(branch_name, branch);
+            return true;
+        }
+    }
+
     private boolean check_manager_constraint(LocalDate date, String branch, Shift.shift_type type) {
-        return schedules.getBranchScheduleMap().get(branch).check_manager_constraint(date, type, this.id);
+        return qualified_branches.get(branch).getSchedule().check_manager_constraint(date, type, this.id);
     }
 
     public boolean add_role(String role) {
