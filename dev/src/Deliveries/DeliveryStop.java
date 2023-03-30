@@ -7,6 +7,8 @@ public class DeliveryStop {
     private List<String> items;
     private Site destination;
 
+
+
     public DeliveryStop(int deliveryId, List<String> items, Site destination) {
         this.deliveryId = deliveryId;
         this.items = items;

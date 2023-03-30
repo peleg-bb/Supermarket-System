@@ -8,14 +8,14 @@ public class Driver {
     private final String phone;
     private License license;
 
-    private DriversAvailability availability;
+    private Availability availability;
 
     public Driver(String name, String id, String phone) {
         this.name = name;
         this.id = id;
         this.phone = phone;
         this.license = new License();
-        availability = DriversAvailability.Available;
+        availability = Availability.Available;
     }
 
 
@@ -28,5 +28,7 @@ public class Driver {
         return license;
     }
 
-
+    public Availability getAvailability() {
+        return availability;
+    }
 }

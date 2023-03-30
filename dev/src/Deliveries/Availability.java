@@ -1,5 +1,5 @@
 package Deliveries;
 
-public enum DriversAvailability {
+public enum Availability {
     Available, Busy
 }
