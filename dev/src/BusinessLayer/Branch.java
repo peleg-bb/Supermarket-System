@@ -11,13 +11,15 @@ public class Branch {
     private String location;
     private Integer morning_shift_hours;
     private Integer evening_shift_hours;
+    private List<BranchSchedule> schedules_history;
 
     public Branch(String name, String location, Integer morning_shift_hours, Integer evening_shift_hours) {
-        branchSchedule = new BranchSchedule(name);
+        this.name = name;
         workers = new LinkedList<>();
         this.location = location;
         this.morning_shift_hours = morning_shift_hours;
         this.evening_shift_hours = evening_shift_hours;
+        schedules_history = new LinkedList<>();
     }
 
     public boolean assign_shift_manager(LocalDate date, Shift.shift_type type, Integer id) {
@@ -29,7 +31,8 @@ public class Branch {
     }
 
     public void create_schedule(LocalDate week_first_day) {
-        branchSchedule.initialize_shifts(week_first_day);
+        branchSchedule = new BranchSchedule(name, week_first_day);
+        schedules_history.add(branchSchedule);
     }
 
     public boolean assign_worker(Integer id) {

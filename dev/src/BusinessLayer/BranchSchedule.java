@@ -14,12 +14,9 @@ public class BranchSchedule {
     private Map<Shift, List<Integer>> manager_constraints;
     private String branch;
 
-    public BranchSchedule(String branch) {
+    public BranchSchedule(String branch, LocalDate weeks_first_date) {
         this.branch = branch;
-        shifts = new HashMap<>();
-        finished_shifts = new HashMap<>();
-        employees_available_shift = new HashMap<>();
-        manager_constraints = new HashMap<>();
+        initialize_shifts(weeks_first_date);
     }
 
     private Map<String, List<Integer>> shift_roles() {
