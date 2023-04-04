@@ -21,7 +21,7 @@ public class TruckController {
     }
 
 
-    public Truck pickTruck(TruckType requiredType){
+    public Truck pickTruck(TruckType requiredType) throws DeliveryException{
         for(int i=0; i<trucks.size(); i++){
             Truck curr = trucks.get(i);
             if(curr.getType().equals(requiredType)){
@@ -30,6 +30,6 @@ public class TruckController {
                 }
             }
         }
-        return null;
+        throw new DeliveryException("No available trucks of type " + requiredType);
     }
 }

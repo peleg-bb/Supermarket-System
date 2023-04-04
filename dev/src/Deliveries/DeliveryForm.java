@@ -8,26 +8,37 @@ public class DeliveryForm {
     private int formId ;
     private Date date;
     private Timestamp dispatchTime;
-    private List<DeliveryStop> destinationSites;
+    private List<DeliveryStop> destinationSitesToVisit;
+    private List<DeliveryStop> destinationSitesVisited;
+    private int maxWeightAllowed;
     private Site originSite;
-    private Driver driver;
-    private Truck truck;
-    private TruckType truckTypeRequired; // Might not be needed, depends on future requirements
+    private DeliveryManagerImpl deliveryManager;
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
 
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Driver driver,Truck truck, TruckType type, int dispatchWeightTons ){
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed){
         this.formId = formId;
-        this.destinationSites = stops;
+        this.destinationSitesToVisit = stops;
         //date = Date.
         //time
         this.originSite = originSite;
-        this.driver = driver;
-        this.truck = truck;
-        truckTypeRequired = type;
-        this.dispatchWeightTons = dispatchWeightTons;
+        this.maxWeightAllowed = maxWeightAllowed;
     }
     public void addDeliveryStop(DeliveryStop deliveryStop) {
-        destinationSites.add(deliveryStop);
+        destinationSitesToVisit.add(deliveryStop);
+    }
+
+    public void visitDeliveryStop(DeliveryStop deliveryStop) {
+        destinationSitesToVisit.remove(deliveryStop);
+        destinationSitesVisited.add(deliveryStop);
+    }
+
+    /* setDispatchWeightTons() is called when the truck leaves the origin site */
+    public void setDispatchWeightTons(int dispatchWeightTons) {
+        this.dispatchWeightTons = dispatchWeightTons;
+        if (dispatchWeightTons > maxWeightAllowed) {
+            deliveryManager.replanDelivery(this);
+            // Notify UI
+        }
     }
 
 }

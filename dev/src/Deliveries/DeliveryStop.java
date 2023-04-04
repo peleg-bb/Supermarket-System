@@ -14,4 +14,8 @@ public class DeliveryStop {
         this.items = items;
         this.destination = destination;
     }
+
+    
+
+
 }

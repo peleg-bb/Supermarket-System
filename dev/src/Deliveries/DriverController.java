@@ -21,7 +21,7 @@ public class DriverController {
     }
 
 
-    public Driver pickDriver(TruckType truckType, int weight){
+    public Driver pickDriver(TruckType truckType, int weight) throws DeliveryException{
         for(int i=0; i<drivers.size(); i++){
             Driver curr = drivers.get(i);
             if(curr.getAvailability().equals(Availability.Available)){
@@ -30,6 +30,7 @@ public class DriverController {
                 }
             }
         }
-        return null;
+        throw new DeliveryException("No available drivers with license for truck type "
+                + truckType + " and weight " + weight);
     }
 }
