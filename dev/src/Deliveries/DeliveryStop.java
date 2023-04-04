@@ -18,10 +18,14 @@ public class DeliveryStop {
     }
 
     // Getters
+
     public TruckType getTruckTypeRequired() {
         return truckTypeRequired;
     }
 
+    public List<String> getItems(){
+        return items;
+    }
 
 
 

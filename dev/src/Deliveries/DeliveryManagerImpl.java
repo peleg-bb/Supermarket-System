@@ -55,25 +55,48 @@ public class DeliveryManagerImpl implements DeliveryManager{
 
     public void replanDelivery(DeliveryForm form) {
         // Notify UI
-        try {
-            Truck newTruck = truckController.pickTruck(form.getTruckType(), form.getDispatchWeightTons());
-            form.setMaxWeightAllowed(newTruck.getMaxWeightTons());
-        } catch (DeliveryException e) {
-            // Notify UI
-        }
+        Truck newTruck = replaceTruck(form);
 
         // Handle the case where no truck is available
         List<DeliveryStop> stopsToAdd = null;
         List<DeliveryStop> stopsToRemove = null;
     }
 
+
+    private Truck replaceTruck(DeliveryForm form){
+        try {
+            Truck newTruck = truckController.pickTruck(form.getTruckType(), form.getDispatchWeightTons());
+            form.setMaxWeightAllowed(newTruck.getMaxWeightTons());
+            return newTruck;
+        } catch (DeliveryException e) {
+            // Notify UI
+        }
+       return null; //????
+    }
+
+    private void removeItems(DeliveryForm form){
+       List<DeliveryStop> stopsToVisit = form.getDestinationSitesToVisit();
+       for(DeliveryStop deliveryStop:stopsToVisit){
+           List<String> items = deliveryStop.getItems();
+           items.remove(0); //need to decide how to remove items
+       }
+    }
+
+    private void removeStop(DeliveryForm form){
+        form.getDestinationSitesToVisit().remove(0); //decide how to remove stops
+
+    }
+
+    private void replaceStops(DeliveryForm form){
+       //need zones for that
+    }
     public int returnReplanningResponse(List<DeliveryStop> stopsToAdd, List<DeliveryStop> stopsToRemove) {
         // Notify UI
         return 0;
     }
 
     private TruckType getTruckType(List<DeliveryStop> stops) {
-        return null;
+        return null;//why?
     }
 
 
