@@ -29,7 +29,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
 
     @Override
     public void addDeliveryStop(List<String> items, Site origin, Site destination) {
-        DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, destination);
+        DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, destination, TruckType.Regular);
         pendingDeliveryStops.add(deliveryStop);
         // decide how to manage the origin.
     }
@@ -55,7 +55,14 @@ public class DeliveryManagerImpl implements DeliveryManager{
 
     public void replanDelivery(DeliveryForm form) {
         // Notify UI
+        try {
+            Truck newTruck = truckController.pickTruck(form.getTruckType(), form.getDispatchWeightTons());
+            form.setMaxWeightAllowed(newTruck.getMaxWeightTons());
+        } catch (DeliveryException e) {
+            // Notify UI
+        }
 
+        // Handle the case where no truck is available
         List<DeliveryStop> stopsToAdd = null;
         List<DeliveryStop> stopsToRemove = null;
     }
@@ -63,6 +70,10 @@ public class DeliveryManagerImpl implements DeliveryManager{
     public int returnReplanningResponse(List<DeliveryStop> stopsToAdd, List<DeliveryStop> stopsToRemove) {
         // Notify UI
         return 0;
+    }
+
+    private TruckType getTruckType(List<DeliveryStop> stops) {
+        return null;
     }
 
 

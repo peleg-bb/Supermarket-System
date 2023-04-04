@@ -41,4 +41,39 @@ public class DeliveryForm {
         }
     }
 
+    // setMaxWeightAllowed() is called when the truck is loaded with items
+        public void setMaxWeightAllowed(int maxWeightAllowed) {
+        this.maxWeightAllowed = maxWeightAllowed;
+        if (dispatchWeightTons > maxWeightAllowed) {
+            deliveryManager.replanDelivery(this);
+        }
+    }
+
+    public int getFormId() {
+        return formId;
+    }
+
+    public List<DeliveryStop> getDestinationSitesToVisit() {
+        return destinationSitesToVisit;
+    }
+
+    public List<DeliveryStop> getDestinationSitesVisited() {
+        return destinationSitesVisited;
+    }
+
+    public TruckType getTruckType() {
+        TruckType truckType = TruckType.Regular;
+        // for each delivery stop, check if the truck type is the same
+        for (DeliveryStop stop : destinationSitesToVisit) {
+            if (stop.getTruckTypeRequired() == TruckType.Refrigerated) {
+                truckType = TruckType.Refrigerated;
+            }
+        }
+        return truckType;
+    }
+
+    public int getDispatchWeightTons() {
+        return dispatchWeightTons;
+    }
+    
 }
