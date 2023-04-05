@@ -2,6 +2,7 @@ package Deliveries;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DeliveryManagerImpl implements DeliveryManager{
     private TruckController truckController;
@@ -28,7 +29,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
     }
 
     @Override
-    public void addDeliveryStop(List<String> items, Site origin, Site destination) {
+    public void addDeliveryStop(Map<String, Integer> items, Site origin, Site destination) {
         DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, destination, TruckType.Regular);
         pendingDeliveryStops.add(deliveryStop);
         // decide how to manage the origin.
@@ -77,7 +78,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
     private void removeItems(DeliveryForm form){
        List<DeliveryStop> stopsToVisit = form.getDestinationSitesToVisit();
        for(DeliveryStop deliveryStop:stopsToVisit){
-           List<String> items = deliveryStop.getItems();
+           Map<String, Integer> items = deliveryStop.getItems();
            items.remove(0); //need to decide how to remove items
        }
     }

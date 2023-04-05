@@ -1,16 +1,17 @@
 package Deliveries;
 
 import java.util.List;
+import java.util.Map;
 
 public class DeliveryStop {
     private int deliveryId;
-    private List<String> items;
+    private Map<String, Integer> items;
     private Site destination;
     private TruckType truckTypeRequired;
 
 
 
-    public DeliveryStop(int deliveryId, List<String> items, Site destination, TruckType truckTypeRequired) {
+    public DeliveryStop(int deliveryId, Map<String, Integer> items, Site destination, TruckType truckTypeRequired) {
         this.deliveryId = deliveryId;
         this.items = items;
         this.destination = destination;
@@ -23,7 +24,7 @@ public class DeliveryStop {
         return truckTypeRequired;
     }
 
-    public List<String> getItems(){
+    public Map<String, Integer> getItems(){
         return items;
     }
 
