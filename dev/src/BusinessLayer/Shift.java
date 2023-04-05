@@ -6,16 +6,16 @@ import java.util.Date;
 
 
 public class Shift {
-    private LocalDate date;
-    private String name;
-    private shift_type type;
+    private final LocalDate date;
+    private final String name;
+    private final shift_type type;
     public enum shift_type {
         MORNING,
         EVENING
     }
     private Integer shift_manager;
     private List<String> events;
-    private String branch;
+    private final String branch;
 
     public Shift(LocalDate date, String name, shift_type type, Integer shift_manager, List<String> events, String branch) {
         this.date = date;

@@ -9,24 +9,24 @@ import java.util.Map;
 
 public class BranchSchedule {
     private Map<LocalDate, List<Shift>> shifts;
-    private Map<Shift, Map<String, List<Integer>>> finished_shifts; //Map<Shift, Map<role, worker_id>>
+    private Map<Shift, Map<Worker.role_type, List<Integer>>> finished_shifts; //Map<Shift, Map<role, worker_id>>
     private Map<Shift, List<Integer>> employees_available_shift;
     private Map<Shift, List<Integer>> manager_constraints;
-    private String branch;
+    private final String branch;
 
     public BranchSchedule(String branch, LocalDate weeks_first_date) {
         this.branch = branch;
         initialize_shifts(weeks_first_date);
     }
 
-    private Map<String, List<Integer>> shift_roles() {
-        Map<String, List<Integer>> roles = new HashMap<>();
-        roles.put("Cashier", new LinkedList<>());
-        roles.put("Storekeeper", new LinkedList<>());
-        roles.put("Security", new LinkedList<>());
-        roles.put("Cleaning", new LinkedList<>());
-        roles.put("Usher", new LinkedList<>());
-        roles.put("General", new LinkedList<>());
+    private Map<Worker.role_type, List<Integer>> shift_roles() {
+        Map<Worker.role_type, List<Integer>> roles = new HashMap<>();
+        roles.put(Worker.role_type.Cashier, new LinkedList<>());
+        roles.put(Worker.role_type.Storekeeper, new LinkedList<>());
+        roles.put(Worker.role_type.Security, new LinkedList<>());
+        roles.put(Worker.role_type.Cleaning, new LinkedList<>());
+        roles.put(Worker.role_type.Usher, new LinkedList<>());
+        roles.put(Worker.role_type.General, new LinkedList<>());
         return roles;
     }
 
@@ -36,46 +36,62 @@ public class BranchSchedule {
         finished_shifts = new HashMap<>();
         employees_available_shift = new HashMap<>();
         manager_constraints = new HashMap<>();
-        Shift sun_morning = new Shift(weeks_first_date, "sun_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift sun_morning = new Shift(weeks_first_date, "sun_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), branch);
         finished_shifts.put(sun_morning, shift_roles());
         employees_available_shift.put(sun_morning, new LinkedList<>());
         manager_constraints.put(sun_morning, new LinkedList<>());
-        Shift sun_evening = new Shift(weeks_first_date, "sun_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift sun_evening = new Shift(weeks_first_date, "sun_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), branch);
         finished_shifts.put(sun_evening, shift_roles());
         employees_available_shift.put(sun_evening, new LinkedList<>());
         manager_constraints.put(sun_evening, new LinkedList<>());
-        Shift mon_morning = new Shift(weeks_first_date.plusDays(1), "mon_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift mon_morning = new Shift(weeks_first_date.plusDays(1), "mon_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), branch);
         finished_shifts.put(mon_morning, shift_roles());
         employees_available_shift.put(mon_morning, new LinkedList<>());
         manager_constraints.put(mon_morning, new LinkedList<>());
-        Shift mon_evening = new Shift(weeks_first_date.plusDays(1), "mon_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift mon_evening = new Shift(weeks_first_date.plusDays(1), "mon_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), branch);
         finished_shifts.put(mon_evening, shift_roles());
         employees_available_shift.put(mon_evening, new LinkedList<>());
         manager_constraints.put(mon_evening, new LinkedList<>());
-        Shift tue_morning = new Shift(weeks_first_date.plusDays(2), "tue_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift tue_morning = new Shift(weeks_first_date.plusDays(2), "tue_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), branch);
         finished_shifts.put(tue_morning, shift_roles());
         employees_available_shift.put(tue_morning, new LinkedList<>());
         manager_constraints.put(tue_morning, new LinkedList<>());
-        Shift tue_evening = new Shift(weeks_first_date.plusDays(2), "tue_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift tue_evening = new Shift(weeks_first_date.plusDays(2), "tue_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), branch);
         finished_shifts.put(tue_evening, shift_roles());
         employees_available_shift.put(tue_evening, new LinkedList<>());
         manager_constraints.put(tue_evening, new LinkedList<>());
-        Shift wed_morning = new Shift(weeks_first_date.plusDays(3), "wed_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift wed_morning = new Shift(weeks_first_date.plusDays(3), "wed_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), branch);
         finished_shifts.put(wed_morning, shift_roles());
         employees_available_shift.put(wed_morning, new LinkedList<>());
         manager_constraints.put(wed_morning, new LinkedList<>());
-        Shift wed_evening = new Shift(weeks_first_date.plusDays(3), "wed_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift wed_evening = new Shift(weeks_first_date.plusDays(3), "wed_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), branch);
         finished_shifts.put(wed_evening, shift_roles());
         employees_available_shift.put(wed_evening, new LinkedList<>());
         manager_constraints.put(wed_evening, new LinkedList<>());
-        Shift thu_morning = new Shift(weeks_first_date.plusDays(4), "thu_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift thu_morning = new Shift(weeks_first_date.plusDays(4), "thu_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), branch);
         finished_shifts.put(thu_morning, shift_roles());
         employees_available_shift.put(thu_morning, new LinkedList<>());
         manager_constraints.put(thu_morning, new LinkedList<>());
-        Shift thu_evening = new Shift(weeks_first_date.plusDays(4), "thu_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), "Be'er Sheva");
+        Shift thu_evening = new Shift(weeks_first_date.plusDays(4), "thu_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), branch);
         finished_shifts.put(thu_evening, shift_roles());
         employees_available_shift.put(thu_evening, new LinkedList<>());
         manager_constraints.put(thu_evening, new LinkedList<>());
+        Shift fri_morning = new Shift(weeks_first_date.plusDays(5), "fri_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), branch);
+        finished_shifts.put(fri_morning, shift_roles());
+        employees_available_shift.put(fri_morning, new LinkedList<>());
+        manager_constraints.put(fri_morning, new LinkedList<>());
+        Shift fri_evening = new Shift(weeks_first_date.plusDays(5), "fri_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), branch);
+        finished_shifts.put(fri_evening, shift_roles());
+        employees_available_shift.put(fri_evening, new LinkedList<>());
+        manager_constraints.put(fri_evening, new LinkedList<>());
+        Shift sat_morning = new Shift(weeks_first_date.plusDays(6), "sat_morning", Shift.shift_type.MORNING, null, new LinkedList<>(), branch);
+        finished_shifts.put(sat_morning, shift_roles());
+        employees_available_shift.put(sat_morning, new LinkedList<>());
+        manager_constraints.put(sat_morning, new LinkedList<>());
+        Shift sat_evening = new Shift(weeks_first_date.plusDays(6), "sat_evening", Shift.shift_type.EVENING, null, new LinkedList<>(), branch);
+        finished_shifts.put(sat_evening, shift_roles());
+        employees_available_shift.put(sat_evening, new LinkedList<>());
+        manager_constraints.put(sat_evening, new LinkedList<>());
         List<Shift> sun_shifts = new LinkedList<>();
         sun_shifts.add(sun_morning);
         sun_shifts.add(sun_evening);
@@ -91,11 +107,19 @@ public class BranchSchedule {
         List<Shift> thu_shifts = new LinkedList<>();
         thu_shifts.add(thu_morning);
         thu_shifts.add(thu_evening);
+        List<Shift> fri_shifts = new LinkedList<>();
+        fri_shifts.add(fri_morning);
+        fri_shifts.add(fri_evening);
+        List<Shift> sat_shifts = new LinkedList<>();
+        sat_shifts.add(sat_morning);
+        sat_shifts.add(sat_evening);
         shifts.put(weeks_first_date, sun_shifts);
         shifts.put(weeks_first_date.plusDays(1), mon_shifts);
         shifts.put(weeks_first_date.plusDays(2), tue_shifts);
         shifts.put(weeks_first_date.plusDays(3), wed_shifts);
         shifts.put(weeks_first_date.plusDays(4), thu_shifts);
+        shifts.put(weeks_first_date.plusDays(5), fri_shifts);
+        shifts.put(weeks_first_date.plusDays(6), sat_shifts);
     }
 
     public void add_availability(LocalDate date, Shift.shift_type type, Integer ID) {
@@ -121,12 +145,7 @@ public class BranchSchedule {
         List<Shift> date_shifts = shifts.get(date);
         for (Shift shift: date_shifts) {
             if (shift.getType() == type) {
-                if (manager_constraints.get(shift).contains(ID)) {
-                    return false;
-                }
-                else {
-                    return true;
-                }
+                return !manager_constraints.get(shift).contains(ID);
             }
         }
         return true;
@@ -143,29 +162,32 @@ public class BranchSchedule {
     }
 
     public void assign_shift(Integer ID, LocalDate date, Shift.shift_type type, String role) {
+        Worker.role_type Role = Worker.role_type.valueOf(role);
         List<Shift> date_shifts = shifts.get(date);
         for (Shift shift: date_shifts) {
             if (shift.getType() == type) {
-                finished_shifts.get(shift).get(role).add(ID);
+                finished_shifts.get(shift).get(Role).add(ID);
             }
         }
     }
 
     public boolean is_assigned(Integer ID, LocalDate date, Shift.shift_type type, String role) {
+        Worker.role_type Role = Worker.role_type.valueOf(role);
         List<Shift> date_shifts = shifts.get(date);
         for (Shift shift: date_shifts) {
             if (shift.getType() == type) {
-                return finished_shifts.get(shift).get(role).contains(ID);
+                return finished_shifts.get(shift).get(Role).contains(ID);
             }
         }
         return false;
     }
 
     public void remove_shift(Integer ID, LocalDate date, Shift.shift_type type, String role) {
+        Worker.role_type Role = Worker.role_type.valueOf(role);
         List<Shift> date_shifts = shifts.get(date);
         for (Shift shift: date_shifts) {
             if (shift.getType() == type) {
-                finished_shifts.get(shift).get(role).remove(ID);
+                finished_shifts.get(shift).get(Role).remove(ID);
             }
         }
     }
@@ -174,10 +196,7 @@ public class BranchSchedule {
         List<Shift> date_shifts = shifts.get(date);
         for (Shift shift: date_shifts) {
             if (shift.getType() == type) {
-                if (shift.getShift_manager() != null) {
-                    return true;
-                }
-                return false;
+                return shift.getShift_manager() != null;
             }
         }
         return false;

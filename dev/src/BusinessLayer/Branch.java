@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Branch {
-    private String name;
+    private final String name;
     private BranchSchedule branchSchedule;
     private List<Integer> workers;
     private String location;
@@ -31,8 +31,9 @@ public class Branch {
     }
 
     public void create_schedule(LocalDate week_first_day) {
-        branchSchedule = new BranchSchedule(name, week_first_day);
-        schedules_history.add(branchSchedule);
+        BranchSchedule newBrance = new BranchSchedule(name, week_first_day);
+        schedules_history.add(newBrance);
+        branchSchedule = newBrance;
     }
 
     public boolean assign_worker(Integer id) {

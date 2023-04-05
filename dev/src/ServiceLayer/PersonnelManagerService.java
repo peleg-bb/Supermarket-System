@@ -9,7 +9,7 @@ import java.util.Map;
 public class PersonnelManagerService {
     PersonnelManager personnelManager;
 
-    public PersonnelManagerService(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Map<String, List<Integer>> roles_employees, Map<Integer, Worker> employees, Map<String, Branch> branches) {
+    public PersonnelManagerService(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Map<Worker.role_type, List<Integer>> roles_employees, Map<Integer, Worker> employees, Map<String, Branch> branches) {
         personnelManager = new PersonnelManager(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date, roles_employees, employees, branches);
     }
 

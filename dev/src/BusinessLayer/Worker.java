@@ -13,7 +13,15 @@ public class Worker {
     protected String terms_of_employment;
     protected LocalDate employment_start_date;
     protected Map<String, Branch> qualified_branches;
-    protected List<String> roles;
+    protected List<role_type> roles;
+    public enum role_type {
+        Cashier,
+        Storekeeper,
+        Security,
+        Cleaning,
+        Usher,
+        General
+    }
 
     public Worker(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
         this.name = name;
@@ -53,22 +61,24 @@ public class Worker {
     }
 
     public boolean add_role(String role) {
-        if (roles.contains(role)) {
+        role_type Role = role_type.valueOf(role);
+        if (roles.contains(Role)) {
             return false;
         }
-        roles.add(role);
+        roles.add(Role);
         return true;
     }
 
     public boolean remove_role(String role) {
-        if (!roles.contains(role)) {
+        role_type Role = role_type.valueOf(role);
+        if (!roles.contains(Role)) {
             return false;
         }
-        roles.remove(role);
+        roles.remove(Role);
         return true;
     }
 
-    public List<String> getRoles() {
+    public List<role_type> getRoles() {
         return roles;
     }
 }

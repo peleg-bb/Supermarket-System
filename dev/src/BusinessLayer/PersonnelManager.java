@@ -4,20 +4,20 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class PersonnelManager extends Worker{
-    private Map<String, List<Integer>> roles_employees;
+    private Map<Worker.role_type, List<Integer>> roles_employees;
     private Map<Integer, Worker> employees;
     private Map<String, Branch> branches;
 
-    public PersonnelManager(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Map<String, List<Integer>> roles_employees, Map<Integer, Worker> employees, Map<String, Branch> branches) {
+    public PersonnelManager(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Map<Worker.role_type, List<Integer>> roles_employees, Map<Integer, Worker> employees, Map<String, Branch> branches) {
         super(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date);
         if (roles_employees == null) {
             this.roles_employees = new HashMap<>();
-            this.roles_employees.put("Cashier", new LinkedList<>());
-            this.roles_employees.put("Storekeeper", new LinkedList<>());
-            this.roles_employees.put("Security", new LinkedList<>());
-            this.roles_employees.put("Cleaning", new LinkedList<>());
-            this.roles_employees.put("Usher", new LinkedList<>());
-            this.roles_employees.put("General", new LinkedList<>());
+            this.roles_employees.put(Worker.role_type.Cashier, new LinkedList<>());
+            this.roles_employees.put(Worker.role_type.Storekeeper, new LinkedList<>());
+            this.roles_employees.put(Worker.role_type.Security, new LinkedList<>());
+            this.roles_employees.put(Worker.role_type.Cleaning, new LinkedList<>());
+            this.roles_employees.put(Worker.role_type.Usher, new LinkedList<>());
+            this.roles_employees.put(Worker.role_type.General, new LinkedList<>());
         }
         else {
             this.roles_employees = roles_employees;
@@ -65,21 +65,23 @@ public class PersonnelManager extends Worker{
     }
 
     public boolean add_employee_role(Integer id, String role) {
-        if (roles_employees.get(role).contains(id)) {
+        Worker.role_type Role = Worker.role_type.valueOf(role);
+        if (roles_employees.get(Role).contains(id)) {
             return false;
         }
         else {
-            roles_employees.get(role).add(id);
+            roles_employees.get(Role).add(id);
         }
         return employees.get(id).add_role(role);
     }
 
     public boolean remove_employee_role(Integer id, String role) {
-        if (!roles_employees.get(role).contains(id)) {
+        Worker.role_type Role = Worker.role_type.valueOf(role);
+        if (!roles_employees.get(Role).contains(id)) {
             return false;
         }
         else {
-            roles_employees.get(role).remove(id);
+            roles_employees.get(Role).remove(id);
             return employees.get(id).remove_role(role);
         }
     }
@@ -89,14 +91,12 @@ public class PersonnelManager extends Worker{
     }
 
     private boolean check_employee_availability(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
-        if (branches.get(branch).check_employee_availability(date, type, ID) && check_employee_role(ID, role)) {
-            return true;
-        }
-        return false;
+        return branches.get(branch).check_employee_availability(date, type, ID) && check_employee_role(ID, role);
     }
 
     private boolean check_employee_role(Integer ID, String role) {
-        return roles_employees.get(role).contains(ID);
+        Worker.role_type Role = Worker.role_type.valueOf(role);
+        return roles_employees.get(Role).contains(ID);
     }
 
     public void create_schedule(String branch, LocalDate week_first_day) {
@@ -127,7 +127,7 @@ public class PersonnelManager extends Worker{
         return employees;
     }
 
-    public Map<String, List<Integer>> getRolesEmployees() {
+    public Map<Worker.role_type, List<Integer>> getRolesEmployees() {
         return roles_employees;
     }
 
