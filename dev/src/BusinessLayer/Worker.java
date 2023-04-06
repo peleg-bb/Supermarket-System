@@ -14,6 +14,11 @@ public class Worker {
     protected LocalDate employment_start_date;
     protected Map<String, Branch> qualified_branches;
     protected List<role_type> roles;
+
+    public int getID() {
+        return id;
+    }
+
     public enum role_type {
         Cashier,
         Storekeeper,
@@ -36,10 +41,23 @@ public class Worker {
         qualified_branches = new HashMap<>();
     }
 
-    public boolean available_to_shift(LocalDate date, String branch, Shift.shift_type type) {
-        if (qualified_branches.containsKey(branch) && check_manager_constraint(date, branch, type)) {
-            qualified_branches.get(branch).add_availability(date, type, this.id);
+    public boolean available_to_shift(String date, String branch, String type) {
+        LocalDate systemDate = LocalDate.parse(date);
+        Shift.shift_type shift_type = Shift.shift_type.valueOf(type);
+        if (qualified_branches.containsKey(branch) && check_manager_constraint(systemDate, branch, shift_type)) {
+            qualified_branches.get(branch).add_availability(systemDate, shift_type, this.id);
             return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean remove_availability(String date, String branch, String type) {
+        LocalDate systemDate = LocalDate.parse(date);
+        Shift.shift_type shift_type = Shift.shift_type.valueOf(type);
+        if (qualified_branches.containsKey(branch)) {
+            return qualified_branches.get(branch).remove_availability(systemDate, shift_type, this.id);
         }
         else {
             return false;

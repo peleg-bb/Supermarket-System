@@ -31,9 +31,9 @@ public class Branch {
     }
 
     public void create_schedule(LocalDate week_first_day) {
-        BranchSchedule newBrance = new BranchSchedule(name, week_first_day);
-        schedules_history.add(newBrance);
-        branchSchedule = newBrance;
+        BranchSchedule newBranch = new BranchSchedule(name, week_first_day);
+        schedules_history.add(newBranch);
+        branchSchedule = newBranch;
     }
 
     public boolean assign_worker(Integer id) {
@@ -70,5 +70,9 @@ public class Branch {
 
     public void add_availability(LocalDate date, Shift.shift_type type, Integer id) {
         branchSchedule.add_availability(date, type, id);
+    }
+
+    public boolean remove_availability(LocalDate date, Shift.shift_type type, Integer id) {
+        return branchSchedule.remove_availability(date, type, id);
     }
 }

@@ -31,19 +31,23 @@ public class PersonnelManager extends Worker{
         this.branches = branches;
     }
 
-    public boolean assign_to_shift(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
-        if (check_employee_availability(ID, date, type, branch, role)) {
-            branches.get(branch).assign_to_shift(ID, date, type, role);
+    public boolean assign_to_shift(Integer ID, String date, String type, String branch, String role) {
+        LocalDate systemDate = LocalDate.parse(date);
+        Shift.shift_type shift_type = Shift.shift_type.valueOf(type);
+        if (check_employee_availability(ID, systemDate, shift_type, branch, role)) {
+            branches.get(branch).assign_to_shift(ID, systemDate, shift_type, role);
             return true;
         }
         return false;
     }
 
-    public boolean remove_shift(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
-        if (!branches.get(branch).is_assigned(ID, date, type, role)) {
+    public boolean remove_shift(Integer ID, String date, String type, String branch, String role) {
+        LocalDate systemDate = LocalDate.parse(date);
+        Shift.shift_type shift_type = Shift.shift_type.valueOf(type);
+        if (!branches.get(branch).is_assigned(ID, systemDate, shift_type, role)) {
             return false;
         }
-        branches.get(branch).remove_shift(ID, date, type, role);
+        branches.get(branch).remove_shift(ID, systemDate, shift_type, role);
         return true;
     }
 
@@ -86,8 +90,10 @@ public class PersonnelManager extends Worker{
         }
     }
 
-    public boolean confirm_shift(LocalDate date, Shift.shift_type type, String branch) {
-        return branches.get(branch).confirm_shift(date, type);
+    public boolean confirm_shift(String date, String type, String branch) {
+        LocalDate systemDate = LocalDate.parse(date);
+        Shift.shift_type shift_type = Shift.shift_type.valueOf(type);
+        return branches.get(branch).confirm_shift(systemDate, shift_type);
     }
 
     private boolean check_employee_availability(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
@@ -99,8 +105,13 @@ public class PersonnelManager extends Worker{
         return roles_employees.get(Role).contains(ID);
     }
 
-    public void create_schedule(String branch, LocalDate week_first_day) {
-        branches.get(branch).create_schedule(week_first_day);
+    public boolean create_schedule(String branch, String week_first_day) {
+        LocalDate systemDate = LocalDate.parse(week_first_day);
+        if (!branches.containsKey(branch)) {
+            return false;
+        }
+        branches.get(branch).create_schedule(systemDate);
+        return true;
     }
 
     public boolean create_branch(String branch_name, String location, Integer morning_shift_hours, Integer evening_shift_hours) {
@@ -119,8 +130,10 @@ public class PersonnelManager extends Worker{
         return employees.get(id).add_qualified_branch(branch, branches.get(branch));
     }
 
-    public boolean assign_shift_manager(LocalDate date, Shift.shift_type type, String branch, Integer id) {
-        return branches.get(branch).assign_shift_manager(date, type, id);
+    public boolean assign_shift_manager(String date, String type, String branch, Integer id) {
+        LocalDate systemDate = LocalDate.parse(date);
+        Shift.shift_type shift_type = Shift.shift_type.valueOf(type);
+        return branches.get(branch).assign_shift_manager(systemDate, shift_type, id);
     }
 
     public Map<Integer, Worker> getEmployees() {

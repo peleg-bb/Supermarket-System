@@ -12,15 +12,19 @@ public class WorkerService {
         worker = new Worker(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date);
     }
 
-    public boolean available_to_shift(LocalDate date, String branch, Shift.shift_type type) {
+    public WorkerService(Worker worker) {
+        this.worker = worker;
+    }
+
+    public boolean available_to_shift(String date, String branch, String type) {
         return worker.available_to_shift(date, branch, type);
     }
 
-    public boolean add_role(String role) {
-        return worker.add_role(role);
+    public boolean remove_availability(String date, String branch, String type) {
+        return worker.remove_availability(date, branch, type);
     }
 
-    public boolean remove_role(String role) {
-        return worker.remove_role(role);
+    public int getID() {
+        return worker.getID();
     }
 }

@@ -13,11 +13,11 @@ public class PersonnelManagerService {
         personnelManager = new PersonnelManager(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date, roles_employees, employees, branches);
     }
 
-    public boolean assign_to_shift(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
+    public boolean assign_to_shift(Integer ID, String date, String type, String branch, String role) {
         return personnelManager.assign_to_shift(ID, date, type, branch, role);
     }
 
-    public boolean remove_shift(Integer ID, LocalDate date, Shift.shift_type type, String branch, String role) {
+    public boolean remove_shift(Integer ID, String date, String type, String branch, String role) {
         return personnelManager.remove_shift(ID, date, type, branch, role);
     }
 
@@ -37,12 +37,12 @@ public class PersonnelManagerService {
         return personnelManager.remove_employee_role(id, role);
     }
 
-    public boolean confirm_shift(LocalDate date, Shift.shift_type type, String branch) {
+    public boolean confirm_shift(String date, String type, String branch) {
         return personnelManager.confirm_shift(date, type, branch);
     }
 
-    public void create_schedule(String branch, LocalDate week_first_day) {
-        personnelManager.create_schedule(branch, week_first_day);
+    public boolean create_schedule(String branch, String week_first_day) {
+        return personnelManager.create_schedule(branch, week_first_day);
     }
 
     public boolean create_branch(String branch_name, String location, Integer morning_shift_hours, Integer evening_shift_hours) {
@@ -53,7 +53,11 @@ public class PersonnelManagerService {
         return personnelManager.qualify_employee_to_branch(id, branch);
     }
 
-    public boolean assign_shift_manager(LocalDate date, Shift.shift_type type, String branch, Integer id) {
+    public boolean assign_shift_manager(String date, String type, String branch, Integer id) {
         return personnelManager.assign_shift_manager(date, type, branch, id);
+    }
+
+    public Worker getEmployee(int id) {
+        return personnelManager.getEmployees().get(id);
     }
 }

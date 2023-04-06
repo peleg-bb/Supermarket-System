@@ -22,7 +22,7 @@ class WorkerTest {
 
     @Test
     void available_to_shift() {
-        worker.available_to_shift(LocalDate.of(2023, 3, 26), "Be'er Sheva", Shift.shift_type.MORNING);
+        worker.available_to_shift("2023-03-26", "Be'er Sheva", "MORNING");
         assertEquals(1, branch.get_availability_per_shift(LocalDate.of(2023, 3, 26), Shift.shift_type.MORNING).size());
     }
 

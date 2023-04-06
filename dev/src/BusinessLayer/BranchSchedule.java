@@ -212,4 +212,19 @@ public class BranchSchedule {
         }
         return false;
     }
+
+    public boolean remove_availability(LocalDate date, Shift.shift_type type, Integer id) {
+        List<Shift> date_shifts = shifts.get(date);
+        for (Shift shift: date_shifts) {
+            if (shift.getType() == type) {
+                if (employees_available_shift.get(shift).remove(id)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
 }
