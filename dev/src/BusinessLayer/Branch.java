@@ -3,6 +3,7 @@ package BusinessLayer;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Branch {
     private final String name;
@@ -74,5 +75,13 @@ public class Branch {
 
     public boolean remove_availability(LocalDate date, Shift.shift_type type, Integer id) {
         return branchSchedule.remove_availability(date, type, id);
+    }
+
+    public Map<String, String> getAvailability(Integer id) {
+        return branchSchedule.getAvailability(id);
+    }
+
+    public Map<String, String> getShifts(Integer id) {
+        return branchSchedule.getShifts(id);
     }
 }

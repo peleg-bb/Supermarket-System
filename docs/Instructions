@@ -1,0 +1,6 @@
+Instructions for using our system:
+
+    1. When the program starts running - the employee will have to choose if he's the manager or he's an employee.
+    2. Once the employee chooses the right role - he will have to choose whether he wishes to register (create a new employee) or login into one of the existing employees.
+    3. Once the registration / connection completed - he will be presented with a menu, containing his options for actions + an exit option.
+    4. Each choice will follow-up with instructions according to the action.

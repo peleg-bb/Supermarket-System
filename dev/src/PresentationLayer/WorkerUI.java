@@ -1,8 +1,6 @@
 package PresentationLayer;
 
 import BusinessLayer.Branch;
-import BusinessLayer.PersonnelManager;
-import BusinessLayer.Worker;
 import ServiceLayer.PersonnelManagerService;
 import ServiceLayer.WorkerService;
 
@@ -29,6 +27,12 @@ public class WorkerUI {
             input = ans.nextLine();
             if (input.equals("register")) {
                 manager = create_manager();
+                System.out.println("Registered Successfully");
+                System.out.println("==========================================================================");
+            }
+            else {
+                System.out.println("Logged in Successfully");
+                System.out.println("==========================================================================");
             }
             while (true) {
                 managerMenu();
@@ -41,6 +45,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't create the employee");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 2) {
                     System.out.println("Enter the worker's ID: ");
@@ -51,6 +56,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't remove employee");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 3) {
                     System.out.println("Enter the worker's ID: ");
@@ -69,6 +75,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't assign employee");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 4) {
                     System.out.println("Enter the worker's ID: ");
@@ -87,6 +94,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't remove employee's shift");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 5) {
                     System.out.println("Enter the worker's ID: ");
@@ -99,6 +107,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't add employee's role");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 6) {
                     System.out.println("Enter the worker's ID: ");
@@ -111,6 +120,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't remove employee's role");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 7) {
                     System.out.println("Enter the shift's date ({year}-{month}-{day}): ");
@@ -125,6 +135,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't confirm shift");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 8) {
                     System.out.println("Enter the branch name: ");
@@ -141,6 +152,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't create branch");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 9) {
                     System.out.println("Enter the branch name: ");
@@ -153,6 +165,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't create schedule");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 10) {
                     System.out.println("Enter the worker's id: ");
@@ -165,6 +178,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't add the employee to this branch");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 11) {
                     System.out.println("Enter the worker's id: ");
@@ -181,6 +195,7 @@ public class WorkerUI {
                     else {
                         System.out.println("Couldn't assign shift manager");
                     }
+                    System.out.println("==========================================================================");
                 }
                 else if (action == 12) {
                     System.out.println("LOGGING OUT...");
@@ -195,15 +210,20 @@ public class WorkerUI {
                 if (input.equals("register")) {
                     worker = create_employee();
                     workers.put(worker.getID(), worker);
+                    System.out.println("Registered Successfully");
+                    System.out.println("==========================================================================");
                     break;
                 } else {
                     System.out.println("Enter ID:");
                     int id = Integer.parseInt(ans.nextLine());
                     if (!workers.containsKey(id)) {
                         System.out.println("ID doesn't exist. Enter a new one / choose \"register\" to register");
+                        System.out.println("==========================================================================");
                         continue;
                     }
                     worker = workers.get(id);
+                    System.out.println("Logged in Successfully");
+                    System.out.println("==========================================================================");
                     break;
                 }
             }
@@ -222,6 +242,7 @@ public class WorkerUI {
                     } else {
                         System.out.println("Couldn't add availability");
                     }
+                    System.out.println("===========================================================");
                 } else if (action == 2) {
                     System.out.println("Enter the shift's date ({year}-{month}-{day}): ");
                     String date = ans.nextLine();
@@ -234,7 +255,42 @@ public class WorkerUI {
                     } else {
                         System.out.println("Couldn't remove availability");
                     }
-                } else if (action == 3) {
+                    System.out.println("===========================================================");
+                }
+                else if (action == 3) {
+                    System.out.println("Which branch do you wish to check availability at? ");
+                    String branch = ans.nextLine();
+                    Map<String, String> availability = worker.getAvailability(branch);
+                    if (availability.isEmpty()) {
+                        System.out.println("You have no shifts availability yet!");
+                        System.out.println("===========================================================");
+                        continue;
+                    }
+                    int counter = 1;
+                    for (String date: availability.keySet()) {
+                        System.out.println(counter + ". " + date + " - " + availability.get(date));
+                        counter++;
+                    }
+                    System.out.println("===========================================================");
+                }
+                else if (action == 4) {
+                    System.out.println("Which branch do you wish to check shifts at? ");
+                    String branch = ans.nextLine();
+                    Map<String, String> shifts = worker.getShifts(branch);
+                    if (shifts.isEmpty()) {
+                        System.out.println("You have no shifts yet!");
+                        System.out.println("===========================================================");
+                        continue;
+                    }
+                    int counter = 1;
+                    for (String date: shifts.keySet()) {
+                        System.out.println(counter + ". " + date + " - " + shifts.get(date));
+                        counter++;
+                    }
+                    System.out.println("===========================================================");
+                }
+
+                else if (action == 5) {
                     System.out.println("LOGGING OUT...");
                     break;
                 }
@@ -268,7 +324,7 @@ public class WorkerUI {
         }
         System.out.println("Enter terms of employment: ");
         String terms_of_employment = ans.nextLine();
-        return new PersonnelManagerService(name, id, bank_account, salary, family_status, student, terms_of_employment, date, null, null, null);
+        return new PersonnelManagerService(name, id, bank_account, salary, family_status, student, terms_of_employment, date, null, null);
     }
 
     public static WorkerService create_employee() {
@@ -333,7 +389,9 @@ public class WorkerUI {
         System.out.println("Please enter the number of the option you would like to choose: ");
         System.out.println("1. Add availability to a shift");
         System.out.println("2. Remove availability from a shift");
-        System.out.println("3. Exit");
+        System.out.println("3. Show my shifts availability");
+        System.out.println("4. Show my shifts");
+        System.out.println("5. Exit");
     }
 
     public static void managerMenu() {
@@ -355,13 +413,10 @@ public class WorkerUI {
 
     /* Loading an example data */
     public static void loadData() {
-        Branch Branch1 = new Branch("Be'er Sheva", "Be'er Sheva", 7,8);
-        Branch Branch2 = new Branch("Tel Aviv", "Tel Aviv", 6,8);
-        Map<String, Branch> branches = new HashMap<>();
-        branches.put("Be'er Sheva", Branch1);
-        branches.put("Tel Aviv", Branch2);
-        PersonnelManagerService manager = new PersonnelManagerService("Omer Guz", 555555555, 567567, 70, "Married", false, "", LocalDate.of(2023, 1, 1), null, null, branches);
+        PersonnelManagerService manager = new PersonnelManagerService("Omer Guz", 555555555, 567567, 70, "Married", false, "", LocalDate.of(2023, 1, 1), null, null);
         WorkerUI.manager = manager;
+        manager.create_branch("Be'er Sheva", "Be'er Sheva", 7,8);
+        manager.create_branch("Tel Aviv", "Tel Aviv", 6,8);
         manager.create_schedule("Tel Aviv", "2023-04-02");
         manager.create_schedule("Be'er Sheva", "2023-04-02");
         manager.add_employee("Ron Hadad", 111111111, 123123, 30, "Single", true, "Commited to one year", "2023-01-22");

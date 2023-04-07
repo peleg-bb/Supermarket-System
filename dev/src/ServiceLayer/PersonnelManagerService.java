@@ -9,8 +9,8 @@ import java.util.Map;
 public class PersonnelManagerService {
     PersonnelManager personnelManager;
 
-    public PersonnelManagerService(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Map<Worker.role_type, List<Integer>> roles_employees, Map<Integer, Worker> employees, Map<String, Branch> branches) {
-        personnelManager = new PersonnelManager(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date, roles_employees, employees, branches);
+    public PersonnelManagerService(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Map<Employee.role_type, List<Integer>> roles_employees, Map<Integer, Employee> employees) {
+        personnelManager = new PersonnelManager(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date, roles_employees, employees);
     }
 
     public boolean assign_to_shift(Integer ID, String date, String type, String branch, String role) {
@@ -57,7 +57,7 @@ public class PersonnelManagerService {
         return personnelManager.assign_shift_manager(date, type, branch, id);
     }
 
-    public Worker getEmployee(int id) {
+    public Employee getEmployee(int id) {
         return personnelManager.getEmployees().get(id);
     }
 }

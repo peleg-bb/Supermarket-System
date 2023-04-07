@@ -3,7 +3,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 
-public class Worker {
+public class Employee {
     protected String name;
     protected Integer id;
     protected Integer bank_account;
@@ -14,6 +14,11 @@ public class Worker {
     protected LocalDate employment_start_date;
     protected Map<String, Branch> qualified_branches;
     protected List<role_type> roles;
+
+    public Map<String, String> getShifts(String branch) {
+        return qualified_branches.get(branch).getShifts(this.id);
+    }
+
     public enum role_type {
         Cashier,
         Storekeeper,
@@ -23,7 +28,7 @@ public class Worker {
         General
     }
 
-    public Worker(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
+    public Employee(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
         this.name = name;
         this.id = id;
         this.bank_account = bank_account;
@@ -103,5 +108,9 @@ public class Worker {
 
     public int getID() {
         return id;
+    }
+
+    public Map<String, String> getAvailability(String branch) {
+        return qualified_branches.get(branch).getAvailability(this.id);
     }
 }

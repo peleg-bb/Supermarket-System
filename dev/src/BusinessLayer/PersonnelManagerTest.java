@@ -19,7 +19,7 @@ class PersonnelManagerTest {
         branch.create_schedule(LocalDate.of(2023,3,26));
         Map<String, Branch> branches = new HashMap<>();
         branches.put("Be'er Sheva", branch);
-        manager = new PersonnelManager("Ron Hadad", 123456789, 3366998, 30, "Single", true, "Commited to one year", LocalDate.of(2023, 1, 26), null, null, branches);
+        manager = new PersonnelManager("Ron Hadad", 123456789, 3366998, 30, "Single", true, "Commited to one year", LocalDate.of(2023, 1, 26), null, null);
     }
 
     @Test
@@ -69,9 +69,9 @@ class PersonnelManagerTest {
     void add_employee_role() {
         manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");
         manager.add_employee_role(666666666, "Storekeeper");
-        boolean test1 = manager.getRolesEmployees().get(Worker.role_type.Storekeeper).contains(666666666);
+        boolean test1 = manager.getRolesEmployees().get(Employee.role_type.Storekeeper).contains(666666666);
         assertTrue(test1);
-        boolean test2 = manager.getEmployees().get(666666666).getRoles().contains(Worker.role_type.Storekeeper);
+        boolean test2 = manager.getEmployees().get(666666666).getRoles().contains(Employee.role_type.Storekeeper);
         assertTrue(test2);
     }
 
@@ -79,14 +79,14 @@ class PersonnelManagerTest {
     void remove_employee_role() {
         manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");
         manager.add_employee_role(666666666, "Storekeeper");
-        boolean test1 = manager.getRolesEmployees().get(Worker.role_type.Storekeeper).contains(666666666);
+        boolean test1 = manager.getRolesEmployees().get(Employee.role_type.Storekeeper).contains(666666666);
         assertTrue(test1);
-        boolean test2 = manager.getEmployees().get(666666666).getRoles().contains(Worker.role_type.Storekeeper);
+        boolean test2 = manager.getEmployees().get(666666666).getRoles().contains(Employee.role_type.Storekeeper);
         assertTrue(test2);
         manager.remove_employee_role(666666666, "Storekeeper");
-        boolean test3 = manager.getRolesEmployees().get(Worker.role_type.Storekeeper).contains(666666666);
+        boolean test3 = manager.getRolesEmployees().get(Employee.role_type.Storekeeper).contains(666666666);
         assertFalse(test3);
-        boolean test4 = manager.getEmployees().get(666666666).getRoles().contains(Worker.role_type.Storekeeper);
+        boolean test4 = manager.getEmployees().get(666666666).getRoles().contains(Employee.role_type.Storekeeper);
         assertFalse(test4);
 
     }

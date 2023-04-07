@@ -9,6 +9,11 @@ public class Shift {
     private final LocalDate date;
     private final String name;
     private final shift_type type;
+
+    public LocalDate getDate() {
+        return date;
+    }
+
     public enum shift_type {
         MORNING,
         EVENING
