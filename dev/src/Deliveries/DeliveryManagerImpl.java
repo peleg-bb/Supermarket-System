@@ -31,10 +31,11 @@ public class DeliveryManagerImpl implements DeliveryManager{
     }
 
     @Override
-    public void addDeliveryStop(Map<String, Integer> items, Site origin, Site destination) {
+    public int addDeliveryStop(Map<String, Integer> items, Site origin, Site destination) {
         DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, origin, destination, TruckType.Regular);
         pendingDeliveryStops.add(deliveryStop);
         // decide how to manage the origin.
+        return deliveryStop.getDeliveryId();
     }
 
     @Override

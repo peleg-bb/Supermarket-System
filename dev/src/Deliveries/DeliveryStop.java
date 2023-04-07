@@ -38,5 +38,7 @@ public class DeliveryStop {
     }
 
 
-
+    public int getDeliveryId() {
+        return deliveryId;
+    }
 }

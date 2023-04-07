@@ -14,8 +14,8 @@ public class UserInterface {
         Scanner scanner = new Scanner(System.in);
         printMenu();
         int ans = scanner.nextInt();
+        DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
         if(ans==1) {
-            DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
             System.out.println("Welcome to the delivery manager!");
             while (true) {
                 System.out.println("Would you like to add a delivery stop? (Y/N)");
@@ -34,8 +34,8 @@ public class UserInterface {
                             int quantity = askForQuantity(scanner);
                             deliveryItems.put(item, quantity);
                         } else if (answer2.equals("N") || answer.equals("n")) {
-                            deliveryManager.addDeliveryStop(deliveryItems, originBranch, destinationBranch);
-                            //System.out.println("delivery ID is");
+                            int id = deliveryManager.addDeliveryStop(deliveryItems, originBranch, destinationBranch);
+                            System.out.println("delivery ID is " + id);
 
                             break;
                         }
@@ -46,7 +46,9 @@ public class UserInterface {
             }
         } else if (ans==2) {
             System.out.println("enter the stop you want to remove:");
+            int id = scanner.nextInt();
             //we dont have deliveryID for removing
+            deliveryManager.removeDeliveryStop(id);
         } else if (ans==3) {
             //exit
         }
