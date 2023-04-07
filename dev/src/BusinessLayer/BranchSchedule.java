@@ -21,16 +21,13 @@ public class BranchSchedule {
 
     private Map<Worker.role_type, List<Integer>> shift_roles() {
         Map<Worker.role_type, List<Integer>> roles = new HashMap<>();
-        roles.put(Worker.role_type.Cashier, new LinkedList<>());
-        roles.put(Worker.role_type.Storekeeper, new LinkedList<>());
-        roles.put(Worker.role_type.Security, new LinkedList<>());
-        roles.put(Worker.role_type.Cleaning, new LinkedList<>());
-        roles.put(Worker.role_type.Usher, new LinkedList<>());
-        roles.put(Worker.role_type.General, new LinkedList<>());
+        for (Worker.role_type type : Worker.role_type.values()) {
+            roles.put(type, new LinkedList<>());
+        }
         return roles;
     }
 
-    /* Initializing all of the week's basic data */
+    /** Initializes the week's basic data **/
     public void initialize_shifts(LocalDate weeks_first_date) {
         shifts = new HashMap<>();
         finished_shifts = new HashMap<>();

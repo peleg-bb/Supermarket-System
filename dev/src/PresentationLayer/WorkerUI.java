@@ -354,6 +354,7 @@ public class WorkerUI {
         System.out.println("12. Exit");
     }
 
+    /* Loading an example data */
     public static void loadData() {
         Branch Branch1 = new Branch("Be'er Sheva", "Be'er Sheva", 7,8);
         Branch Branch2 = new Branch("Tel Aviv", "Tel Aviv", 6,8);

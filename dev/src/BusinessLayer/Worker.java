@@ -14,11 +14,6 @@ public class Worker {
     protected LocalDate employment_start_date;
     protected Map<String, Branch> qualified_branches;
     protected List<role_type> roles;
-
-    public int getID() {
-        return id;
-    }
-
     public enum role_type {
         Cashier,
         Storekeeper,
@@ -41,6 +36,7 @@ public class Worker {
         qualified_branches = new HashMap<>();
     }
 
+    /** Adds availability to a specific shift - in a specific branch **/
     public boolean available_to_shift(String date, String branch, String type) {
         LocalDate systemDate = LocalDate.parse(date);
         Shift.shift_type shift_type = Shift.shift_type.valueOf(type);
@@ -53,6 +49,7 @@ public class Worker {
         }
     }
 
+    /** Removes availability from a specific shift - in a specific branch **/
     public boolean remove_availability(String date, String branch, String type) {
         LocalDate systemDate = LocalDate.parse(date);
         Shift.shift_type shift_type = Shift.shift_type.valueOf(type);
@@ -64,6 +61,7 @@ public class Worker {
         }
     }
 
+    /** Adds the branch to the list of qualified branches to work at **/
     public boolean add_qualified_branch(String branch_name, Branch branch) {
         if (qualified_branches.containsKey(branch_name)) {
             return false;
@@ -74,10 +72,12 @@ public class Worker {
         }
     }
 
+    /** Checks whether the manager has restricted the work of the worker **/
     private boolean check_manager_constraint(LocalDate date, String branch, Shift.shift_type type) {
         return qualified_branches.get(branch).getSchedule().check_manager_constraint(date, type, this.id);
     }
 
+    /** Adds the role to the list of qualified roles of the worker **/
     public boolean add_role(String role) {
         role_type Role = role_type.valueOf(role);
         if (roles.contains(Role)) {
@@ -87,6 +87,7 @@ public class Worker {
         return true;
     }
 
+    /** Removes the role from the list of qualified roles of the worker **/
     public boolean remove_role(String role) {
         role_type Role = role_type.valueOf(role);
         if (!roles.contains(Role)) {
@@ -98,5 +99,9 @@ public class Worker {
 
     public List<role_type> getRoles() {
         return roles;
+    }
+
+    public int getID() {
+        return id;
     }
 }
