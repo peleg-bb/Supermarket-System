@@ -316,7 +316,6 @@ public class WorkerUI {
         String is_student = ans.next();
         System.out.println("Enter the employee's employment start date ({year}-{month}-{day}): ");
         String employment_start_date = ans.next();
-        LocalDate date = LocalDate.parse(employment_start_date);
         boolean student;
         if (is_student.equals("yes")) {
             student = true;
@@ -326,7 +325,7 @@ public class WorkerUI {
         }
         System.out.println("Enter the employee's terms of employment: ");
         String terms_of_employment = ans.next();
-        return manager.add_employee(name, id, bank_account, salary, family_status, student, terms_of_employment, date);
+        return manager.add_employee(name, id, bank_account, salary, family_status, student, terms_of_employment, employment_start_date);
     }
 
     public static void workerMenu() {
@@ -365,14 +364,14 @@ public class WorkerUI {
         WorkerUI.manager = manager;
         manager.create_schedule("Tel Aviv", "2023-04-02");
         manager.create_schedule("Be'er Sheva", "2023-04-02");
-        manager.add_employee("Ron Hadad", 111111111, 123123, 30, "Single", true, "Commited to one year", LocalDate.of(2023, 1, 22));
+        manager.add_employee("Ron Hadad", 111111111, 123123, 30, "Single", true, "Commited to one year", "2023-01-22");
         manager.qualify_employee_to_branch(111111111, "Be'er Sheva");
         manager.qualify_employee_to_branch(111111111, "Tel Aviv");
-        manager.add_employee("Guy Cohen", 222222222, 234234, 35, "Married", false, "", LocalDate.of(2022, 2, 1));
+        manager.add_employee("Guy Cohen", 222222222, 234234, 35, "Married", false, "", "2023-02-01");
         manager.qualify_employee_to_branch(222222222, "Be'er Sheva");
-        manager.add_employee("Tal Levi", 333333333, 345345, 34, "Single", true, "Can't work on Thursdays", LocalDate.of(2022, 9, 26));
+        manager.add_employee("Tal Levi", 333333333, 345345, 34, "Single", true, "Can't work on Thursdays", "2023-09-26");
         manager.qualify_employee_to_branch(333333333, "Tel Aviv");
-        manager.add_employee("Ron Zehavi", 444444444, 456456, 33, "Single", true, "Commited to one year", LocalDate.of(2023, 2, 2));
+        manager.add_employee("Ron Zehavi", 444444444, 456456, 33, "Single", true, "Commited to one year", "2023-02-02");
         manager.add_employee_role(111111111, "Storekeeper");
         manager.add_employee_role(111111111, "Cashier");
         manager.add_employee_role(222222222, "Security");

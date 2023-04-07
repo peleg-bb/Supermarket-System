@@ -24,7 +24,7 @@ class PersonnelManagerTest {
 
     @Test
     void assign_to_shift() {
-        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", LocalDate.of(2023, 1, 26));
+        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");
         manager.add_employee_role(666666666, "Storekeeper");
         manager.assign_to_shift(666666666, "2023-03-27", "MORNING", "Be'er Sheva", "Storekeeper");
         manager.qualify_employee_to_branch(666666666, "Be'er Sheva");
@@ -38,7 +38,7 @@ class PersonnelManagerTest {
 
     @Test
     void remove_shift() {
-        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", LocalDate.of(2023, 1, 26));
+        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");
         manager.add_employee_role(666666666, "Storekeeper");
         manager.getEmployees().get(666666666).available_to_shift("2023-03-27","Be'er Sheva", "MORNING");
         manager.assign_to_shift(666666666, "2023-03-27", "MORNING", "Be'er Sheva", "Storekeeper");
@@ -49,16 +49,16 @@ class PersonnelManagerTest {
 
     @Test
     void add_employee() {
-        boolean added = manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", LocalDate.of(2023, 1, 26));
+        boolean added = manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");
         assertEquals(1, manager.getEmployees().size());
         assertTrue(added);
-        added = manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", LocalDate.of(2023, 1, 26));
+        added = manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");
         assertFalse(added);
     }
 
     @Test
     void remove_employee() {
-        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", LocalDate.of(2023, 1, 26));
+        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");
         manager.remove_employee(666656666);
         assertEquals(1, manager.getEmployees().size());
         manager.remove_employee(666666666);
@@ -67,7 +67,7 @@ class PersonnelManagerTest {
 
     @Test
     void add_employee_role() {
-        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", LocalDate.of(2023, 1, 26));
+        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");
         manager.add_employee_role(666666666, "Storekeeper");
         boolean test1 = manager.getRolesEmployees().get(Worker.role_type.Storekeeper).contains(666666666);
         assertTrue(test1);
@@ -77,7 +77,7 @@ class PersonnelManagerTest {
 
     @Test
     void remove_employee_role() {
-        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", LocalDate.of(2023, 1, 26));
+        manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");
         manager.add_employee_role(666666666, "Storekeeper");
         boolean test1 = manager.getRolesEmployees().get(Worker.role_type.Storekeeper).contains(666666666);
         assertTrue(test1);

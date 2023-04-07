@@ -21,7 +21,7 @@ public class PersonnelManagerService {
         return personnelManager.remove_shift(ID, date, type, branch, role);
     }
 
-    public boolean add_employee(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
+    public boolean add_employee(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, String employment_start_date) {
         return personnelManager.add_employee(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date);
     }
 

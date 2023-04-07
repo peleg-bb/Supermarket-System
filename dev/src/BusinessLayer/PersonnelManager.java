@@ -54,11 +54,12 @@ public class PersonnelManager extends Worker{
     }
 
     /** Adds an employee to the system **/
-    public boolean add_employee(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
+    public boolean add_employee(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, String employment_start_date) {
+        LocalDate systemDate = LocalDate.parse(employment_start_date);
         if (employees.containsKey(id)) {
             return false;
         }
-        Worker employee = new Worker(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date);
+        Worker employee = new Worker(name, id, bank_account, salary, family_status, is_student, terms_of_employment, systemDate);
         employees.put(id, employee);
         return true;
     }
