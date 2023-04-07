@@ -31,4 +31,8 @@ public class Driver {
     public Availability getAvailability() {
         return availability;
     }
+
+    public String getId() {
+        return id;
+    }
 }

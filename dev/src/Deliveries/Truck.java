@@ -41,4 +41,8 @@ public class Truck {
     public Availability getAvailability() {
         return availability;
     }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
 }

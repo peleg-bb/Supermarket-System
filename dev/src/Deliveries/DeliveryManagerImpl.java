@@ -44,11 +44,12 @@ public class DeliveryManagerImpl implements DeliveryManager{
 
 
 
-    public boolean createForm(List<DeliveryStop> stops, TruckType truckType, Site origin) {
+    public boolean createForm(List<DeliveryStop> stops, Site origin) {
         try {
+            TruckType truckType = getTruckType(stops);
             Truck truck = truckController.pickTruck(truckType);
             Driver driver = driverController.pickDriver(truck.getType(), truck.getMaxWeightTons());
-            DeliveryForm form = new DeliveryForm(deliveryFormCount++, stops, origin, truck.getMaxWeightTons());//TODO: fix weight
+            DeliveryForm form = new DeliveryForm(deliveryFormCount++, stops, origin, truck.getMaxWeightTons(), driver.getId(),truck.getLicensePlate());//TODO: fix weight
             return true;
 
         } catch (DeliveryException e) {
@@ -56,12 +57,24 @@ public class DeliveryManagerImpl implements DeliveryManager{
         }
     }
 
-    //maybe private + need a better name
-    public void toCreateForm(){
+    //maybe private
+    public void createDeliveryGroup(){
         HashMap<String,List<DeliveryStop>> originToZones = createDeliveryLists(pendingDeliveryStops);
         for(Map.Entry<String,List<DeliveryStop>> entries: originToZones.entrySet()){
-            createForm(entries.getValue(),TruckType.Regular,entries.getValue().get(0).getOrigin()); // might be a bit messy, couldn't think of a better way to get the origin
+            createForm(entries.getValue(),entries.getValue().get(0).getOrigin()); // might be a bit messy, couldn't think of a better way to get the origin
         }
+        pendingDeliveryStops.clear();
+    }
+
+    public TruckType getTruckType(List<DeliveryStop> destinationSitesToVisit) {
+        TruckType truckType = TruckType.Regular;
+        // for each delivery stop, check if the truck type is the same
+        for (DeliveryStop stop : destinationSitesToVisit) {
+            if (stop.getTruckTypeRequired() == TruckType.Refrigerated) {
+                truckType = TruckType.Refrigerated;
+            }
+        }
+        return truckType;
     }
 
     public void replanDelivery(DeliveryForm form) {
@@ -106,9 +119,6 @@ public class DeliveryManagerImpl implements DeliveryManager{
         return 0;
     }
 
-    private TruckType getTruckType(List<DeliveryStop> stops) {
-        return null;//why?
-    }
 
     private HashMap<Site,List<DeliveryStop>> sortStopsByOrigin(List<DeliveryStop> pendingDeliveryStops){
         HashMap<Site,List<DeliveryStop>> sortedByOrigin = new HashMap<>();

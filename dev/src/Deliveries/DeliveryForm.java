@@ -11,17 +11,21 @@ public class DeliveryForm {
     private List<DeliveryStop> destinationSitesToVisit;
     private List<DeliveryStop> destinationSitesVisited;
     private int maxWeightAllowed;
+    private String driverID;
+    private String truckID;
     private Site originSite;
     private DeliveryManagerImpl deliveryManager;
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
 
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed){
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed, String driverID, String truckID){
         this.formId = formId;
         this.destinationSitesToVisit = stops;
         //date = Date.
         //time
         this.originSite = originSite;
         this.maxWeightAllowed = maxWeightAllowed;
+        this.driverID = driverID;
+        this.truckID = truckID;
     }
     public void addDeliveryStop(DeliveryStop deliveryStop) {
         destinationSitesToVisit.add(deliveryStop);
@@ -75,5 +79,7 @@ public class DeliveryForm {
     public int getDispatchWeightTons() {
         return dispatchWeightTons;
     }
+
+
     
 }
