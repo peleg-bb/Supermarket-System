@@ -10,32 +10,45 @@ public class UserInterface {
     // main method
     public static void main(String[] args) {
         // create a new DeliveryFormsController
-        DeliveryManagerService deliveryManagerService = new DeliveryManagerService();
-        DeliveryManagerImpl deliveryManager = deliveryManagerService.deliveryManager;
+        //DeliveryManagerService deliveryManagerService = new DeliveryManagerService();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the delivery manager!");
-        System.out.println("Please enter details about the origin of the delivery: ");
-        Site originBranch = getSite(scanner);
-        while (true) {
-            System.out.println("Would you like to add a delivery stop? (Y/N)");
-            String answer = scanner.nextLine();
-            if (answer.equals("Y")) {
-                Site destinationBranch = getSite(scanner);
-                while (true) {
-                    HashMap<String, Integer> deliveryItems = new HashMap<>();
-                    System.out.println("Would you like to add an item? (Y/N)");
-                    String answer2 = scanner.nextLine();
-                    if (answer2.equals("Y")) {
-                        String item = askForItem(scanner);
-                        int quantity = askForQuantity(scanner);
-                        deliveryItems.put(item, quantity);
-                    } else if (answer2.equals("N")) {
-                        deliveryManager.addDeliveryStop(deliveryItems, originBranch, destinationBranch);
-                        break;
+        printMenu();
+        int ans = scanner.nextInt();
+        if(ans==1) {
+            DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
+            System.out.println("Welcome to the delivery manager!");
+            while (true) {
+                System.out.println("Would you like to add a delivery stop? (Y/N)");
+                String answer = scanner.nextLine();
+                if (answer.equals("Y") || answer.equals("y")) {
+                    System.out.println("please enter the origin details");
+                    Site originBranch = getSite(scanner);
+                    System.out.println("please enter the destination details");
+                    Site destinationBranch = getSite(scanner);
+                    while (true) {
+                        HashMap<String, Integer> deliveryItems = new HashMap<>();
+                        System.out.println("Would you like to add an item? (Y/N)");
+                        String answer2 = scanner.nextLine();
+                        if (answer2.equals("Y") || answer.equals("y")) {
+                            String item = askForItem(scanner);
+                            int quantity = askForQuantity(scanner);
+                            deliveryItems.put(item, quantity);
+                        } else if (answer2.equals("N") || answer.equals("n")) {
+                            deliveryManager.addDeliveryStop(deliveryItems, originBranch, destinationBranch);
+                            //System.out.println("delivery ID is");
+
+                            break;
+                        }
                     }
+                } else if (answer.equals("N") || answer.equals("n")) {
+                    break;
                 }
-                break;
             }
+        } else if (ans==2) {
+            System.out.println("enter the stop you want to remove:");
+            //we dont have deliveryID for removing
+        } else if (ans==3) {
+            //exit
         }
     }
 

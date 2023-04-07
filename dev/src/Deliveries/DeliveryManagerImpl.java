@@ -1,8 +1,10 @@
 package Deliveries;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class DeliveryManagerImpl implements DeliveryManager{
     private TruckController truckController;
@@ -16,7 +18,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
    private DeliveryManagerImpl() {
             deliveryCount = 0;
             deliveryFormCount = 0;
-            pendingDeliveryStops = new ArrayList<DeliveryStop>();
+            pendingDeliveryStops = new ArrayList<>();
             truckController = TruckController.getInstance();
             driverController = DriverController.getInstance();
     }
@@ -30,7 +32,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
 
     @Override
     public void addDeliveryStop(Map<String, Integer> items, Site origin, Site destination) {
-        DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, destination, TruckType.Regular);
+        DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, origin, destination, TruckType.Regular);
         pendingDeliveryStops.add(deliveryStop);
         // decide how to manage the origin.
     }
@@ -51,6 +53,14 @@ public class DeliveryManagerImpl implements DeliveryManager{
 
         } catch (DeliveryException e) {
             return false;
+        }
+    }
+
+    //maybe private + need a better name
+    public void toCreateForm(){
+        HashMap<String,List<DeliveryStop>> originToZones = createDeliveryLists(pendingDeliveryStops);
+        for(Map.Entry<String,List<DeliveryStop>> entries: originToZones.entrySet()){
+            createForm(entries.getValue(),TruckType.Regular,entries.getValue().get(0).getOrigin()); // might be a bit messy, couldn't think of a better way to get the origin
         }
     }
 
@@ -100,6 +110,50 @@ public class DeliveryManagerImpl implements DeliveryManager{
         return null;//why?
     }
 
+    private HashMap<Site,List<DeliveryStop>> sortStopsByOrigin(List<DeliveryStop> pendingDeliveryStops){
+        HashMap<Site,List<DeliveryStop>> sortedByOrigin = new HashMap<>();
+        for (DeliveryStop stop : pendingDeliveryStops) {
+            Site origin = stop.getOrigin();
+            if(!sortedByOrigin.containsKey(origin)){
+                ArrayList<DeliveryStop> originStops = new ArrayList<>();
+                originStops.add(stop);
+                sortedByOrigin.put(origin,originStops);
+            }
+            else{
+                sortedByOrigin.get(origin).add(stop);
+            }
+        }
+        return sortedByOrigin;
+    }
+
+    //takes a list of the stops for each origin and separates to lists sorted by zones
+    private HashMap<String,List<DeliveryStop>> sortByDeliveryZones(List<DeliveryStop> originsStops){
+       HashMap<String,List<DeliveryStop>> deliveryZonesSorted = new HashMap<>(); //key-delivery zone, value-stops in that delivery zones
+        for (DeliveryStop stop: originsStops) {
+            if (!deliveryZonesSorted.containsKey(stop.getDestination().getDeliveryZone())) {
+                    ArrayList<DeliveryStop> deliveryZoneStops = new ArrayList<>();
+                    deliveryZoneStops.add(stop);
+                    deliveryZonesSorted.put(stop.getDestination().getDeliveryZone(), deliveryZoneStops);
+                } else {
+                    deliveryZonesSorted.get(stop.getDestination().getDeliveryZone()).add(stop);
+                }
+
+        }
+        return deliveryZonesSorted;
+    }
+
+    public HashMap<String,List<DeliveryStop>> createDeliveryLists(List<DeliveryStop> pendingDeliveryStops){
+        HashMap<String,List<DeliveryStop>> originToSortedByZones = new HashMap<>();
+        HashMap<Site,List<DeliveryStop>> originSorted = sortStopsByOrigin(pendingDeliveryStops);
+        for(Map.Entry<Site,List<DeliveryStop>> originsStops: originSorted.entrySet()){
+            List<DeliveryStop> stops = originsStops.getValue();
+            HashMap<String,List<DeliveryStop>> zoneSorted = sortByDeliveryZones(stops);
+            for (Map.Entry<String,List<DeliveryStop>> entries: zoneSorted.entrySet()) {
+                originToSortedByZones.put(entries.getKey(),entries.getValue());
+            }
+        }
+        return originToSortedByZones;
+    }
 
 }
 
