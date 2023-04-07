@@ -35,4 +35,8 @@ public class Driver {
     public String getId() {
         return id;
     }
+
+    public void setAvailability(Availability availability) {
+        this.availability = availability;
+    }
 }

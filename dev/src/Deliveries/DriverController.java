@@ -1,15 +1,14 @@
 package Deliveries;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class DriverController {
-    private List<Driver> drivers;
+    private HashMap<String,Driver> drivers;
 
     private static DriverController instance = null;
     // Singleton Constructor
     private DriverController() {
-        drivers = new ArrayList<Driver>();
+        drivers = new HashMap<>();
 
     }
 
@@ -32,5 +31,9 @@ public class DriverController {
         }
         throw new DeliveryException("No available drivers with license for truck type "
                 + truckType + " and weight " + weight);
+    }
+
+    public void freeDriver(String driverID){
+        drivers.get(driverID).setAvailability(Availability.Available);
     }
 }

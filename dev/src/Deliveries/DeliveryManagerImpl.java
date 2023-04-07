@@ -166,6 +166,13 @@ public class DeliveryManagerImpl implements DeliveryManager{
         return originToSortedByZones;
     }
 
+    public TruckController getTruckController() {
+        return truckController;
+    }
+
+    public DriverController getDriverController() {
+        return driverController;
+    }
 }
 
 

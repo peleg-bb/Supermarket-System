@@ -45,4 +45,8 @@ public class Truck {
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
+
+    public void setAvailability(Availability availability) {
+        this.availability = availability;
+    }
 }

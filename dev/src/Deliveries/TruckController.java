@@ -1,15 +1,14 @@
 package Deliveries;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class TruckController {
-    private List<Truck> trucks;
+    private HashMap<String,Truck> trucks;
 
     private static TruckController instance = null;
     // Singleton Constructor
     private TruckController() {
-        trucks = new ArrayList<Truck>();
+        trucks = new HashMap<>();
 
     }
 
@@ -43,5 +42,9 @@ public class TruckController {
             }
         }
         throw new DeliveryException("No available trucks of type " + requiredType + " and weight " + requiredWeight);
+    }
+
+    public void freeTruck(String truckID){
+        trucks.get(truckID).setAvailability(Availability.Available);
     }
 }

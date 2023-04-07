@@ -34,6 +34,10 @@ public class DeliveryForm {
     public void visitDeliveryStop(DeliveryStop deliveryStop) {
         destinationSitesToVisit.remove(deliveryStop);
         destinationSitesVisited.add(deliveryStop);
+        if(destinationSitesToVisit.isEmpty()){
+            deliveryManager.getDriverController().freeDriver(driverID);
+            deliveryManager.getTruckController().freeTruck(truckID);
+        }
     }
 
     /* setDispatchWeightTons() is called when the truck leaves the origin site */
