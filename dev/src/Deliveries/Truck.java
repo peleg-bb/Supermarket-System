@@ -5,16 +5,25 @@ public class Truck {
     private String licensePlate;
     private TruckType type;
     private int maxWeightTons;
-    private int netoWeightTons;
+    private int netWeightTons;
 
     private Availability availability;
 
-    public Truck(String model, String licensePlate, TruckType type, int maxWeightTons, int netoWeightTons) {
+    @Override
+    public String toString() {
+        return "Truck{" +
+                "model='" + model + '\'' +
+                ", licensePlate='" + licensePlate + '\'' +
+                ", type=" + type +
+                '}';
+    }
+
+    public Truck(String model, String licensePlate, TruckType type, int maxWeightTons, int netWeightTons) {
         this.model = model;
         this.licensePlate = licensePlate;
         this.type = type;
         this.maxWeightTons = maxWeightTons;
-        this.netoWeightTons = netoWeightTons;
+        this.netWeightTons = netWeightTons;
         availability = Availability.Available;
     }
 
@@ -34,8 +43,8 @@ public class Truck {
         return maxWeightTons;
     }
 
-    public int getNetoWeightTons() {
-        return netoWeightTons;
+    public int getNetWeightTons() {
+        return netWeightTons;
     }
 
     public Availability getAvailability() {

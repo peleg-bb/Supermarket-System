@@ -6,6 +6,15 @@ public class Driver {
     private final String name;
     private final String id;
     private final String phone;
+
+    @Override
+    public String toString() {
+        return "Driver{" +
+                "name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
+
     private License license;
 
     private Availability availability;

@@ -45,24 +45,24 @@ public class DeliveryManagerImpl implements DeliveryManager{
 
 
 
-    public boolean createForm(List<DeliveryStop> stops, Site origin) {
-        try {
-            TruckType truckType = getTruckType(stops);
-            Truck truck = truckController.pickTruck(truckType);
-            Driver driver = driverController.pickDriver(truck.getType(), truck.getMaxWeightTons());
-            DeliveryForm form = new DeliveryForm(deliveryFormCount++, stops, origin, truck.getMaxWeightTons(), driver.getId(),truck.getLicensePlate());//TODO: fix weight
-            return true;
+    public DeliveryForm createForm(List<DeliveryStop> stops, Site origin) throws DeliveryException {
+        TruckType truckType = getTruckType(stops);
+        Truck truck = truckController.pickTruck(truckType);
+        Driver driver = driverController.pickDriver(truck.getType(), truck.getMaxWeightTons());
+        return new DeliveryForm(deliveryFormCount++, stops, origin, truck.getMaxWeightTons(), driver.getId(),truck.getLicensePlate());//TODO: fix weight
 
-        } catch (DeliveryException e) {
-            return false;
-        }
     }
 
     //maybe private
     public void createDeliveryGroup(){
         HashMap<String,List<DeliveryStop>> originToZones = createDeliveryLists(pendingDeliveryStops);
+        System.out.println(originToZones);
         for(Map.Entry<String,List<DeliveryStop>> entries: originToZones.entrySet()){
-            createForm(entries.getValue(),entries.getValue().get(0).getOrigin()); // might be a bit messy, couldn't think of a better way to get the origin
+            try {
+                DeliveryForm form = createForm(entries.getValue(), entries.getValue().get(0).getOrigin()); // might be a bit messy, couldn't think of a better way to get the origin
+            } catch (DeliveryException e) {
+                // Notify UI
+                }
         }
         pendingDeliveryStops.clear();
     }

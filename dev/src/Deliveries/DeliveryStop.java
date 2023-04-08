@@ -9,9 +9,18 @@ public class DeliveryStop {
     private Site destination;
     private TruckType truckTypeRequired;
 
+    @Override
+    public String toString() {
+        return "DeliveryStop{" +
+                "deliveryId=" + deliveryId +
+                ", items=" + items +
+                ", from origin=" + origin +
+                ", to destination=" + destination +
+                ", truckTypeRequired=" + truckTypeRequired +
+                '}';
+    }
 
-
-    public DeliveryStop(int deliveryId, Map<String, Integer> items,Site origin, Site destination, TruckType truckTypeRequired) {
+    public DeliveryStop(int deliveryId, Map<String, Integer> items, Site origin, Site destination, TruckType truckTypeRequired) {
         this.deliveryId = deliveryId;
         this.items = items;
         this.destination = destination;

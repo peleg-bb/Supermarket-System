@@ -2,9 +2,12 @@ package PresentationLayer;
 
 import Deliveries.DeliveryManagerImpl;
 import Deliveries.Site;
+import Deliveries.SiteGenerator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
+
 
 public class UserInterface {
     // main method
@@ -12,45 +15,66 @@ public class UserInterface {
         // create a new DeliveryFormsController
         //DeliveryManagerService deliveryManagerService = new DeliveryManagerService();
         Scanner scanner = new Scanner(System.in);
+        SiteGenerator siteGenerator = new SiteGenerator();
+        List<Site> sitesList = siteGenerator.sitesList;
+        System.out.println("Welcome to the delivery manager!");
+        System.out.println("The following sites were auto generated and can be used for this demo: ");
+        for (Site site : sitesList) {
+            // print the site and its index in the list
+            System.out.println(sitesList.indexOf(site) + "- " + site);
+        }
         printMenu();
         int ans = scanner.nextInt();
         DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
-        if(ans==1) {
-            System.out.println("Welcome to the delivery manager!");
-            while (true) {
-                System.out.println("Would you like to add a delivery stop? (Y/N)");
-                String answer = scanner.nextLine();
-                if (answer.equals("Y") || answer.equals("y")) {
-                    System.out.println("please enter the origin details");
-                    Site originBranch = getSite(scanner);
-                    System.out.println("please enter the destination details");
-                    Site destinationBranch = getSite(scanner);
-                    while (true) {
-                        HashMap<String, Integer> deliveryItems = new HashMap<>();
-                        System.out.println("Would you like to add an item? (Y/N)");
-                        String answer2 = scanner.nextLine();
-                        if (answer2.equals("Y") || answer.equals("y")) {
-                            String item = askForItem(scanner);
-                            int quantity = askForQuantity(scanner);
-                            deliveryItems.put(item, quantity);
-                        } else if (answer2.equals("N") || answer.equals("n")) {
-                            int id = deliveryManager.addDeliveryStop(deliveryItems, originBranch, destinationBranch);
-                            System.out.println("delivery ID is " + id);
-
-                            break;
-                        }
-                    }
-                } else if (answer.equals("N") || answer.equals("n")) {
-                    break;
-                }
+        while (ans != 4) {
+            if (ans == 1) {
+                addDeliveryStop(scanner, deliveryManager, sitesList);
+            } else if (ans == 2) {
+                System.out.println("enter the stop you want to remove:");
+                int id = scanner.nextInt();
+                //we dont have deliveryID for removing
+                deliveryManager.removeDeliveryStop(id);
+            } else if (ans == 3) {
+                deliveryManager.createDeliveryGroup();
             }
-        } else if (ans==2) {
-            System.out.println("enter the stop you want to remove:");
-            int id = scanner.nextInt();
-            //we dont have deliveryID for removing
-            deliveryManager.removeDeliveryStop(id);
-        } else if (ans==3) {
-            //exit
+            printMenu();
+            ans = scanner.nextInt();
+        }
+
+    }
+
+    private static void addDeliveryStop(Scanner scanner, DeliveryManagerImpl deliveryManager, List<Site> sitesList) {
+        System.out.println("Welcome to the delivery manager!");
+        while (true) {
+            System.out.println("Would you like to add a delivery stop? (Y/N)");
+            String answer = scanner.nextLine();
+            if (answer.equals("Y") || answer.equals("y")) {
+                System.out.println("please enter the origin details");
+                Site originBranch = getSite(scanner, sitesList);
+                System.out.println();
+                System.out.println("Origin is set! Please enter the details about the destinations");
+                System.out.println("please enter the destination details");
+                Site destinationBranch = getSite(scanner, sitesList);
+
+                while (true) {
+                    HashMap<String, Integer> deliveryItems = new HashMap<>();
+                    System.out.println("Would you like to add an item to deliver to "
+                            + destinationBranch.getName() + "? (Y/N)");
+                    String answer2 = scanner.nextLine();
+                    if (answer2.equals("Y") || answer2.equals("y")) {
+                        String item = askForItem(scanner);
+                        int quantity = askForQuantity(scanner);
+                        deliveryItems.put(item, quantity);
+                    } else if (answer2.equals("N") || answer2.equals("n")) {
+                        int id = deliveryManager.addDeliveryStop(deliveryItems, originBranch, destinationBranch);
+                        System.out.println("delivery ID is " + id);
+
+                        break;
+                    }
+                }
+            } else if (answer.equals("N") || answer.equals("n")) {
+                break;
+            }
         }
     }
 
@@ -74,6 +98,17 @@ public class UserInterface {
         return branch;
     }
 
+    private static Site getSite(Scanner scanner, List<Site> sitesList) {
+        System.out.println("Please enter the index (shown on top) of the site you would like to choose: ");
+        // ask for an int. if not int, ask again
+        while (!scanner.hasNextInt()) {
+            System.out.println("Please enter a valid quantity: ");
+            scanner.next();
+        }
+        int SiteIndex = scanner.nextInt();
+        return sitesList.get(SiteIndex);
+    }
+
     public static String askForItem(Scanner scanner){
         System.out.println("Please enter the item: ");
         String item = scanner.nextLine();
@@ -82,15 +117,24 @@ public class UserInterface {
 
     public static int askForQuantity(Scanner scanner){
         System.out.println("Please enter the quantity: ");
+        // ask for an int. if not int, ask again
+        while (!scanner.hasNextInt()) {
+            System.out.println("Please enter a valid quantity: ");
+            scanner.next();
+        }
         int quantity = scanner.nextInt();
+
         return quantity;
     }
 
     public static void printMenu() {
+        System.out.println();
+        System.out.println();
         System.out.println("Please enter the number of the option you would like to choose: ");
         System.out.println("1. Add a delivery stop");
         System.out.println("2. Remove a delivery stop");
-        System.out.println("3. Exit");
+        System.out.println("3. Execute a delivery");
+        System.out.println("4. Exit");
     }
 
 

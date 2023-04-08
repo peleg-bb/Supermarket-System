@@ -40,6 +40,17 @@ public class DeliveryForm {
         }
     }
 
+    @Override
+    public String toString() {
+        return "DeliveryForm{" +
+                "formId=" + formId +
+                ", dispatchTime=" + dispatchTime +
+                ", originSite=" + originSite +
+                ", destinationSitesToVisit=" + destinationSitesToVisit +
+                ", dispatchWeightTons=" + dispatchWeightTons +
+                '}';
+    }
+
     /* setDispatchWeightTons() is called when the truck leaves the origin site */
     public void setDispatchWeightTons(int dispatchWeightTons) {
         this.dispatchWeightTons = dispatchWeightTons;

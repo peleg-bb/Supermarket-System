@@ -15,6 +15,13 @@ public class Site {
         this.deliveryZone = deliveryZone;
     }
 
+    @Override
+    public String toString() {
+        return "Site{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

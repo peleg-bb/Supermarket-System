@@ -8,9 +8,10 @@ public class License {
     private List<TruckType> truckTypesAllowed;
 
     public License() {
-        this.weightAllowedTons = 4;
-        this.truckTypesAllowed = new ArrayList<TruckType>();
+        this.weightAllowedTons = 15;
+        this.truckTypesAllowed = new ArrayList<>();
         this.truckTypesAllowed.add(TruckType.Regular);
+        this.truckTypesAllowed.add(TruckType.Refrigerated);
     }
 
     public License(int weightAllowed, List<TruckType> truckTypesAllowed) {
