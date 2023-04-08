@@ -1,8 +1,6 @@
 package PresentationLayer;
 
-import Deliveries.DeliveryManagerImpl;
-import Deliveries.Site;
-import Deliveries.SiteGenerator;
+import Deliveries.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +11,7 @@ public class UserInterface {
     // main method
     public static void main(String[] args) {
         // create a new DeliveryFormsController
-        //DeliveryManagerService deliveryManagerService = new DeliveryManagerService();
+        // DeliveryManagerService deliveryManagerService = new DeliveryManagerService();
         Scanner scanner = new Scanner(System.in);
         SiteGenerator siteGenerator = new SiteGenerator();
         List<Site> sitesList = siteGenerator.sitesList;
@@ -23,19 +21,35 @@ public class UserInterface {
             // print the site and its index in the list
             System.out.println(sitesList.indexOf(site) + "- " + site);
         }
+        System.out.println();
+        System.out.println();
+        System.out.println("In order to launch a delivery, you should first provide details.");
+        System.out.println("A delivery consists of a list of delivery stops");
+        System.out.println("Each delivery stop contains an origin, a destination and a list of items to deliver");
         printMenu();
         int ans = scanner.nextInt();
         DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
+        DeliveryFormsController deliveryFormsController = deliveryManager.getDeliveryFormsController();
         while (ans != 4) {
             if (ans == 1) {
                 addDeliveryStop(scanner, deliveryManager, sitesList);
             } else if (ans == 2) {
-                System.out.println("enter the stop you want to remove:");
+                System.out.println("Enter the stop you want to remove:");
                 int id = scanner.nextInt();
                 //we dont have deliveryID for removing
                 deliveryManager.removeDeliveryStop(id);
             } else if (ans == 3) {
                 deliveryManager.createDeliveryGroup();
+                System.out.println("The following delivery forms were created:");
+                deliveryFormsController.printDeliveryForms();
+                System.out.println("Execute delivery? (Y/N)");
+                String answer = scanner.next();
+                if (answer.equals("Y") || answer.equals("y")) {
+                    System.out.println("Not implemented yet!");
+                    System.out.println("Delivery executed successfully!");
+                } else if (answer.equals("N") || answer.equals("n")) {
+                    System.out.println("Delivery was not executed");
+                }
             }
             printMenu();
             ans = scanner.nextInt();
@@ -44,23 +58,22 @@ public class UserInterface {
     }
 
     private static void addDeliveryStop(Scanner scanner, DeliveryManagerImpl deliveryManager, List<Site> sitesList) {
-        System.out.println("Welcome to the delivery manager!");
+        System.out.println("Here you can add a delivery stop to the pool of visits to be made");
         while (true) {
             System.out.println("Would you like to add a delivery stop? (Y/N)");
-            String answer = scanner.nextLine();
+            String answer = scanner.next();
             if (answer.equals("Y") || answer.equals("y")) {
-                System.out.println("please enter the origin details");
+                System.out.println("Please enter the origin details");
                 Site originBranch = getSite(scanner, sitesList);
                 System.out.println();
                 System.out.println("Origin is set! Please enter the details about the destinations");
-                System.out.println("please enter the destination details");
+                System.out.println("Please enter the destination details");
                 Site destinationBranch = getSite(scanner, sitesList);
-
+                HashMap<String, Integer> deliveryItems = new HashMap<>();
                 while (true) {
-                    HashMap<String, Integer> deliveryItems = new HashMap<>();
                     System.out.println("Would you like to add an item to deliver to "
                             + destinationBranch.getName() + "? (Y/N)");
-                    String answer2 = scanner.nextLine();
+                    String answer2 = scanner.next();
                     if (answer2.equals("Y") || answer2.equals("y")) {
                         String item = askForItem(scanner);
                         int quantity = askForQuantity(scanner);
@@ -110,8 +123,8 @@ public class UserInterface {
     }
 
     public static String askForItem(Scanner scanner){
-        System.out.println("Please enter the item: ");
-        String item = scanner.nextLine();
+        System.out.println("Please enter the item name: ");
+        String item = scanner.next();
         return item;
     }
 
@@ -135,6 +148,7 @@ public class UserInterface {
         System.out.println("2. Remove a delivery stop");
         System.out.println("3. Execute a delivery");
         System.out.println("4. Exit");
+        System.out.print("Your choice: ");
     }
 
 

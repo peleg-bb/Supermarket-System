@@ -11,13 +11,26 @@ public class DeliveryStop {
 
     @Override
     public String toString() {
-        return "DeliveryStop{" +
-                "deliveryId=" + deliveryId +
-                ", items=" + items +
-                ", from origin=" + origin +
-                ", to destination=" + destination +
-                ", truckTypeRequired=" + truckTypeRequired +
-                '}';
+            StringBuilder sb = new StringBuilder();
+            sb.append("DeliveryStop{")
+                    .append("deliveryId=")
+                    .append(deliveryId)
+                    .append(", deliveryItems={");
+            for (Map.Entry<String, Integer> entry : items.entrySet()) {
+                sb.append(entry.getKey())
+                        .append(": ")
+                        .append(entry.getValue())
+                        .append(", ");
+            }
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append("}, from origin- ")
+                    .append(origin)
+                    .append(", to destination- ")
+                    .append(destination)
+                    .append(", truckTypeRequired- ")
+                    .append(truckTypeRequired)
+                    .append('}');
+            return sb.toString();
     }
 
     public DeliveryStop(int deliveryId, Map<String, Integer> items, Site origin, Site destination, TruckType truckTypeRequired) {

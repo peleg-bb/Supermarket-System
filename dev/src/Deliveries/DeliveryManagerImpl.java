@@ -10,6 +10,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
     private TruckController truckController;
     private DriverController driverController;
     private List<DeliveryStop> pendingDeliveryStops;
+    private DeliveryFormsController deliveryFormsController;
 
     private int deliveryCount;
     private int deliveryFormCount;
@@ -21,6 +22,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
             pendingDeliveryStops = new ArrayList<>();
             truckController = TruckController.getInstance();
             driverController = DriverController.getInstance();
+            deliveryFormsController = new DeliveryFormsController();
     }
 
     public static DeliveryManagerImpl getInstance() {
@@ -59,9 +61,13 @@ public class DeliveryManagerImpl implements DeliveryManager{
         System.out.println(originToZones);
         for(Map.Entry<String,List<DeliveryStop>> entries: originToZones.entrySet()){
             try {
-                DeliveryForm form = createForm(entries.getValue(), entries.getValue().get(0).getOrigin()); // might be a bit messy, couldn't think of a better way to get the origin
+                DeliveryForm form = createForm(entries.getValue(), entries.getValue().get(0).getOrigin());
+                // might be a bit messy, couldn't think of a better way to get the origin
+                deliveryFormsController.addDeliveryForm(form);
+
             } catch (DeliveryException e) {
                 // Notify UI
+                System.out.println(e.getMessage());
                 }
         }
         pendingDeliveryStops.clear();
@@ -172,6 +178,10 @@ public class DeliveryManagerImpl implements DeliveryManager{
 
     public DriverController getDriverController() {
         return driverController;
+    }
+
+    public DeliveryFormsController getDeliveryFormsController() {
+        return deliveryFormsController;
     }
 }
 

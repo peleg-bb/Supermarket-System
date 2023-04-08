@@ -20,8 +20,9 @@ public class DeliveryForm {
     public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed, String driverID, String truckID){
         this.formId = formId;
         this.destinationSitesToVisit = stops;
-        //date = Date.
-        //time
+        dispatchTime = new Timestamp(System.currentTimeMillis());
+        // date = today?
+        date = new Date();
         this.originSite = originSite;
         this.maxWeightAllowed = maxWeightAllowed;
         this.driverID = driverID;
@@ -93,6 +94,13 @@ public class DeliveryForm {
 
     public int getDispatchWeightTons() {
         return dispatchWeightTons;
+    }
+
+    public void startJourney(){
+        // visit the stops in the order they were added
+        for (DeliveryStop stop : destinationSitesToVisit) {
+            visitDeliveryStop(stop);
+        }
     }
 
 

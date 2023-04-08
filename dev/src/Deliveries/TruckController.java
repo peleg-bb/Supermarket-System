@@ -55,8 +55,8 @@ public class TruckController {
         String[] truckModels = {"Volvo", "Mercedes-Benz", "Scania", "MAN", "Daf", "Iveco"};
         String[] licensePlates = {"ABC123", "DEF456", "GHI789", "JKL012", "MNO345", "PQR678"};
         TruckType[] truckTypes = TruckType.values();
-        int[] maxWeights = {10, 20, 30, 40, 50};
-        int[] netWeights = {3, 5, 7, 9, 11};
+        int[] maxWeights = {4, 6, 8, 10, 12};
+        int[] netWeights = {2, 3};
 
         for (int i = 0; i < numTrucks; i++) {
             String model = truckModels[(int)(Math.random() * truckModels.length)];

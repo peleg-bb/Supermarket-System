@@ -8,6 +8,7 @@ public class DeliveryFormsController {
 
     public DeliveryFormsController() {
         this.deliveryForms = new ArrayList<>();
+        // As of now doesn't have to be a singleton
     }
 
     public void addDeliveryForm(DeliveryForm deliveryForm) {
@@ -20,6 +21,17 @@ public class DeliveryFormsController {
 
     public List<DeliveryForm> getDeliveryForms() {
         return this.deliveryForms;
+    }
+
+    public void startDeliveryForm(DeliveryForm deliveryForm) {
+        deliveryForm.startJourney();
+    }
+
+    // print deliveries
+    public void printDeliveryForms() {
+        for (DeliveryForm deliveryForm : deliveryForms) {
+            System.out.println(deliveryForm);
+        }
     }
 
 
