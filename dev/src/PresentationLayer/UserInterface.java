@@ -14,7 +14,7 @@ public class UserInterface {
         // DeliveryManagerService deliveryManagerService = new DeliveryManagerService();
         Scanner scanner = new Scanner(System.in);
         SiteGenerator siteGenerator = new SiteGenerator();
-        List<Site> sitesList = siteGenerator.sitesList;
+        List<Site> sitesList = siteGenerator.getSitesList();
         System.out.println("Welcome to the delivery manager!");
         System.out.println("The following sites were auto generated and can be used for this demo: ");
         for (Site site : sitesList) {
@@ -36,7 +36,6 @@ public class UserInterface {
             } else if (ans == 2) {
                 System.out.println("Enter the stop you want to remove:");
                 int id = scanner.nextInt();
-                //we dont have deliveryID for removing
                 deliveryManager.removeDeliveryStop(id);
             } else if (ans == 3) {
                 deliveryManager.createDeliveryGroup();
@@ -81,7 +80,7 @@ public class UserInterface {
                         deliveryItems.put(item, quantity);
                     } else if (answer2.equals("N") || answer2.equals("n")) {
                         int id = deliveryManager.addDeliveryStop(deliveryItems, originBranch, destinationBranch);
-                        System.out.println("delivery ID is " + id);
+                        System.out.println("Delivery added successfully. The delivery ID is " + id);
 
                         break;
                     }
@@ -133,7 +132,7 @@ public class UserInterface {
         System.out.println("Please enter the quantity: ");
         // ask for an int. if not int, ask again
         while (!scanner.hasNextInt()) {
-            System.out.println("Please enter a valid quantity: ");
+            System.out.println("Invalid quantity. Please enter a valid quantity: ");
             scanner.next();
         }
         int quantity = scanner.nextInt();

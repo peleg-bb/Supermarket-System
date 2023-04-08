@@ -26,4 +26,8 @@ public class SiteGenerator {
         }
         return sites;
     }
+
+    public List<Site> getSitesList() {
+        return sitesList;
+    }
 }
