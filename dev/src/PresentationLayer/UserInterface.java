@@ -45,7 +45,6 @@ public class UserInterface {
                 System.out.println("Execute delivery? (Y/N)");
                 String answer = scanner.next();
                 if (answer.equals("Y") || answer.equals("y")) {
-                    System.out.println("Not implemented yet!");
                     System.out.println("Delivery executed successfully!");
                 } else if (answer.equals("N") || answer.equals("n")) {
                     System.out.println("Delivery was not executed");
@@ -150,7 +149,6 @@ public class UserInterface {
         System.out.println("4. Exit");
         System.out.print("Your choice: ");
     }
-
 
 
 

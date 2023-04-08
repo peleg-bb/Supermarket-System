@@ -1,5 +1,7 @@
 package Deliveries;
 
+import PresentationLayer.UserInteractionUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,10 +9,11 @@ import java.util.Map;
 
 
 public class DeliveryManagerImpl implements DeliveryManager{
-    private TruckController truckController;
-    private DriverController driverController;
+    private final TruckController truckController;
+    private final DriverController driverController;
     private List<DeliveryStop> pendingDeliveryStops;
     private DeliveryFormsController deliveryFormsController;
+    private TripReplanner tripReplanner;
 
     private int deliveryCount;
     private int deliveryFormCount;
@@ -23,6 +26,8 @@ public class DeliveryManagerImpl implements DeliveryManager{
             truckController = TruckController.getInstance();
             driverController = DriverController.getInstance();
             deliveryFormsController = new DeliveryFormsController();
+            tripReplanner = new UserInteractionUtil();
+
     }
 
     public static DeliveryManagerImpl getInstance() {
@@ -52,7 +57,6 @@ public class DeliveryManagerImpl implements DeliveryManager{
         Truck truck = truckController.pickTruck(truckType);
         Driver driver = driverController.pickDriver(truck.getType(), truck.getMaxWeightTons());
         return new DeliveryForm(deliveryFormCount++, stops, origin, truck.getMaxWeightTons(), driver.getId(),truck.getLicensePlate());//TODO: fix weight
-
     }
 
     //maybe private
@@ -79,30 +83,27 @@ public class DeliveryManagerImpl implements DeliveryManager{
         for (DeliveryStop stop : destinationSitesToVisit) {
             if (stop.getTruckTypeRequired() == TruckType.Refrigerated) {
                 truckType = TruckType.Refrigerated;
+                return truckType;
             }
         }
         return truckType;
     }
 
     public void replanDelivery(DeliveryForm form) {
-        // Notify UI
-        Truck newTruck = replaceTruck(form);
-
-        // Handle the case where no truck is available
-        List<DeliveryStop> stopsToAdd = null;
-        List<DeliveryStop> stopsToRemove = null;
+        try {
+            replaceTruck(form);
+        } catch (DeliveryException e) {
+            // Notify UI
+            System.out.println(e.getMessage());
+        }
+        form.setDestinationSitesToVisit(tripReplanner.removeStops(form.getDestinationSitesToVisit()));
     }
 
 
-    private Truck replaceTruck(DeliveryForm form){
-        try {
-            Truck newTruck = truckController.pickTruck(form.getTruckType(), form.getDispatchWeightTons());
-            form.setMaxWeightAllowed(newTruck.getMaxWeightTons());
-            return newTruck;
-        } catch (DeliveryException e) {
-            // Notify UI
-        }
-       return null; //????
+    private void replaceTruck(DeliveryForm form) throws DeliveryException{
+        Truck newTruck = truckController.pickTruck(form.getTruckType(), form.getDispatchWeightTons());
+        form.setMaxWeightAllowed(newTruck.getMaxWeightTons());
+        // TODO: replace driver
     }
 
     private void removeItems(DeliveryForm form){

@@ -1,13 +1,16 @@
 package Deliveries;
 
+import PresentationLayer.UserInteractionUtil;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 public class DeliveryForm {
-    private int formId ;
+    private final int formId ;
     private Date date;
     private Timestamp dispatchTime;
+    private WeightMeasurer weightMeasurer;
     private List<DeliveryStop> destinationSitesToVisit;
     private List<DeliveryStop> destinationSitesVisited;
     private int maxWeightAllowed;
@@ -17,7 +20,8 @@ public class DeliveryForm {
     private DeliveryManagerImpl deliveryManager;
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
 
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed, String driverID, String truckID){
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed,
+                        String driverID, String truckID){
         this.formId = formId;
         this.destinationSitesToVisit = stops;
         dispatchTime = new Timestamp(System.currentTimeMillis());
@@ -27,6 +31,7 @@ public class DeliveryForm {
         this.maxWeightAllowed = maxWeightAllowed;
         this.driverID = driverID;
         this.truckID = truckID;
+        this.weightMeasurer = new UserInteractionUtil();
     }
     public void addDeliveryStop(DeliveryStop deliveryStop) {
         destinationSitesToVisit.add(deliveryStop);
@@ -38,6 +43,10 @@ public class DeliveryForm {
         if(destinationSitesToVisit.isEmpty()){
             deliveryManager.getDriverController().freeDriver(driverID);
             deliveryManager.getTruckController().freeTruck(truckID);
+        }
+        int currentWeight = weightMeasurer.measureWeight(this);
+        if (currentWeight > maxWeightAllowed) {
+            deliveryManager.replanDelivery(this);
         }
     }
 
@@ -67,6 +76,10 @@ public class DeliveryForm {
         if (dispatchWeightTons > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
         }
+    }
+
+    public void setDestinationSitesToVisit(List<DeliveryStop> destinationSitesToVisit) {
+        this.destinationSitesToVisit = destinationSitesToVisit;
     }
 
     public int getFormId() {
