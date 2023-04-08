@@ -5,14 +5,14 @@ import BusinessLayer.Employee;
 import java.time.LocalDate;
 import java.util.Map;
 
-public class WorkerService {
+public class EmployeeService {
     Employee employee;
 
-    public WorkerService(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
+    public EmployeeService(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
         employee = new Employee(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date);
     }
 
-    public WorkerService(Employee employee) {
+    public EmployeeService(Employee employee) {
         this.employee = employee;
     }
 

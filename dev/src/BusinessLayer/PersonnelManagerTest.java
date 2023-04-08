@@ -21,7 +21,6 @@ class PersonnelManagerTest {
         branches.put("Be'er Sheva", branch);
         manager = new PersonnelManager("Ron Hadad", 123456789, 3366998, 30, "Single", true, "Commited to one year", LocalDate.of(2023, 1, 26), null, null);
     }
-
     @Test
     void assign_to_shift() {
         manager.add_employee("Guy Cohen", 666666666, 1231231, 30, "Single", false, "", "2023-01-26");

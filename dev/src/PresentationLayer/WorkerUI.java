@@ -1,15 +1,14 @@
 package PresentationLayer;
 
-import BusinessLayer.Branch;
 import ServiceLayer.PersonnelManagerService;
-import ServiceLayer.WorkerService;
+import ServiceLayer.EmployeeService;
 
 import java.time.LocalDate;
 import java.util.*;
 
 public class WorkerUI {
 
-    private static Map<Integer, WorkerService> workers = new HashMap<>();
+    private static Map<Integer, EmployeeService> workers = new HashMap<>();
     private static PersonnelManagerService manager;
 
     public static void main(String[] args) {
@@ -203,7 +202,7 @@ public class WorkerUI {
                 }
             }
         } else if (input.equals("worker") || input.equals("Worker")) {
-            WorkerService worker;
+            EmployeeService worker;
             while(true) {
                 System.out.println("Do you wish to login / register?");
                 input = ans.nextLine();
@@ -327,7 +326,7 @@ public class WorkerUI {
         return new PersonnelManagerService(name, id, bank_account, salary, family_status, student, terms_of_employment, date, null, null);
     }
 
-    public static WorkerService create_employee() {
+    public static EmployeeService create_employee() {
         Scanner ans = new Scanner(System.in);
         System.out.println("Enter your name: ");
         String name = ans.nextLine();
@@ -353,7 +352,7 @@ public class WorkerUI {
         }
         System.out.println("Enter terms of employment: ");
         String terms_of_employment = ans.next();
-        return new WorkerService(name, id, bank_account, salary, family_status, student, terms_of_employment, date);
+        return new EmployeeService(name, id, bank_account, salary, family_status, student, terms_of_employment, date);
     }
 
     public static boolean manager_create_employee(PersonnelManagerService manager) {
@@ -431,13 +430,13 @@ public class WorkerUI {
         manager.add_employee_role(111111111, "Cashier");
         manager.add_employee_role(222222222, "Security");
         manager.add_employee_role(333333333, "General");
-        WorkerService worker1 = new WorkerService(manager.getEmployee(111111111));
+        EmployeeService worker1 = new EmployeeService(manager.getEmployee(111111111));
         workers.put(111111111, worker1);
-        WorkerService worker2 = new WorkerService(manager.getEmployee(222222222));
+        EmployeeService worker2 = new EmployeeService(manager.getEmployee(222222222));
         workers.put(222222222, worker2);
-        WorkerService worker3 = new WorkerService(manager.getEmployee(333333333));
+        EmployeeService worker3 = new EmployeeService(manager.getEmployee(333333333));
         workers.put(333333333, worker3);
-        WorkerService worker4 = new WorkerService(manager.getEmployee(444444444));
+        EmployeeService worker4 = new EmployeeService(manager.getEmployee(444444444));
         workers.put(444444444, worker4);
     }
 }
