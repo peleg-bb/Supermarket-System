@@ -42,18 +42,20 @@ public class UserInterface {
                 deliveryManager.createDeliveryGroup();
                 System.out.println("The following delivery forms were created:");
                 deliveryFormsController.printDeliveryForms();
-                System.out.println("Execute delivery? (Y/N)");
+                System.out.println("Execute deliveries? (Y/N)");
                 String answer = scanner.next();
                 if (answer.equals("Y") || answer.equals("y")) {
+                    for (DeliveryForm deliveryForm : deliveryFormsController.getDeliveryForms()) {
+                        deliveryFormsController.startDeliveryForm(deliveryForm);
+                    }
                     System.out.println("Delivery executed successfully!");
                 } else if (answer.equals("N") || answer.equals("n")) {
-                    System.out.println("Delivery was not executed");
+                    System.out.println("Deliveries were not executed");
                 }
             }
             printMenu();
             ans = scanner.nextInt();
         }
-
     }
 
     private static void addDeliveryStop(Scanner scanner, DeliveryManagerImpl deliveryManager, List<Site> sitesList) {
@@ -149,7 +151,6 @@ public class UserInterface {
         System.out.println("4. Exit");
         System.out.print("Your choice: ");
     }
-
 
 
 }

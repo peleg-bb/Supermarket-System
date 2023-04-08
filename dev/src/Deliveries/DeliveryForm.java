@@ -5,6 +5,8 @@ import PresentationLayer.UserInteractionUtil;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class DeliveryForm {
     private final int formId ;
@@ -24,6 +26,7 @@ public class DeliveryForm {
                         String driverID, String truckID){
         this.formId = formId;
         this.destinationSitesToVisit = stops;
+        this.destinationSitesVisited = new ArrayList<>();
         dispatchTime = new Timestamp(System.currentTimeMillis());
         // date = today?
         date = new Date();
@@ -32,13 +35,14 @@ public class DeliveryForm {
         this.driverID = driverID;
         this.truckID = truckID;
         this.weightMeasurer = new UserInteractionUtil();
+        deliveryManager = DeliveryManagerImpl.getInstance();
     }
+
     public void addDeliveryStop(DeliveryStop deliveryStop) {
         destinationSitesToVisit.add(deliveryStop);
     }
 
     public void visitDeliveryStop(DeliveryStop deliveryStop) {
-        destinationSitesToVisit.remove(deliveryStop);
         destinationSitesVisited.add(deliveryStop);
         if(destinationSitesToVisit.isEmpty()){
             deliveryManager.getDriverController().freeDriver(driverID);
@@ -111,8 +115,10 @@ public class DeliveryForm {
 
     public void startJourney(){
         // visit the stops in the order they were added
-        for (DeliveryStop stop : destinationSitesToVisit) {
-            visitDeliveryStop(stop);
+        ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
+        while(iterator.hasNext()){
+            visitDeliveryStop(iterator.next());
+            destinationSitesToVisit.remove(iterator.previous());
         }
     }
 
