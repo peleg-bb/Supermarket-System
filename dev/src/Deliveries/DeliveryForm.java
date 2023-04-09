@@ -163,5 +163,10 @@ public class DeliveryForm {
         stopToCancel = stop;
     }
 
+    public void setWeightMeasurer(WeightMeasurer weightMeasurer) {
+        // This is used for testing
+        this.weightMeasurer = weightMeasurer;
+    }
+
 
 }
