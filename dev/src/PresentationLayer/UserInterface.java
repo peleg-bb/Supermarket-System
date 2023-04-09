@@ -85,22 +85,17 @@ public class UserInterface {
         deliveryManager.createDeliveryGroup();
         System.out.println("The following delivery forms were created:");
         deliveryFormsController.printPendingDeliveryForms();
-        System.out.println("Execute deliveries? (Y/N)");
-        String answer = scanner.next();
-        if (answer.equals("Y") || answer.equals("y")) {
-            deliveryFormsController.printPendingDeliveryForms();
-            System.out.println("Enter the ID of the delivery form you want to execute:");
-            while (!scanner.hasNextInt()) {
-                System.out.println("Please enter a valid ID: ");
-                scanner.next();
-            }
-            int id = scanner.nextInt();
-            DeliveryForm deliveryForm = deliveryFormsController.getDeliveryForm(id);
-            deliveryFormsController.startDeliveryForm(deliveryForm);
-            System.out.println("Delivery executed successfully!");
-        } else if (answer.equals("N") || answer.equals("n")) {
-            System.out.println("Deliveries were not executed");
+
+        System.out.println("Enter the ID of the delivery form you want to execute:");
+        while (!scanner.hasNextInt()) {
+            System.out.println("Please enter a valid ID: ");
+            scanner.next();
         }
+        int id = scanner.nextInt();
+        DeliveryForm deliveryForm = deliveryFormsController.getDeliveryForm(id);
+        deliveryFormsController.startDeliveryForm(deliveryForm);
+        System.out.println("Delivery executed successfully!");
+
     }
 
     private static void addDeliveryStop(Scanner scanner, DeliveryManagerImpl deliveryManager, List<Site> sitesList) {

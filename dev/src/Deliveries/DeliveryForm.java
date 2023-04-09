@@ -48,7 +48,8 @@ public class DeliveryForm {
     public void visitDeliveryStop(DeliveryStop deliveryStop) {
         if (destinationSitesVisited.contains(deliveryStop) ||
                 deliveryStop.getStatus() == DeliveryStatus.DELIVERED ||
-                deliveryStop.equals(stopToCancel))
+                deliveryStop.equals(stopToCancel) ||
+                deliveryStop.getStatus() == DeliveryStatus.CANCELLED)
         {
             return; // Already visited or cancelled
         }
@@ -58,14 +59,14 @@ public class DeliveryForm {
         performWeightCheck();
     }
 
-    private void performWeightCheck() {
+    public void performWeightCheck() {
         int currentWeight = measureWeight();
         if (currentWeight > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
         }
     }
 
-    public int measureWeight() {
+    private int measureWeight() {
         int currentWeight = weightMeasurer.measureWeight(this);
         setDispatchWeightTons(currentWeight);
         return currentWeight;
@@ -85,10 +86,6 @@ public class DeliveryForm {
     /* setDispatchWeightTons() is called when the truck leaves the origin site */
     public void setDispatchWeightTons(int dispatchWeightTons) {
         this.dispatchWeightTons = dispatchWeightTons;
-        if (dispatchWeightTons > maxWeightAllowed) {
-            deliveryManager.replanDelivery(this);
-            // Notify UI
-        }
     }
 
     // setMaxWeightAllowed() is called when the truck is loaded with items
@@ -132,11 +129,14 @@ public class DeliveryForm {
 
     public void startJourney(){
         // visit the stops in the order they were added
+        performWeightCheck();
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
         while(iterator.hasNext()){
             DeliveryStop currentStop = iterator.next();
             visitDeliveryStop(currentStop);
-            if (currentStop.getStatus() == DeliveryStatus.DELIVERED || currentStop.equals(stopToCancel)) {
+            if (currentStop.getStatus() == DeliveryStatus.DELIVERED ||
+                    currentStop.equals(stopToCancel) ||
+                    currentStop.getStatus() == DeliveryStatus.CANCELLED) {
                 iterator.remove();
                 // Needs testing
             }
@@ -157,7 +157,7 @@ public class DeliveryForm {
         // for delivery stops that were not visited, set their status to cancelled
         for (DeliveryStop stop : destinationSitesToVisit) {
             if (stop.getStatus() != DeliveryStatus.DELIVERED) { // Not sure if this is needed, but just in case
-                stop.setStatus(DeliveryStatus.NOT_STARTED);
+                stop.setStatus(DeliveryStatus.CANCELLED);
                 deliveryManager.addDeliveryStop(stop);
             }
         }
@@ -165,6 +165,7 @@ public class DeliveryForm {
 
     public void cancelStop(DeliveryStop stop) {
         stopToCancel = stop;
+        stop.setStatus(DeliveryStatus.CANCELLED);
     }
 
     public void setWeightMeasurer(WeightMeasurer weightMeasurer) {

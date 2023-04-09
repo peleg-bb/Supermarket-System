@@ -74,9 +74,8 @@ public class UserInteractionUtil implements WeightMeasurer, TripReplanner {
         }
         System.out.println("What would you like to do?");
         System.out.println("1. Remove stops");
-        System.out.println("2. Remove items");
-        System.out.println("3. Cancel delivery");
-        System.out.println("4. Reweigh truck");
+        System.out.println("2. Cancel delivery");
+        System.out.println("3. Reweigh truck");
         // ask for an int. if not int, ask again
         while (!scanner.hasNextInt()) {
             System.out.println("Enter the stop index you'd like to remove: ");

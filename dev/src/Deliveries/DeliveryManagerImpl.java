@@ -106,13 +106,10 @@ public class DeliveryManagerImpl implements DeliveryManager{
             pendingDeliveryStops.add(stopToCancel);
         }
         else if (action == 2) {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        else if (action == 3) {
             form.cancelForm();
         }
-        else if (action == 4) {
-            form.measureWeight();
+        else if (action == 3) {
+            form.performWeightCheck();
         }
         // else do nothing, will be handled by the UI according to submission 1
     }

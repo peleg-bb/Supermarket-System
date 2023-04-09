@@ -77,13 +77,6 @@ class DeliveryFormTest {
     }
 
     @Test
-    void measureWeight() {
-        deliveryForm.addDeliveryStop(stop1);
-        deliveryForm.addDeliveryStop(stop2);
-        assertEquals(5, deliveryForm.measureWeight());
-    }
-
-    @Test
     void startJourney() {
         deliveryForm.addDeliveryStop(stop1);
         deliveryForm.addDeliveryStop(stop2);
@@ -99,8 +92,8 @@ class DeliveryFormTest {
         deliveryForm.addDeliveryStop(stop1);
         deliveryForm.addDeliveryStop(stop2);
         deliveryForm.cancelForm();
-        assertEquals(DeliveryStatus.NOT_STARTED, stop1.getStatus());
-        assertEquals(DeliveryStatus.NOT_STARTED, stop2.getStatus());
+        assertEquals(DeliveryStatus.CANCELLED, stop1.getStatus());
+        assertEquals(DeliveryStatus.CANCELLED, stop2.getStatus());
         assertEquals(new ArrayList<DeliveryStop>(), deliveryForm.getDestinationSitesVisited());
     }
 
@@ -110,7 +103,7 @@ class DeliveryFormTest {
         deliveryForm.addDeliveryStop(stop2);
         deliveryForm.cancelStop(stop1);
         deliveryForm.startJourney();
-        assertEquals(DeliveryStatus.NOT_STARTED, stop1.getStatus());
+        assertEquals(DeliveryStatus.CANCELLED, stop1.getStatus());
         assertEquals(DeliveryStatus.DELIVERED, stop2.getStatus());
     }
 
