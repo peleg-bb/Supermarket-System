@@ -36,8 +36,8 @@ public class DeliveryManagerImpl implements DeliveryManager{
     }
 
     @Override
-    public int addDeliveryStop(Map<String, Integer> items, Site origin, Site destination) {
-        DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, origin, destination, TruckType.Regular);
+    public int addDeliveryStop(Map<String, Integer> items, Site origin, Site destination, TruckType truckType) {
+        DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, origin, destination, truckType);
         pendingDeliveryStops.add(deliveryStop);
         // decide how to manage the origin.
         return deliveryStop.getShipmentInstanceID();

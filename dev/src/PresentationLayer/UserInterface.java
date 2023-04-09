@@ -77,16 +77,41 @@ public class UserInterface {
                 System.out.println("Please enter the destination details");
                 Site destinationBranch = getSite(scanner, sitesList);
                 HashMap<String, Integer> deliveryItems = new HashMap<>();
+                System.out.println("do you need a regular(1) or a refrigerated(2) truck? (1/2)");
+                //
+                int truckTypeAns = 0;
+                TruckType truckType = TruckType.Regular;
+
+                while(true) {
+                    try {
+                            truckTypeAns = scanner.nextInt();
+
+                            if ((truckTypeAns == 1) || (truckTypeAns == 2)) {
+                                truckType = (truckTypeAns == 1) ? TruckType.Regular : TruckType.Refrigerated;
+                                break;
+                            } else {
+                                throw new Exception("invalid input");
+                            }
+
+                    } catch (Exception e) {
+                        System.out.println("Invalid answer. try again.");
+                        System.out.println("do you need a regular(1) or a refrigerated(2) truck? (1/2)");
+                        scanner.nextLine();
+                    }
+                }
+
+
                 while (true) {
                     System.out.println("Would you like to add an item to deliver to "
                             + destinationBranch.getName() + "? (Y/N)");
                     String answer2 = scanner.next();
                     if (answer2.equals("Y") || answer2.equals("y")) {
+
                         String item = askForItem(scanner);
                         int quantity = askForQuantity(scanner);
                         deliveryItems.put(item, quantity);
                     } else if (answer2.equals("N") || answer2.equals("n")) {
-                        int id = deliveryManager.addDeliveryStop(deliveryItems, originBranch, destinationBranch);
+                        int id = deliveryManager.addDeliveryStop(deliveryItems, originBranch, destinationBranch,truckType);
                         System.out.println("Delivery added successfully. The delivery ID is " + id);
 
                         break;
