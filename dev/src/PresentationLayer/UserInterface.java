@@ -34,7 +34,14 @@ public class UserInterface {
             if (ans == 1) {
                 addDeliveryStop(scanner, deliveryManager, sitesList);
             } else if (ans == 2) {
-                System.out.println("Enter the stop you want to remove:");
+                System.out.println("Note: This should only be used for stops that you added by mistake," +
+                        " it is not related to the overweight truck requirement");
+                System.out.println("The following stops are available:");
+                for (DeliveryStop deliveryStop : deliveryManager.getPendingDeliveryStops()) {
+                    System.out.println(deliveryStop);
+                }
+                System.out.println();
+                System.out.println("Enter the ID of the stop you want to remove:");
                 int id = scanner.nextInt();
                 deliveryManager.removeDeliveryStop(id);
             } else if (ans == 3) {

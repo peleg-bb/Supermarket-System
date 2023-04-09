@@ -24,7 +24,7 @@ public class UserInteractionUtil implements WeightMeasurer, TripReplanner {
     }
 
     @Override
-    public DeliveryStop removeStops(List<DeliveryStop> stops) {
+    public DeliveryStop removeStop(List<DeliveryStop> stops) {
         System.out.println("The truck is overloaded, and we couldn't arrange a larger truck." +
                 " You have to remove some stops.");
         System.out.println("These are the stops you have to visit: ");

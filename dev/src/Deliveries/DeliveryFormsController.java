@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeliveryFormsController {
-    private List<DeliveryForm> deliveryForms;
+    private List<DeliveryForm> deliveryForms; // Improve to separate by status
 
     public DeliveryFormsController() {
         this.deliveryForms = new ArrayList<>();

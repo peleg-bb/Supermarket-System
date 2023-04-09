@@ -45,14 +45,11 @@ public class DeliveryForm {
 
     public void visitDeliveryStop(DeliveryStop deliveryStop) {
         if (destinationSitesVisited.contains(deliveryStop) || deliveryStop.getStatus() == DeliveryStatus.DELIVERED) {
-            return;
-        }
-        if(destinationSitesToVisit.isEmpty()){ // Not yet implemented
-            deliveryManager.getDriverController().freeDriver(driverID); // This should be improved
-            deliveryManager.getTruckController().freeTruck(truckID);
+            return; // Already visited, should never reach here
         }
         destinationSitesVisited.add(deliveryStop);
         deliveryStop.setStatus(DeliveryStatus.DELIVERED);
+
         int currentWeight = checkWeight();
         if (currentWeight > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
@@ -133,6 +130,8 @@ public class DeliveryForm {
                 // Needs testing
             }
         }
+        deliveryManager.getDriverController().freeDriver(driverID);
+        deliveryManager.getTruckController().freeTruck(truckID);
     }
 
     public void cancelForm() {
@@ -140,11 +139,15 @@ public class DeliveryForm {
         deliveryManager.getTruckController().freeTruck(truckID);
         // for delivery stops that were not visited, set their status to cancelled
         for (DeliveryStop stop : destinationSitesToVisit) {
-            if (stop.getStatus() != DeliveryStatus.DELIVERED) {
+            if (stop.getStatus() != DeliveryStatus.DELIVERED) { // Not sure if this is needed, but just in case
                 stop.setStatus(DeliveryStatus.NOT_STARTED);
                 deliveryManager.addDeliveryStop(stop);
             }
         }
+    }
+
+    public void cancelStop(DeliveryStop stop) {
+        stopToCancel = stop;
     }
 
 

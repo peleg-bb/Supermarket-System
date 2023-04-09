@@ -14,8 +14,6 @@ public class DeliveryManagerImpl implements DeliveryManager{
     private List<DeliveryStop> pendingDeliveryStops;
     private DeliveryFormsController deliveryFormsController;
     private TripReplanner tripReplanner;
-    private DeliveryStop stopToCancel;
-
     private int deliveryCount;
     private int deliveryFormCount;
     private static DeliveryManagerImpl instance = null;
@@ -104,12 +102,12 @@ public class DeliveryManagerImpl implements DeliveryManager{
         }
         int action = tripReplanner.chooseAction(form.getDestinationSitesToVisit());
         if (action == 1) {
-            stopToCancel = tripReplanner.removeStops(form.getDestinationSitesToVisit());
-            // concurrent mod issue
+            DeliveryStop stopToCancel = tripReplanner.removeStop(form.getDestinationSitesToVisit());
+            form.cancelStop(stopToCancel);
+            pendingDeliveryStops.add(stopToCancel);
         }
         else if (action == 2) {
-            stopToCancel = tripReplanner.removeItems(form.getDestinationSitesToVisit());
-            // not yet implemented
+            throw new UnsupportedOperationException("Not implemented yet");
         }
         else if (action == 3) {
             form.cancelForm();
@@ -134,20 +132,6 @@ public class DeliveryManagerImpl implements DeliveryManager{
            items.remove(0); //need to decide how to remove items
        }
     }
-
-    private void removeStop(DeliveryForm form){
-        form.getDestinationSitesToVisit().remove(0); //decide how to remove stops
-
-    }
-
-    private void replaceStops(DeliveryForm form){
-       //need zones for that
-    }
-    public int returnReplanningResponse(List<DeliveryStop> stopsToAdd, List<DeliveryStop> stopsToRemove) {
-        // Notify UI
-        return 0;
-    }
-
 
     private HashMap<Site,List<DeliveryStop>> sortStopsByOrigin(List<DeliveryStop> pendingDeliveryStops){
         HashMap<Site,List<DeliveryStop>> sortedByOrigin = new HashMap<>();
@@ -204,6 +188,10 @@ public class DeliveryManagerImpl implements DeliveryManager{
 
     public DeliveryFormsController getDeliveryFormsController() {
         return deliveryFormsController;
+    }
+
+    public Iterable<? extends DeliveryStop> getPendingDeliveryStops() {
+        return pendingDeliveryStops;
     }
 }
 
