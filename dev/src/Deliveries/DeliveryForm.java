@@ -20,6 +20,7 @@ public class DeliveryForm {
     private String truckID;
     private Site originSite;
     private DeliveryManagerImpl deliveryManager;
+    private DeliveryFormsController deliveryFormsController;
     private DeliveryStop stopToCancel;
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
 
@@ -47,17 +48,23 @@ public class DeliveryForm {
         if (destinationSitesVisited.contains(deliveryStop) || deliveryStop.getStatus() == DeliveryStatus.DELIVERED) {
             return; // Already visited, should never reach here
         }
+
         destinationSitesVisited.add(deliveryStop);
         deliveryStop.setStatus(DeliveryStatus.DELIVERED);
+        performWeightCheck();
+    }
 
-        int currentWeight = checkWeight();
+    private void performWeightCheck() {
+        int currentWeight = measureWeight();
         if (currentWeight > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
         }
     }
 
-    public int checkWeight() {
-        return weightMeasurer.measureWeight(this);
+    public int measureWeight() {
+        int currentWeight = weightMeasurer.measureWeight(this);
+        setDispatchWeightTons(currentWeight);
+        return currentWeight;
     }
 
     @Override
@@ -130,8 +137,14 @@ public class DeliveryForm {
                 // Needs testing
             }
         }
+        completeJourney();
+
+    }
+
+    private void completeJourney() {
         deliveryManager.getDriverController().freeDriver(driverID);
         deliveryManager.getTruckController().freeTruck(truckID);
+        deliveryFormsController.terminateDeliveryForm(this);
     }
 
     public void cancelForm() {

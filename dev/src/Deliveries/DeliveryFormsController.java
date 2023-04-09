@@ -4,23 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeliveryFormsController {
-    private List<DeliveryForm> deliveryForms; // Improve to separate by status
+    private final List<DeliveryForm> pendingDeliveryForms; // Improve to separate by status
+    private final List<DeliveryForm> completedDeliveryForms;
 
     public DeliveryFormsController() {
-        this.deliveryForms = new ArrayList<>();
+        pendingDeliveryForms = new ArrayList<>();
+        completedDeliveryForms = new ArrayList<>();
         // As of now doesn't have to be a singleton
     }
 
     public void addDeliveryForm(DeliveryForm deliveryForm) {
-        this.deliveryForms.add(deliveryForm);
+        pendingDeliveryForms.add(deliveryForm);
     }
 
     public void removeDeliveryForm(DeliveryForm deliveryForm) {
-        this.deliveryForms.remove(deliveryForm);
+        this.pendingDeliveryForms.remove(deliveryForm);
     }
 
-    public List<DeliveryForm> getDeliveryForms() {
-        return this.deliveryForms;
+    public List<DeliveryForm> getPendingDeliveryForms() {
+        return pendingDeliveryForms;
     }
 
     public void startDeliveryForm(DeliveryForm deliveryForm) {
@@ -28,12 +30,21 @@ public class DeliveryFormsController {
     }
 
     // print deliveries
-    public void printDeliveryForms() {
-        for (DeliveryForm deliveryForm : deliveryForms) {
+    public void printPendingDeliveryForms() {
+        for (DeliveryForm deliveryForm : pendingDeliveryForms) {
             System.out.println(deliveryForm);
         }
     }
 
+    public void printCompletedDeliveryForms() {
+        for (DeliveryForm deliveryForm : completedDeliveryForms) {
+            System.out.println(deliveryForm);
+        }
+    }
 
+    public void terminateDeliveryForm(DeliveryForm deliveryForm) {
+        pendingDeliveryForms.remove(deliveryForm);
+        completedDeliveryForms.add(deliveryForm);
+    }
 
 }

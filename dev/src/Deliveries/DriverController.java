@@ -63,7 +63,6 @@ public class DriverController {
                     return curr;
                 }
             }
-
         }
         throw new DeliveryException("No available drivers with license for truck type "
                 + truckType + " and weight " + weight);

@@ -26,7 +26,6 @@ public class DeliveryManagerImpl implements DeliveryManager{
             driverController = DriverController.getInstance();
             deliveryFormsController = new DeliveryFormsController();
             tripReplanner = new UserInteractionUtil();
-
     }
 
     public static DeliveryManagerImpl getInstance() {
@@ -113,7 +112,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
             form.cancelForm();
         }
         else if (action == 4) {
-            form.checkWeight();
+            form.measureWeight();
         }
         // else do nothing, will be handled by the UI according to submission 1
     }
@@ -123,14 +122,6 @@ public class DeliveryManagerImpl implements DeliveryManager{
         Truck newTruck = truckController.pickTruck(form.getTruckType(), form.getDispatchWeightTons());
         form.setMaxWeightAllowed(newTruck.getMaxWeightTons());
         // TODO: replace driver
-    }
-
-    private void removeItems(DeliveryForm form){
-       List<DeliveryStop> stopsToVisit = form.getDestinationSitesToVisit();
-       for(DeliveryStop deliveryStop:stopsToVisit){
-           Map<String, Integer> items = deliveryStop.getItems();
-           items.remove(0); //need to decide how to remove items
-       }
     }
 
     private HashMap<Site,List<DeliveryStop>> sortStopsByOrigin(List<DeliveryStop> pendingDeliveryStops){

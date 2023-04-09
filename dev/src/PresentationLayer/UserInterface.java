@@ -47,11 +47,11 @@ public class UserInterface {
             } else if (ans == 3) {
                 deliveryManager.createDeliveryGroup();
                 System.out.println("The following delivery forms were created:");
-                deliveryFormsController.printDeliveryForms();
+                deliveryFormsController.printPendingDeliveryForms();
                 System.out.println("Execute deliveries? (Y/N)");
                 String answer = scanner.next();
                 if (answer.equals("Y") || answer.equals("y")) {
-                    for (DeliveryForm deliveryForm : deliveryFormsController.getDeliveryForms()) {
+                    for (DeliveryForm deliveryForm : deliveryFormsController.getPendingDeliveryForms()) {
                         deliveryFormsController.startDeliveryForm(deliveryForm);
                     }
                     System.out.println("Delivery executed successfully!");
