@@ -6,12 +6,23 @@ import java.util.List;
 public class DeliveryFormsController {
     private final List<DeliveryForm> pendingDeliveryForms; // Improve to separate by status
     private final List<DeliveryForm> completedDeliveryForms;
+    // singleton
+    private static DeliveryFormsController instance;
 
-    public DeliveryFormsController() {
+
+    private DeliveryFormsController() {
         pendingDeliveryForms = new ArrayList<>();
         completedDeliveryForms = new ArrayList<>();
         // As of now doesn't have to be a singleton
     }
+
+    public static DeliveryFormsController getInstance() {
+        if (instance == null) {
+            instance = new DeliveryFormsController();
+        }
+        return instance;
+    }
+
 
     public void addDeliveryForm(DeliveryForm deliveryForm) {
         pendingDeliveryForms.add(deliveryForm);

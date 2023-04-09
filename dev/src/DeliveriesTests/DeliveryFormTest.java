@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DeliveryFormTest {
 
     private DeliveryForm deliveryForm;
+    private DeliveryFormsController deliveryFormsController;
     private Site origin;
     private Site destination2;
     private Site destination;
@@ -21,6 +22,8 @@ class DeliveryFormTest {
     private DriverController driverController;
     private DeliveryStop stop1;
     private DeliveryStop stop2;
+    private Truck truck;
+    private Driver driver;
 
     @BeforeEach
     void setUp() {
@@ -40,11 +43,21 @@ class DeliveryFormTest {
         stop2 = new DeliveryStop(2, items2, origin, destination2, TruckType.Refrigerated);
         driverController = DriverController.getInstance();
         truckController = TruckController.getInstance();
+        try {
+            truck = truckController.pickTruck(TruckType.Regular);
+            driver = driverController.pickDriver(truck.getType(), truck.getMaxWeightTons());
+        } catch (DeliveryException e) {
+            e.printStackTrace();
+        }
+
         List<DeliveryStop> destinations = new ArrayList<>();
         destinations.add(stop1);
         destinations.add(stop2);
-        deliveryForm = new DeliveryForm(1, new ArrayList<>(), origin, 70, "", "");
+        deliveryForm = new DeliveryForm(1, new ArrayList<>(), origin,
+                truck.getMaxWeightTons(), driver.getId(), truck.getLicensePlate());
         deliveryForm.setWeightMeasurer(new MockWeightMeasurer());
+        deliveryFormsController = DeliveryFormsController.getInstance();
+        deliveryFormsController.addDeliveryForm(deliveryForm);
     }
 
     @Test
@@ -74,9 +87,11 @@ class DeliveryFormTest {
     void startJourney() {
         deliveryForm.addDeliveryStop(stop1);
         deliveryForm.addDeliveryStop(stop2);
+        assertEquals(DeliveryStatus.NOT_STARTED, stop1.getStatus());
+        assertEquals(DeliveryStatus.NOT_STARTED, stop2.getStatus());
         deliveryForm.startJourney();
         assertEquals(DeliveryStatus.DELIVERED, stop1.getStatus());
-        assertEquals(DeliveryStatus.NOT_STARTED, stop2.getStatus());
+        assertEquals(DeliveryStatus.DELIVERED, stop2.getStatus());
     }
 
     @Test

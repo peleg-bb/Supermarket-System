@@ -38,6 +38,7 @@ public class DeliveryForm {
         this.truckID = truckID;
         this.weightMeasurer = new UserInteractionUtil();
         deliveryManager = DeliveryManagerImpl.getInstance();
+        deliveryFormsController = DeliveryFormsController.getInstance();
     }
 
     public void addDeliveryStop(DeliveryStop deliveryStop) {

@@ -24,7 +24,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
             pendingDeliveryStops = new ArrayList<>();
             truckController = TruckController.getInstance();
             driverController = DriverController.getInstance();
-            deliveryFormsController = new DeliveryFormsController();
+            deliveryFormsController = DeliveryFormsController.getInstance();
             tripReplanner = new UserInteractionUtil();
     }
 
