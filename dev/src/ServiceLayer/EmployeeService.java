@@ -24,10 +24,6 @@ public class EmployeeService {
         return employee.remove_availability(date, branch, type);
     }
 
-    public int getID() {
-        return employee.getID();
-    }
-
     public Map<String, String> getAvailability(String branch) {
         return employee.getAvailability(branch);
     }

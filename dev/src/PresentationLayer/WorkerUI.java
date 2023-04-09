@@ -22,16 +22,19 @@ public class WorkerUI {
             input = ans.nextLine();
         }
         if (input.equals("manager") || input.equals("Manager")) {
-            System.out.println("Do you wish to login / register?");
-            input = ans.nextLine();
-            if (input.equals("register")) {
-                manager = create_manager();
-                System.out.println("Registered Successfully");
-                System.out.println("==========================================================================");
-            }
-            else {
-                System.out.println("Logged in Successfully");
-                System.out.println("==========================================================================");
+            while(true) {
+                System.out.println("Enter your id: ");
+                int id = Integer.parseInt(ans.nextLine());
+                System.out.println("Enter your password: ");
+                int password = Integer.parseInt(ans.nextLine());
+                if (manager.check_password(id, password)) {
+                    System.out.println("Logged in Successfully");
+                    System.out.println("==========================================================================");
+                    break;
+                } else {
+                    System.out.println("Couldn't log-in. Please try again.");
+                    System.out.println("==========================================================================");
+                }
             }
             while (true) {
                 managerMenu();
@@ -204,26 +207,18 @@ public class WorkerUI {
         } else if (input.equals("worker") || input.equals("Worker")) {
             EmployeeService worker;
             while(true) {
-                System.out.println("Do you wish to login / register?");
-                input = ans.nextLine();
-                if (input.equals("register")) {
-                    worker = create_employee();
-                    workers.put(worker.getID(), worker);
-                    System.out.println("Registered Successfully");
-                    System.out.println("==========================================================================");
-                    break;
-                } else {
-                    System.out.println("Enter ID:");
-                    int id = Integer.parseInt(ans.nextLine());
-                    if (!workers.containsKey(id)) {
-                        System.out.println("ID doesn't exist. Enter a new one / choose \"register\" to register");
-                        System.out.println("==========================================================================");
-                        continue;
-                    }
-                    worker = workers.get(id);
+                System.out.println("Enter your id: ");
+                int id = Integer.parseInt(ans.nextLine());
+                System.out.println("Enter your password: ");
+                int password = Integer.parseInt(ans.nextLine());
+                if (manager.check_password(id, password)) {
                     System.out.println("Logged in Successfully");
                     System.out.println("==========================================================================");
+                    worker = workers.get(id);
                     break;
+                } else {
+                    System.out.println("Couldn't log-in. Please try again.");
+                    System.out.println("==========================================================================");
                 }
             }
             while(true) {
@@ -297,64 +292,6 @@ public class WorkerUI {
         }
     }
 
-    public static PersonnelManagerService create_manager() {
-        Scanner ans = new Scanner(System.in);
-        System.out.println("Enter your name: ");
-        String name = ans.nextLine();
-        System.out.println("Enter your id: ");
-        int id = Integer.parseInt(ans.nextLine());
-        System.out.println("Enter your bank account number: ");
-        int bank_account = Integer.parseInt(ans.nextLine());
-        System.out.println("Enter your salary: ");
-        int salary = Integer.parseInt(ans.nextLine());
-        System.out.println("Enter your family status: ");
-        String family_status = ans.nextLine();
-        System.out.println("Are you a student? ");
-        String is_student = ans.nextLine();
-        System.out.println("Enter the employment start date ({year}-{month}-{day}): ");
-        String employment_start_date = ans.nextLine();
-        LocalDate date = LocalDate.parse(employment_start_date);
-        boolean student;
-        if (is_student.equals("yes")) {
-            student = true;
-        }
-        else {
-            student = false;
-        }
-        System.out.println("Enter terms of employment: ");
-        String terms_of_employment = ans.nextLine();
-        return new PersonnelManagerService(name, id, bank_account, salary, family_status, student, terms_of_employment, date, null, null);
-    }
-
-    public static EmployeeService create_employee() {
-        Scanner ans = new Scanner(System.in);
-        System.out.println("Enter your name: ");
-        String name = ans.nextLine();
-        System.out.println("Enter your id: ");
-        int id = Integer.parseInt(ans.nextLine());
-        System.out.println("Enter your bank account number: ");
-        int bank_account = Integer.parseInt(ans.nextLine());
-        System.out.println("Enter your salary: ");
-        int salary = Integer.parseInt(ans.nextLine());
-        System.out.println("Enter your family status: ");
-        String family_status = ans.next();
-        System.out.println("Are you a student? ");
-        String is_student = ans.next();
-        System.out.println("Enter the employment start date ({year}-{month}-{day}): ");
-        String employment_start_date = ans.next();
-        LocalDate date = LocalDate.parse(employment_start_date);
-        boolean student;
-        if (is_student.equals("yes")) {
-            student = true;
-        }
-        else {
-            student = false;
-        }
-        System.out.println("Enter terms of employment: ");
-        String terms_of_employment = ans.next();
-        return new EmployeeService(name, id, bank_account, salary, family_status, student, terms_of_employment, date);
-    }
-
     public static boolean manager_create_employee(PersonnelManagerService manager) {
         Scanner ans = new Scanner(System.in);
         System.out.println("Enter the employee's name: ");
@@ -380,7 +317,9 @@ public class WorkerUI {
         }
         System.out.println("Enter the employee's terms of employment: ");
         String terms_of_employment = ans.next();
-        return manager.add_employee(name, id, bank_account, salary, family_status, student, terms_of_employment, employment_start_date);
+        System.out.println("Enter the employee's password: ");
+        int password = Integer.parseInt(ans.next());
+        return manager.add_employee(name, id, bank_account, salary, family_status, student, terms_of_employment, employment_start_date, password);
     }
 
     public static void workerMenu() {
@@ -412,20 +351,20 @@ public class WorkerUI {
 
     /* Loading an example data */
     public static void loadData() {
-        PersonnelManagerService manager = new PersonnelManagerService("Omer Guz", 555555555, 567567, 70, "Married", false, "", LocalDate.of(2023, 1, 1), null, null);
+        PersonnelManagerService manager = new PersonnelManagerService("Omer Guz", 555555555, 567567, 70, "Married", false, "", LocalDate.of(2023, 1, 1), 123456);
         WorkerUI.manager = manager;
         manager.create_branch("Be'er Sheva", "Be'er Sheva", 7,8);
         manager.create_branch("Tel Aviv", "Tel Aviv", 6,8);
         manager.create_schedule("Tel Aviv", "2023-04-02");
         manager.create_schedule("Be'er Sheva", "2023-04-02");
-        manager.add_employee("Ron Hadad", 111111111, 123123, 30, "Single", true, "Commited to one year", "2023-01-22");
+        manager.add_employee("Ron Hadad", 111111111, 123123, 30, "Single", true, "Commited to one year", "2023-01-22", 111111);
         manager.qualify_employee_to_branch(111111111, "Be'er Sheva");
         manager.qualify_employee_to_branch(111111111, "Tel Aviv");
-        manager.add_employee("Guy Cohen", 222222222, 234234, 35, "Married", false, "", "2023-02-01");
+        manager.add_employee("Guy Cohen", 222222222, 234234, 35, "Married", false, "", "2023-02-01", 222222);
         manager.qualify_employee_to_branch(222222222, "Be'er Sheva");
-        manager.add_employee("Tal Levi", 333333333, 345345, 34, "Single", true, "Can't work on Thursdays", "2023-09-26");
+        manager.add_employee("Tal Levi", 333333333, 345345, 34, "Single", true, "Can't work on Thursdays", "2023-09-26", 333333);
         manager.qualify_employee_to_branch(333333333, "Tel Aviv");
-        manager.add_employee("Ron Zehavi", 444444444, 456456, 33, "Single", true, "Commited to one year", "2023-02-02");
+        manager.add_employee("Ron Zehavi", 444444444, 456456, 33, "Single", true, "Commited to one year", "2023-02-02", 444444);
         manager.add_employee_role(111111111, "Storekeeper");
         manager.add_employee_role(111111111, "Cashier");
         manager.add_employee_role(222222222, "Security");

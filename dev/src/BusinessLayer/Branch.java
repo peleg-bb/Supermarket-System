@@ -84,4 +84,8 @@ public class Branch {
     public Map<String, String> getShifts(Integer id) {
         return branchSchedule.getShifts(id);
     }
+
+    public String getName() {
+        return name;
+    }
 }

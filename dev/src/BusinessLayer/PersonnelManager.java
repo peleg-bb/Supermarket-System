@@ -5,27 +5,12 @@ import java.util.*;
 
 public class PersonnelManager extends Employee {
     private Map<Employee.role_type, List<Integer>> roles_employees;
-    private Map<Integer, Employee> employees;
 
-    public PersonnelManager(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date, Map<Employee.role_type, List<Integer>> roles_employees, Map<Integer, Employee> employees) {
+    public PersonnelManager(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, LocalDate employment_start_date) {
         super(name, id, bank_account, salary, family_status, is_student, terms_of_employment, employment_start_date);
-        if (roles_employees == null) {
-            this.roles_employees = new HashMap<>();
-            this.roles_employees.put(Employee.role_type.Cashier, new LinkedList<>());
-            this.roles_employees.put(Employee.role_type.Storekeeper, new LinkedList<>());
-            this.roles_employees.put(Employee.role_type.Security, new LinkedList<>());
-            this.roles_employees.put(Employee.role_type.Cleaning, new LinkedList<>());
-            this.roles_employees.put(Employee.role_type.Usher, new LinkedList<>());
-            this.roles_employees.put(Employee.role_type.General, new LinkedList<>());
-        }
-        else {
-            this.roles_employees = roles_employees;
-        }
-        if (employees == null) {
-            this.employees = new HashMap<>();
-        }
-        else {
-            this.employees = employees;
+        this.roles_employees = new HashMap<>();
+        for (Employee.role_type type: Employee.role_type.values()) {
+            this.roles_employees.put(type, new LinkedList<>());
         }
     }
 
@@ -51,36 +36,14 @@ public class PersonnelManager extends Employee {
         return true;
     }
 
-    /** Adds an employee to the system **/
-    public boolean add_employee(String name, Integer id, Integer bank_account, Integer salary, String family_status, boolean is_student, String terms_of_employment, String employment_start_date) {
-        LocalDate systemDate = LocalDate.parse(employment_start_date);
-        if (employees.containsKey(id)) {
-            return false;
-        }
-        Employee employee = new Employee(name, id, bank_account, salary, family_status, is_student, terms_of_employment, systemDate);
-        employees.put(id, employee);
-        return true;
-    }
-
-    /** Removes an employee from the system **/
-    public boolean remove_employee(Integer id) {
-        if (!employees.containsKey(id)) {
-            return false;
-        }
-        employees.remove(id);
-        return true;
-    }
-
     /** Qualifies an employee to a role **/
     public boolean add_employee_role(Integer id, String role) {
         Employee.role_type Role = Employee.role_type.valueOf(role);
         if (roles_employees.get(Role).contains(id)) {
             return false;
         }
-        else {
-            roles_employees.get(Role).add(id);
-        }
-        return employees.get(id).add_role(role);
+        roles_employees.get(Role).add(id);
+        return true;
     }
 
     /** Removes employee's role qualification **/
@@ -89,10 +52,8 @@ public class PersonnelManager extends Employee {
         if (!roles_employees.get(Role).contains(id)) {
             return false;
         }
-        else {
-            roles_employees.get(Role).remove(id);
-            return employees.get(id).remove_role(role);
-        }
+        roles_employees.get(Role).remove(id);
+        return true;
     }
 
     /** Confirming a shift - making sure it has a shift manager **/
@@ -134,11 +95,8 @@ public class PersonnelManager extends Employee {
     }
 
     /** Qualifies an employee to work in a branch **/
-    public boolean qualify_employee_to_branch(Integer id, String branch) {
-        if (!qualified_branches.get(branch).assign_worker(id)) {
-            return false;
-        }
-        return employees.get(id).add_qualified_branch(branch, qualified_branches.get(branch));
+    public Branch get_branch(String branch) {
+        return qualified_branches.get(branch);
     }
 
     /** Assigns a shift manager to a shift **/
@@ -146,10 +104,6 @@ public class PersonnelManager extends Employee {
         LocalDate systemDate = LocalDate.parse(date);
         Shift.shift_type shift_type = Shift.shift_type.valueOf(type);
         return qualified_branches.get(branch).assign_shift_manager(systemDate, shift_type, id);
-    }
-
-    public Map<Integer, Employee> getEmployees() {
-        return employees;
     }
 
     public Map<Employee.role_type, List<Integer>> getRolesEmployees() {
