@@ -43,11 +43,14 @@ public class DeliveryForm {
     }
 
     public void visitDeliveryStop(DeliveryStop deliveryStop) {
-        destinationSitesVisited.add(deliveryStop);
+        if (destinationSitesVisited.contains(deliveryStop) && deliveryStop.getStatus() == DeliveryStatus.DELIVERED) {
+            return;
+        }
         if(destinationSitesToVisit.isEmpty()){
-            deliveryManager.getDriverController().freeDriver(driverID);
+            deliveryManager.getDriverController().freeDriver(driverID); // This should be improved
             deliveryManager.getTruckController().freeTruck(truckID);
         }
+        destinationSitesVisited.add(deliveryStop);
         int currentWeight = weightMeasurer.measureWeight(this);
         if (currentWeight > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
@@ -118,7 +121,6 @@ public class DeliveryForm {
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
         while(iterator.hasNext()){
             visitDeliveryStop(iterator.next());
-            destinationSitesToVisit.remove(iterator.previous());
         }
     }
 

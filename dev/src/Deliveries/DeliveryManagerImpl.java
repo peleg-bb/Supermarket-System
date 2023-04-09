@@ -42,7 +42,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
         DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, origin, destination, TruckType.Regular);
         pendingDeliveryStops.add(deliveryStop);
         // decide how to manage the origin.
-        return deliveryStop.getDeliveryId();
+        return deliveryStop.getShipmentInstanceID();
     }
 
     @Override
@@ -94,9 +94,20 @@ public class DeliveryManagerImpl implements DeliveryManager{
             replaceTruck(form);
         } catch (DeliveryException e) {
             // Notify UI
-            System.out.println(e.getMessage());
+            System.out.println("Truck is overweight for delivery " + form
+                    + ". Tried to find a new truck but " + e.getMessage());
         }
-        form.setDestinationSitesToVisit(tripReplanner.removeStops(form.getDestinationSitesToVisit()));
+        int action = tripReplanner.chooseAction(form.getDestinationSitesToVisit());
+        if (action == 1) {
+            form.setDestinationSitesToVisit(tripReplanner.removeStops(form.getDestinationSitesToVisit()));
+        }
+        else if (action == 2) {
+            form.setDestinationSitesToVisit(tripReplanner.removeStops(form.getDestinationSitesToVisit()));
+        }
+        else if (action == 3) {
+
+        }
+
     }
 
 

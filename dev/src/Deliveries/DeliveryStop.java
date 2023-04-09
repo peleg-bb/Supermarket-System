@@ -1,20 +1,35 @@
 package Deliveries;
 
 import java.util.Map;
+import Deliveries.DeliveryStatus;
 
 public class DeliveryStop {
-    private int deliveryId;
+    private final int shipmentInstanceID;
     private Map<String, Integer> items;
-    private Site origin;
-    private Site destination;
+    private final Site origin;
+    private final Site destination;
     private TruckType truckTypeRequired;
+    private DeliveryStatus status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DeliveryStop that)) return false;
+
+        return getShipmentInstanceID() == that.getShipmentInstanceID();
+    }
+
+    @Override
+    public int hashCode() {
+        return getShipmentInstanceID();
+    }
 
     @Override
     public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append("DeliveryStop{")
-                    .append("deliveryId=")
-                    .append(deliveryId)
+                    .append("shipmentInstanceID=")
+                    .append(shipmentInstanceID)
                     .append(", deliveryItems={");
             for (Map.Entry<String, Integer> entry : items.entrySet()) {
                 sb.append(entry.getKey())
@@ -33,12 +48,13 @@ public class DeliveryStop {
             return sb.toString();
     }
 
-    public DeliveryStop(int deliveryId, Map<String, Integer> items, Site origin, Site destination, TruckType truckTypeRequired) {
-        this.deliveryId = deliveryId;
+    public DeliveryStop(int shipmentInstanceID, Map<String, Integer> items, Site origin, Site destination, TruckType truckTypeRequired) {
+        this.shipmentInstanceID = shipmentInstanceID;
         this.items = items;
         this.destination = destination;
         this.truckTypeRequired = truckTypeRequired;
         this.origin=origin;
+        this.status = DeliveryStatus.NOT_STARTED;
     }
 
     // Getters
@@ -59,8 +75,20 @@ public class DeliveryStop {
         return destination;
     }
 
+    public int getShipmentInstanceID() {
+        return shipmentInstanceID;
+    }
 
-    public int getDeliveryId() {
-        return deliveryId;
+    public DeliveryStatus getStatus() {
+        return status;
+    }
+
+    // Setters
+    public void setTruckTypeRequired(TruckType truckTypeRequired) {
+        this.truckTypeRequired = truckTypeRequired;
+    }
+
+    public void setStatus(DeliveryStatus status) {
+        this.status = status;
     }
 }
