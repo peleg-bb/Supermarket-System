@@ -30,7 +30,7 @@ public class UserInterface {
         int ans = scanner.nextInt();
         DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
         DeliveryFormsController deliveryFormsController = deliveryManager.getDeliveryFormsController();
-        while (ans != 4) {
+        while (ans != 4 || scanner.hasNextInt()) {
             if (ans == 1) {
                 addDeliveryStop(scanner, deliveryManager, sitesList);
             } else if (ans == 2) {
@@ -42,6 +42,10 @@ public class UserInterface {
                 }
                 System.out.println();
                 System.out.println("Enter the ID of the stop you want to remove:");
+                while (!scanner.hasNextInt()) {
+                    System.out.println("Please enter a valid ID: ");
+                    scanner.next();
+                }
                 int id = scanner.nextInt();
                 deliveryManager.removeDeliveryStop(id);
             } else if (ans == 3) {
@@ -147,7 +151,7 @@ public class UserInterface {
         System.out.println("Please enter the index (shown on top) of the site you would like to choose: ");
         // ask for an int. if not int, ask again
         while (!scanner.hasNextInt()) {
-            System.out.println("Please enter a valid quantity: ");
+            System.out.println("Please enter a valid index: ");
             scanner.next();
         }
         int SiteIndex = scanner.nextInt();
