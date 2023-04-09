@@ -173,4 +173,7 @@ public class DeliveryForm {
     }
 
 
+    public int getMaxWeightAllowed() {
+        return maxWeightAllowed;
+    }
 }

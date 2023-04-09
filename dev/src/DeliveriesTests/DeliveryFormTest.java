@@ -113,4 +113,50 @@ class DeliveryFormTest {
         assertEquals(DeliveryStatus.NOT_STARTED, stop1.getStatus());
         assertEquals(DeliveryStatus.DELIVERED, stop2.getStatus());
     }
+
+    @Test
+    void setDispatchWeightTons() {
+        int dispatchWeightTons = deliveryForm.getMaxWeightAllowed();
+        deliveryForm.setDispatchWeightTons(dispatchWeightTons);
+        assertEquals(dispatchWeightTons, deliveryForm.getDispatchWeightTons());
+    }
+
+    @Test
+    void setMaxWeightAllowed() {
+        int maxWeightAllowed = 17;
+        deliveryForm.setMaxWeightAllowed(maxWeightAllowed);
+        assertEquals(maxWeightAllowed, deliveryForm.getMaxWeightAllowed());
+    }
+
+    @Test
+    void setDestinationSitesToVisit() {
+        List<DeliveryStop> destinationSites = new ArrayList<>();
+        deliveryForm.setDestinationSitesToVisit(destinationSites);
+        assertEquals(destinationSites, deliveryForm.getDestinationSitesToVisit());
+
+
+        destinationSites.add(stop1);
+        destinationSites.add(stop2);
+        deliveryForm.setDestinationSitesToVisit(destinationSites);
+        assertEquals(destinationSites, deliveryForm.getDestinationSitesToVisit());
+    }
+
+    @Test
+    void getFormId() {
+        assertEquals(1, deliveryForm.getFormId());
+    }
+
+    @Test
+    void getTruckType() {
+        TruckType truckType = TruckType.Regular;
+        assertEquals(truckType, deliveryForm.getTruckType());
+    }
+
+    @Test
+    void getDispatchWeightTons() {
+        int dispatchWeightTons = 5;
+        deliveryForm.setDispatchWeightTons(dispatchWeightTons);
+        assertEquals(dispatchWeightTons, deliveryForm.getDispatchWeightTons());
+    }
 }
+
