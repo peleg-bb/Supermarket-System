@@ -58,4 +58,13 @@ public class DeliveryFormsController {
         completedDeliveryForms.add(deliveryForm);
     }
 
+    public DeliveryForm getDeliveryForm(int id) {
+        for (DeliveryForm deliveryForm : pendingDeliveryForms) {
+            if (deliveryForm.getFormId() == id) {
+                return deliveryForm;
+            }
+        }
+        return null;
+    }
+
 }

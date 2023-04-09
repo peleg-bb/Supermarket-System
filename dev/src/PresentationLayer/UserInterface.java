@@ -4,6 +4,7 @@ import Deliveries.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 
@@ -15,6 +16,8 @@ public class UserInterface {
         Scanner scanner = new Scanner(System.in);
         SiteGenerator siteGenerator = new SiteGenerator();
         List<Site> sitesList = siteGenerator.getSitesList();
+        DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
+        DeliveryFormsController deliveryFormsController = deliveryManager.getDeliveryFormsController();
         System.out.println("Welcome to the delivery manager!");
         System.out.println("The following sites were auto generated and can be used for this demo: ");
         for (Site site : sitesList) {
@@ -26,45 +29,77 @@ public class UserInterface {
         System.out.println("In order to launch a delivery, you should first provide details.");
         System.out.println("A delivery consists of a list of delivery stops");
         System.out.println("Each delivery stop contains an origin, a destination and a list of items to deliver");
+
+        menuLoop(scanner, sitesList, deliveryManager, deliveryFormsController);
+        System.out.println("Thank you for using the delivery manager, bye bye!");
+
+    }
+
+    private static int getMenuAns(Scanner scanner) {
         printMenu();
+        while (!scanner.hasNextInt()) {
+            System.out.print("Your choice: ");
+            scanner.next();
+        }
         int ans = scanner.nextInt();
-        DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
-        DeliveryFormsController deliveryFormsController = deliveryManager.getDeliveryFormsController();
-        while (ans != 4 || scanner.hasNextInt()) {
-            if (ans == 1) {
-                addDeliveryStop(scanner, deliveryManager, sitesList);
-            } else if (ans == 2) {
-                System.out.println("Note: This should only be used for stops that you added by mistake," +
-                        " it is not related to the overweight truck requirement");
-                System.out.println("The following stops are available:");
-                for (DeliveryStop deliveryStop : deliveryManager.getPendingDeliveryStops()) {
-                    System.out.println(deliveryStop);
+        return ans;
+    }
+
+    private static void menuLoop(Scanner scanner, List<Site> sitesList, DeliveryManagerImpl deliveryManager, DeliveryFormsController deliveryFormsController) {
+        try {
+            int ans = getMenuAns(scanner);
+            while (ans != 4) {
+                if (ans == 1) {
+                    addDeliveryStop(scanner, deliveryManager, sitesList);
+                } else if (ans == 2) {
+                    removeStop(scanner, deliveryManager);
+                } else if (ans == 3) {
+                    executeDeliveries(scanner, deliveryManager, deliveryFormsController);
                 }
-                System.out.println();
-                System.out.println("Enter the ID of the stop you want to remove:");
-                while (!scanner.hasNextInt()) {
-                    System.out.println("Please enter a valid ID: ");
-                    scanner.next();
-                }
-                int id = scanner.nextInt();
-                deliveryManager.removeDeliveryStop(id);
-            } else if (ans == 3) {
-                deliveryManager.createDeliveryGroup();
-                System.out.println("The following delivery forms were created:");
-                deliveryFormsController.printPendingDeliveryForms();
-                System.out.println("Execute deliveries? (Y/N)");
-                String answer = scanner.next();
-                if (answer.equals("Y") || answer.equals("y")) {
-                    for (DeliveryForm deliveryForm : deliveryFormsController.getPendingDeliveryForms()) {
-                        deliveryFormsController.startDeliveryForm(deliveryForm);
-                    }
-                    System.out.println("Delivery executed successfully!");
-                } else if (answer.equals("N") || answer.equals("n")) {
-                    System.out.println("Deliveries were not executed");
-                }
+                ans = getMenuAns(scanner);
             }
-            printMenu();
-            ans = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("An error occurred- " + e.getMessage() + ", please try again");
+            menuLoop(scanner, sitesList, deliveryManager, deliveryFormsController);
+        }
+    }
+
+    private static void removeStop(Scanner scanner, DeliveryManagerImpl deliveryManager) {
+        System.out.println("Note: This should only be used for stops that you added by mistake," +
+                " it is not related to the overweight truck requirement");
+        System.out.println("The following stops are available:");
+        for (DeliveryStop deliveryStop : deliveryManager.getPendingDeliveryStops()) {
+            System.out.println(deliveryStop);
+        }
+        System.out.println();
+        System.out.println("Enter the ID of the stop you want to remove:");
+        while (!scanner.hasNextInt()) {
+            System.out.println("Please enter a valid ID: ");
+            scanner.next();
+        }
+        int id = scanner.nextInt();
+        deliveryManager.removeDeliveryStop(id);
+    }
+
+    private static void executeDeliveries(Scanner scanner, DeliveryManagerImpl deliveryManager, DeliveryFormsController deliveryFormsController) {
+        deliveryManager.createDeliveryGroup();
+        System.out.println("The following delivery forms were created:");
+        deliveryFormsController.printPendingDeliveryForms();
+        System.out.println("Execute deliveries? (Y/N)");
+        String answer = scanner.next();
+        if (answer.equals("Y") || answer.equals("y")) {
+            deliveryFormsController.printPendingDeliveryForms();
+            System.out.println("Enter the ID of the delivery form you want to execute:");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Please enter a valid ID: ");
+                scanner.next();
+            }
+            int id = scanner.nextInt();
+            DeliveryForm deliveryForm = deliveryFormsController.getDeliveryForm(id);
+            deliveryFormsController.startDeliveryForm(deliveryForm);
+            System.out.println("Delivery executed successfully!");
+        } else if (answer.equals("N") || answer.equals("n")) {
+            System.out.println("Deliveries were not executed");
         }
     }
 
