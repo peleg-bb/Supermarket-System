@@ -43,7 +43,7 @@ public class DeliveryForm {
     }
 
     public void visitDeliveryStop(DeliveryStop deliveryStop) {
-        if (destinationSitesVisited.contains(deliveryStop) && deliveryStop.getStatus() == DeliveryStatus.DELIVERED) {
+        if (destinationSitesVisited.contains(deliveryStop) || deliveryStop.getStatus() == DeliveryStatus.DELIVERED) {
             return;
         }
         if(destinationSitesToVisit.isEmpty()){
@@ -51,6 +51,7 @@ public class DeliveryForm {
             deliveryManager.getTruckController().freeTruck(truckID);
         }
         destinationSitesVisited.add(deliveryStop);
+        deliveryStop.setStatus(DeliveryStatus.DELIVERED);
         int currentWeight = weightMeasurer.measureWeight(this);
         if (currentWeight > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
@@ -121,9 +122,20 @@ public class DeliveryForm {
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
         while(iterator.hasNext()){
             visitDeliveryStop(iterator.next());
+            destinationSitesToVisit.remove(iterator.next());
         }
+
     }
 
-
-    
+    public void cancelForm() {
+        deliveryManager.getDriverController().freeDriver(driverID);
+        deliveryManager.getTruckController().freeTruck(truckID);
+        // for delivery stops that were not visited, set their status to cancelled
+        for (DeliveryStop stop : destinationSitesToVisit) {
+            if (stop.getStatus() != DeliveryStatus.DELIVERED) {
+                stop.setStatus(DeliveryStatus.NOT_STARTED);
+                deliveryManager.addDeliveryStop(stop);
+            }
+        }
+    }
 }

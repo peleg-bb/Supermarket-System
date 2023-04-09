@@ -45,6 +45,10 @@ public class DeliveryManagerImpl implements DeliveryManager{
         return deliveryStop.getShipmentInstanceID();
     }
 
+    public void addDeliveryStop(DeliveryStop deliveryStop) {
+        pendingDeliveryStops.add(deliveryStop);
+    }
+
     @Override
     public void removeDeliveryStop(int deliveryId) {
         pendingDeliveryStops.remove(deliveryId);
@@ -105,9 +109,9 @@ public class DeliveryManagerImpl implements DeliveryManager{
             form.setDestinationSitesToVisit(tripReplanner.removeStops(form.getDestinationSitesToVisit()));
         }
         else if (action == 3) {
-
+            form.cancelForm();
         }
-
+        // else do nothing, will be handled by the UI according to submission 1
     }
 
 
