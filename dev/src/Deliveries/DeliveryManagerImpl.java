@@ -14,6 +14,7 @@ public class DeliveryManagerImpl implements DeliveryManager{
     private List<DeliveryStop> pendingDeliveryStops;
     private DeliveryFormsController deliveryFormsController;
     private TripReplanner tripReplanner;
+    private DeliveryStop stopToCancel;
 
     private int deliveryCount;
     private int deliveryFormCount;
@@ -103,13 +104,18 @@ public class DeliveryManagerImpl implements DeliveryManager{
         }
         int action = tripReplanner.chooseAction(form.getDestinationSitesToVisit());
         if (action == 1) {
-            form.setDestinationSitesToVisit(tripReplanner.removeStops(form.getDestinationSitesToVisit()));
+            stopToCancel = tripReplanner.removeStops(form.getDestinationSitesToVisit());
+            // concurrent mod issue
         }
         else if (action == 2) {
-            form.setDestinationSitesToVisit(tripReplanner.removeStops(form.getDestinationSitesToVisit()));
+            stopToCancel = tripReplanner.removeItems(form.getDestinationSitesToVisit());
+            // not yet implemented
         }
         else if (action == 3) {
             form.cancelForm();
+        }
+        else if (action == 4) {
+            form.checkWeight();
         }
         // else do nothing, will be handled by the UI according to submission 1
     }

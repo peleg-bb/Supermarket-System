@@ -24,7 +24,7 @@ public class UserInteractionUtil implements WeightMeasurer, TripReplanner {
     }
 
     @Override
-    public List<DeliveryStop> removeStops(List<DeliveryStop> stops) {
+    public DeliveryStop removeStops(List<DeliveryStop> stops) {
         System.out.println("The truck is overloaded, and we couldn't arrange a larger truck." +
                 " You have to remove some stops.");
         System.out.println("These are the stops you have to visit: ");
@@ -39,13 +39,12 @@ public class UserInteractionUtil implements WeightMeasurer, TripReplanner {
             System.out.println("Enter the stop index you'd like to remove: ");
             scanner.next();
         }
-        int quantity = scanner.nextInt();
-        stops.remove(quantity-1);
-        return stops;
+        int indexToRemove = scanner.nextInt();
+        return stops.get(indexToRemove-1);
     }
 
     @Override
-    public List<DeliveryStop> removeItems(List<DeliveryStop> stops) {
+    public DeliveryStop removeItems(List<DeliveryStop> stops) {
         System.out.println("The truck is overloaded, and we couldn't arrange a larger truck." +
                 " There is only one stop left so you can remove some items.");
         System.out.println("These are the stops you have to visit: ");
@@ -61,8 +60,7 @@ public class UserInteractionUtil implements WeightMeasurer, TripReplanner {
             scanner.next();
         }
         int quantity = scanner.nextInt();
-        stops.remove(quantity-1);
-        return stops;
+        return stops.get(quantity-1);
     }
 
     @Override

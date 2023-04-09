@@ -20,6 +20,7 @@ public class DeliveryForm {
     private String truckID;
     private Site originSite;
     private DeliveryManagerImpl deliveryManager;
+    private DeliveryStop stopToCancel;
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
 
     public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed,
@@ -46,16 +47,20 @@ public class DeliveryForm {
         if (destinationSitesVisited.contains(deliveryStop) || deliveryStop.getStatus() == DeliveryStatus.DELIVERED) {
             return;
         }
-        if(destinationSitesToVisit.isEmpty()){
+        if(destinationSitesToVisit.isEmpty()){ // Not yet implemented
             deliveryManager.getDriverController().freeDriver(driverID); // This should be improved
             deliveryManager.getTruckController().freeTruck(truckID);
         }
         destinationSitesVisited.add(deliveryStop);
         deliveryStop.setStatus(DeliveryStatus.DELIVERED);
-        int currentWeight = weightMeasurer.measureWeight(this);
+        int currentWeight = checkWeight();
         if (currentWeight > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
         }
+    }
+
+    public int checkWeight() {
+        return weightMeasurer.measureWeight(this);
     }
 
     @Override
@@ -121,10 +126,13 @@ public class DeliveryForm {
         // visit the stops in the order they were added
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
         while(iterator.hasNext()){
-            visitDeliveryStop(iterator.next());
-            destinationSitesToVisit.remove(iterator.next());
+            DeliveryStop currentStop = iterator.next();
+            visitDeliveryStop(currentStop);
+            if (currentStop.getStatus() == DeliveryStatus.DELIVERED || currentStop.equals(stopToCancel)) {
+                iterator.remove();
+                // Needs testing
+            }
         }
-
     }
 
     public void cancelForm() {
@@ -138,4 +146,6 @@ public class DeliveryForm {
             }
         }
     }
+
+
 }
