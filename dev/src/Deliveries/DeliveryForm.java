@@ -46,8 +46,11 @@ public class DeliveryForm {
     }
 
     public void visitDeliveryStop(DeliveryStop deliveryStop) {
-        if (destinationSitesVisited.contains(deliveryStop) || deliveryStop.getStatus() == DeliveryStatus.DELIVERED) {
-            return; // Already visited, should never reach here
+        if (destinationSitesVisited.contains(deliveryStop) ||
+                deliveryStop.getStatus() == DeliveryStatus.DELIVERED ||
+                deliveryStop.equals(stopToCancel))
+        {
+            return; // Already visited or cancelled
         }
 
         destinationSitesVisited.add(deliveryStop);

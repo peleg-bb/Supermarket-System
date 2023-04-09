@@ -111,6 +111,6 @@ class DeliveryFormTest {
         deliveryForm.cancelStop(stop1);
         deliveryForm.startJourney();
         assertEquals(DeliveryStatus.NOT_STARTED, stop1.getStatus());
-        assertEquals(DeliveryStatus.NOT_STARTED, stop2.getStatus());
+        assertEquals(DeliveryStatus.DELIVERED, stop2.getStatus());
     }
 }
