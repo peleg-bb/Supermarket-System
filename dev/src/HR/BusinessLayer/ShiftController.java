@@ -1,9 +1,12 @@
 package HR.BusinessLayer;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.*;
 
-public class ShiftController {
+import HR_Deliveries_Interface.HRIntegrator;
+
+public class ShiftController implements HRIntegrator {
 
     private Map<String, Schedule> stores_schedules;
     private List<String> stores;
@@ -133,5 +136,20 @@ public class ShiftController {
 
     public List<Integer> show_shift_availability(Date date_object, ShiftType shift_type, String store) {
         return stores_schedules.get(store).show_shift_availability(date_object, shift_type);
+    }
+
+    @Override
+    public boolean checkAvailability(Timestamp arrivalTime) {
+        return false;
+    }
+
+    @Override
+    public List<String> getAvailableDrivers(Timestamp startTime, Timestamp endTime) {
+        return null;
+    }
+
+    @Override
+    public boolean assignShifts(String driverId, Timestamp startTime, Timestamp endTime) {
+        return false;
     }
 }
