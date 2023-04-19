@@ -1,10 +1,9 @@
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Set;
 
-public interface AvailabilityChecker {
+public interface HRIntegrator {
     boolean checkAvailability(Timestamp arrivalTime);
     List<String> getAvailableDrivers(Timestamp startTime, Timestamp endTime);
+    boolean assignShifts(String driverId, Timestamp startTime, Timestamp endTime);
 
 }
