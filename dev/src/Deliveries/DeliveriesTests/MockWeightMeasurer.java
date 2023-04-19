@@ -1,4 +1,4 @@
-package DeliveriesTests;
+package Deliveries.DeliveriesTests;
 
 import Deliveries.DeliveryForm;
 import Deliveries.WeightMeasurer;

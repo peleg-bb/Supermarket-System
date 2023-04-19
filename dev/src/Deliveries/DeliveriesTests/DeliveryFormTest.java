@@ -1,4 +1,4 @@
-package DeliveriesTests;
+package Deliveries.DeliveriesTests;
 
 import Deliveries.*;
 import org.junit.jupiter.api.BeforeEach;
