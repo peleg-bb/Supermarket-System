@@ -139,7 +139,7 @@ public class ShiftController implements HRIntegrator {
     }
 
     @Override
-    public boolean checkAvailability(Timestamp arrivalTime) {
+    public boolean checkAvailability(String store, Timestamp arrivalTime) {
         return false;
     }
 
