@@ -1,18 +1,20 @@
 package Deliveries.BusinessLayer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DeliveryFormsController {
-    private final List<DeliveryForm> pendingDeliveryForms; // Improve to separate by status
-    private final List<DeliveryForm> completedDeliveryForms;
+    private final Set<DeliveryForm> pendingDeliveryForms; // Improve to separate by status
+    private final Set<DeliveryForm> completedDeliveryForms;
     // singleton
     private static DeliveryFormsController instance;
 
 
     private DeliveryFormsController() {
-        pendingDeliveryForms = new ArrayList<>();
-        completedDeliveryForms = new ArrayList<>();
+        pendingDeliveryForms = new HashSet<>();
+        completedDeliveryForms = new HashSet<>();
         // As of now doesn't have to be a singleton
     }
 
@@ -32,7 +34,7 @@ public class DeliveryFormsController {
         this.pendingDeliveryForms.remove(deliveryForm);
     }
 
-    public List<DeliveryForm> getPendingDeliveryForms() {
+    public Set<DeliveryForm> getPendingDeliveryForms() {
         return pendingDeliveryForms;
     }
 

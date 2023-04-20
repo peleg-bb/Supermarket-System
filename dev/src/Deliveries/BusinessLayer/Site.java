@@ -1,11 +1,11 @@
 package Deliveries.BusinessLayer;
 
 public class Site {
-    private String name;
-    private String address;
-    private String contactName;
-    private String contactPhone;
-    private String deliveryZone;
+    private final String name;
+    private final String address;
+    private final String contactName;
+    private final String contactPhone;
+    private final String deliveryZone;
 
     public Site(String name, String address, String contactName, String contactPhone, String deliveryZone) {
         this.name = name;

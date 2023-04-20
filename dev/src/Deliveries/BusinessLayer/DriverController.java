@@ -10,13 +10,13 @@ import java.util.Random;
 import java.util.Set;
 
 public class DriverController {
-    private HashMap<String, Driver> drivers;
+    private final HashSet<Driver> drivers;
 
     private static DriverController instance = null;
 
     // Singleton Constructor
     private DriverController() {
-        drivers = new HashMap<>();
+        drivers = new HashSet<>();
         generateFleet(20);
 
     }
@@ -47,7 +47,7 @@ public class DriverController {
     }
 
     private void addDriver(Driver driver) {
-        drivers.put(driver.getId(), driver);
+        drivers.add(driver);
     }
 
     public static DriverController getInstance() {
@@ -59,7 +59,7 @@ public class DriverController {
 
 
     public Driver pickDriver(TruckType truckType, int weight) throws DeliveryException {
-        for (Driver curr : drivers.values()) {
+        for (Driver curr : drivers) {
             if (curr.getAvailability().equals(Availability.Available)) {
                 License license = curr.getLicense();
                 if (curr.getLicense().getTruckTypesAllowed().contains(truckType)

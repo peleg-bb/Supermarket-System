@@ -8,13 +8,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class TruckController {
-    private HashMap<String,Truck> trucks;
-    private HashSet<Truck> trucksSet;
-
+    private final HashSet<Truck> trucks;
     private static TruckController instance = null;
     // Singleton Constructor
     private TruckController() {
-        trucks = new HashMap<>();
+        trucks = new HashSet<>();
         generateTruckFleet(20);
 
     }
@@ -28,7 +26,7 @@ public class TruckController {
 
 
     public Truck pickTruck(TruckType requiredType) throws DeliveryException {
-        for (Truck curr : trucks.values()) {
+        for (Truck curr : trucks) {
             if (curr.getType().equals(requiredType)) {
                 if (curr.getAvailability().equals(Availability.Available)) {
                     return curr;
@@ -42,7 +40,7 @@ public class TruckController {
 
 
     public Truck pickTruck(TruckType requiredType, int requiredWeight) throws DeliveryException{
-        for (Truck curr : trucks.values()) {
+        for (Truck curr : trucks) {
             if (curr.getType().equals(requiredType) && curr.getMaxWeightTons() >= requiredWeight) {
                 if (curr.getAvailability().equals(Availability.Available)) {
                     return curr;
@@ -74,7 +72,7 @@ public class TruckController {
     }
 
     private void addTruck(Truck truck) {
-        trucks.put(truck.getLicensePlate(), truck);
+        trucks.add(truck);
     }
 
 }
