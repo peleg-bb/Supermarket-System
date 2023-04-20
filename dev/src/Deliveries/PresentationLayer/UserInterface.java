@@ -1,6 +1,7 @@
 package Deliveries.PresentationLayer;
 
-import Deliveries.*;
+import Deliveries.BusinessLayer.*;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 
 import java.util.HashMap;
 import java.util.List;

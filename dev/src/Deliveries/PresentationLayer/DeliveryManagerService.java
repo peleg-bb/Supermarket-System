@@ -1,6 +1,6 @@
 package Deliveries.PresentationLayer;
 
-import Deliveries.DeliveryManagerImpl;
+import Deliveries.BusinessLayer.DeliveryManagerImpl;
 
 public class DeliveryManagerService {
     public DeliveryManagerImpl deliveryManager;

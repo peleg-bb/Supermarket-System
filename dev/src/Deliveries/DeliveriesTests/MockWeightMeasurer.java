@@ -1,7 +1,7 @@
 package Deliveries.DeliveriesTests;
 
-import Deliveries.DeliveryForm;
-import Deliveries.WeightMeasurer;
+import Deliveries.BusinessLayer.DeliveryForm;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
 
 public class MockWeightMeasurer implements WeightMeasurer {
     public MockWeightMeasurer() {

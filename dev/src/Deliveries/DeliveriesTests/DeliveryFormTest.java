@@ -1,6 +1,9 @@
 package Deliveries.DeliveriesTests;
 
-import Deliveries.*;
+import Deliveries.BusinessLayer.*;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +57,7 @@ class DeliveryFormTest {
         destinations.add(stop1);
         destinations.add(stop2);
         deliveryForm = new DeliveryForm(1, new ArrayList<>(), origin,
-                truck.getMaxWeightTons(), driver.getId(), truck.getLicensePlate());
+                truck.getMaxWeightTons(), driver, truck);
         deliveryForm.setWeightMeasurer(new MockWeightMeasurer());
         deliveryFormsController = DeliveryFormsController.getInstance();
         deliveryFormsController.addDeliveryForm(deliveryForm);
