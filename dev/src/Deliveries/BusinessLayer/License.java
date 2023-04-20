@@ -30,4 +30,10 @@ public class License {
     public Set<TruckType> getTruckTypesAllowed() {
         return truckTypesAllowed;
     }
+
+    public boolean isLicensed(Truck truck) {
+        int weight = truck.getMaxWeightTons();
+        TruckType type = truck.getType();
+        return weight <= weightAllowedTons && truckTypesAllowed.contains(type);
+    }
 }

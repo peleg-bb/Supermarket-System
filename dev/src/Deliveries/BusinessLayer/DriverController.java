@@ -57,20 +57,16 @@ public class DriverController {
         return instance;
     }
 
-
-    public Driver pickDriver(TruckType truckType, int weight) throws DeliveryException {
-        for (Driver curr : drivers) {
-            if (curr.getAvailability().equals(Availability.Available)) {
-                License license = curr.getLicense();
-                if (curr.getLicense().getTruckTypesAllowed().contains(truckType)
-                        && curr.getLicense().getWeightAllowedTons() >= weight) {
-                    curr.setAvailability(Availability.Busy);
-                    return curr;
+    public Driver pickDriver(Truck truck) throws DeliveryException {
+        for (Driver driver : drivers) {
+            if (driver.getAvailability().equals(Availability.Available)) {
+                if (driver.isLicensed(truck)) {
+                    driver.setAvailability(Availability.Busy);
+                    return driver;
                 }
             }
         }
-        throw new DeliveryException("No available drivers with license for truck type "
-                + truckType + " and weight " + weight);
+        throw new DeliveryException("No available drivers with license for truck " + truck);
     }
 
 }

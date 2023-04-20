@@ -2,6 +2,7 @@ package Deliveries.BusinessLayer;
 
 
 import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 
 public class Driver {
     private final String name;
@@ -52,5 +53,9 @@ public class Driver {
 
     public void freeDriver() {
         availability = Availability.Available;
+    }
+
+    public boolean isLicensed(Truck truck) {
+        return license.isLicensed(truck);
     }
 }

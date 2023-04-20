@@ -48,7 +48,7 @@ class DeliveryFormTest {
         truckController = TruckController.getInstance();
         try {
             truck = truckController.pickTruck(TruckType.Regular);
-            driver = driverController.pickDriver(truck.getType(), truck.getMaxWeightTons());
+            driver = driverController.pickDriver(truck);
         } catch (DeliveryException e) {
             e.printStackTrace();
         }

@@ -56,7 +56,7 @@ public class DeliveryManagerImpl implements DeliveryManager {
     public DeliveryForm createForm(List<DeliveryStop> stops, Site origin) throws DeliveryException {
         TruckType truckType = getTruckType(stops);
         Truck truck = truckController.pickTruck(truckType);
-        Driver driver = driverController.pickDriver(truck.getType(), truck.getMaxWeightTons());
+        Driver driver = driverController.pickDriver(truck);
         return new DeliveryForm(deliveryFormCount++, stops, origin, truck.getMaxWeightTons(), driver, truck);//TODO: fix weight
     }
 
