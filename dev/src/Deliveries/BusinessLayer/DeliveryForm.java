@@ -64,15 +64,14 @@ public class DeliveryForm {
 
     public void performWeightCheck() {
         int currentWeight = measureWeight();
+        setDispatchWeightTons(currentWeight);
         if (currentWeight > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
         }
     }
 
     private int measureWeight() {
-        int currentWeight = weightMeasurer.measureWeight(this);
-        setDispatchWeightTons(currentWeight);
-        return currentWeight;
+        return weightMeasurer.measureWeight(this);
     }
 
     @Override
@@ -92,8 +91,8 @@ public class DeliveryForm {
     }
 
     // setMaxWeightAllowed() is called when the truck is loaded with items
-        public void setMaxWeightAllowed(int maxWeightAllowed) {
-        this.maxWeightAllowed = maxWeightAllowed;
+    private void setMaxWeightAllowed(int maxWeightAllowed) {
+    this.maxWeightAllowed = maxWeightAllowed;
         if (dispatchWeightTons > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
         }
@@ -179,5 +178,11 @@ public class DeliveryForm {
 
     public int getMaxWeightAllowed() {
         return maxWeightAllowed;
+    }
+
+    public void setTruck(Truck newTruck) {
+        truck.freeTruck();
+        truck = newTruck;
+        setMaxWeightAllowed(truck.getMaxWeightTons());
     }
 }

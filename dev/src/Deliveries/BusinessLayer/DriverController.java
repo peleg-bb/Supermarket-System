@@ -64,6 +64,7 @@ public class DriverController {
                 License license = curr.getLicense();
                 if (curr.getLicense().getTruckTypesAllowed().contains(truckType)
                         && curr.getLicense().getWeightAllowedTons() >= weight) {
+                    curr.setAvailability(Availability.Busy);
                     return curr;
                 }
             }

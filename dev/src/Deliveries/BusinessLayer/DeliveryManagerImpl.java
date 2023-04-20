@@ -6,16 +6,13 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanner;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.PresentationLayer.UserInteractionUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class DeliveryManagerImpl implements DeliveryManager {
     private final TruckController truckController;
     private final DriverController driverController;
-    private List<DeliveryStop> pendingDeliveryStops;
+    private Set<DeliveryStop> pendingDeliveryStops;
     private DeliveryFormsController deliveryFormsController;
     private TripReplanner tripReplanner;
     private int deliveryCount;
@@ -25,7 +22,7 @@ public class DeliveryManagerImpl implements DeliveryManager {
    private DeliveryManagerImpl() {
             deliveryCount = 0;
             deliveryFormCount = 0;
-            pendingDeliveryStops = new ArrayList<>();
+            pendingDeliveryStops = new HashSet<>();
             truckController = TruckController.getInstance();
             driverController = DriverController.getInstance();
             deliveryFormsController = DeliveryFormsController.getInstance();
@@ -56,8 +53,6 @@ public class DeliveryManagerImpl implements DeliveryManager {
         pendingDeliveryStops.remove(deliveryId);
     }
 
-
-
     public DeliveryForm createForm(List<DeliveryStop> stops, Site origin) throws DeliveryException {
         TruckType truckType = getTruckType(stops);
         Truck truck = truckController.pickTruck(truckType);
@@ -74,7 +69,6 @@ public class DeliveryManagerImpl implements DeliveryManager {
                 DeliveryForm form = createForm(entries.getValue(), entries.getValue().get(0).getOrigin());
                 // might be a bit messy, couldn't think of a better way to get the origin
                 deliveryFormsController.addDeliveryForm(form);
-
             } catch (DeliveryException e) {
                 // Notify UI
                 System.out.println(e.getMessage());
@@ -118,14 +112,13 @@ public class DeliveryManagerImpl implements DeliveryManager {
         // else do nothing, will be handled by the UI according to submission 1
     }
 
-
     private void replaceTruck(DeliveryForm form) throws DeliveryException{
         Truck newTruck = truckController.pickTruck(form.getTruckType(), form.getDispatchWeightTons());
-        form.setMaxWeightAllowed(newTruck.getMaxWeightTons());
+        form.setTruck(newTruck);
         // TODO: replace driver
     }
 
-    private HashMap<Site,List<DeliveryStop>> sortStopsByOrigin(List<DeliveryStop> pendingDeliveryStops){
+    private HashMap<Site,List<DeliveryStop>> sortStopsByOrigin(Set<DeliveryStop> pendingDeliveryStops){
         HashMap<Site,List<DeliveryStop>> sortedByOrigin = new HashMap<>();
         for (DeliveryStop stop : pendingDeliveryStops) {
             Site origin = stop.getOrigin();
@@ -157,7 +150,7 @@ public class DeliveryManagerImpl implements DeliveryManager {
         return deliveryZonesSorted;
     }
 
-    public HashMap<String,List<DeliveryStop>> createDeliveryLists(List<DeliveryStop> pendingDeliveryStops){
+    public HashMap<String,List<DeliveryStop>> createDeliveryLists(Set<DeliveryStop> pendingDeliveryStops){
         HashMap<String,List<DeliveryStop>> originToSortedByZones = new HashMap<>();
         HashMap<Site,List<DeliveryStop>> originSorted = sortStopsByOrigin(pendingDeliveryStops);
         for(Map.Entry<Site,List<DeliveryStop>> originsStops: originSorted.entrySet()){

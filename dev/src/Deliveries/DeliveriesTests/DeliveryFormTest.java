@@ -118,13 +118,6 @@ class DeliveryFormTest {
     }
 
     @Test
-    void setMaxWeightAllowed() {
-        int maxWeightAllowed = 17;
-        deliveryForm.setMaxWeightAllowed(maxWeightAllowed);
-        assertEquals(maxWeightAllowed, deliveryForm.getMaxWeightAllowed());
-    }
-
-    @Test
     void setDestinationSitesToVisit() {
         List<DeliveryStop> destinationSites = new ArrayList<>();
         deliveryForm.setDestinationSitesToVisit(destinationSites);

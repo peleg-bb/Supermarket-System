@@ -27,6 +27,7 @@ public class Truck {
         this.type = type;
         this.maxWeightTons = maxWeightTons;
         this.netWeightTons = netWeightTons;
+        // TODO: check if netWeightTons is relevant
         availability = Availability.Available;
     }
 

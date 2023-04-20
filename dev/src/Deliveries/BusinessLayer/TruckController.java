@@ -43,6 +43,7 @@ public class TruckController {
         for (Truck curr : trucks) {
             if (curr.getType().equals(requiredType) && curr.getMaxWeightTons() >= requiredWeight) {
                 if (curr.getAvailability().equals(Availability.Available)) {
+                    curr.setAvailability(Availability.Busy);
                     return curr;
                 }
             }
