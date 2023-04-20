@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 public class DeliveryForm {
-    private final int formId ;
+    private final int formId;
     private Date date;
     private Timestamp dispatchTime;
     private WeightMeasurer weightMeasurer;
