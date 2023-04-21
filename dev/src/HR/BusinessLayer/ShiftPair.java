@@ -1,5 +1,6 @@
 package HR.BusinessLayer;
 
+import java.time.ZoneId;
 import java.util.Date;
 
 public class ShiftPair {
@@ -18,5 +19,9 @@ public class ShiftPair {
 
     public ShiftType getType() {
         return type;
+    }
+
+    public boolean equals(Date date, ShiftType type) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().equals(this.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) && type == this.type;
     }
 }

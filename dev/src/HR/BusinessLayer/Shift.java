@@ -1,32 +1,36 @@
 package HR.BusinessLayer;
 
 import java.sql.Time;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.*;
 
 public class Shift {
+    private String store;
     private List<Integer> available_employees;
     private Map<JobType, List<Integer>> employees;
-    private List<String> events;
+    private Map<Integer, Integer> product_canceling; //Employee, product_id
     private List<Integer> manager_constraints;
     private boolean confirmed;
     private Time start;
     private Time end;
-
-    public Shift(Time start, Time end) {
+    public Shift(String store, Time start, Time end) {
         available_employees = new LinkedList<>();
         employees = new HashMap<>();
         initialize_roles();
-        events = new LinkedList<>();
+        product_canceling = new HashMap<>();
         this.start = start;
         this.end = end;
+        confirmed = false;
+        this.store = store;
+        manager_constraints = new LinkedList<>();
     }
 
     public void initialize_roles() {
         for (JobType job: JobType.values()) {
-            employees.put(job, new LinkedList<>());
+            if (!employees.containsKey(job)) {
+                employees.put(job, new LinkedList<>());
+            }
         }
     }
 
@@ -45,7 +49,7 @@ public class Shift {
         if (!available_employees.contains(id)) {
             return "You're not available on this shift";
         }
-        available_employees.remove(id);
+        available_employees.remove(Integer.valueOf(id));
         return "";
     }
 
@@ -76,7 +80,6 @@ public class Shift {
             return "Employee isn't available on this shift";
         }
         employees.get(role).add(id_num);
-        available_employees.remove(id_num);
         return "";
     }
 
@@ -84,7 +87,7 @@ public class Shift {
         if (!employees.get(job).contains(id_num)) {
             return "Employee isn't assigned to this shift";
         }
-        employees.get(job).remove(id_num);
+        employees.get(job).remove(Integer.valueOf(id_num));
         return "";
     }
 
@@ -100,11 +103,65 @@ public class Shift {
         if (!manager_constraints.contains(id_num)) {
             return "User isn't limited on this shift";
         }
-        manager_constraints.remove(id_num);
+        manager_constraints.remove(Integer.valueOf(id_num));
         return "";
     }
 
     public List<Integer> show_shift_availability() {
         return available_employees;
+    }
+
+    public double get_length() {
+        LocalTime startLocalTime = start.toLocalTime();
+        LocalTime endLocalTime = end.toLocalTime();
+
+        Duration duration = Duration.between(startLocalTime, endLocalTime);
+        return duration.toHours();
+    }
+
+    public Date get_start() {
+        return start;
+    }
+
+    public Date get_end() {
+        return end;
+    }
+
+    public boolean check_availability() {
+        return !employees.get(JobType.STOREKEEPER).isEmpty();
+    }
+
+    public List<String> get_available_drivers() {
+        List<String> drivers_ids = new LinkedList<>();
+        for (Integer id: available_employees) {
+            drivers_ids.add(id.toString());
+        }
+        return drivers_ids;
+    }
+
+    public boolean is_assigned_to_role(int id_num, JobType role) {
+        return employees.get(role).contains(id_num);
+    }
+
+    public void set_available(List<Integer> employees) {
+        available_employees = employees;
+    }
+    public void set_employees(Map<JobType, List<Integer>> employees) {
+        this.employees = employees;
+    }
+    public void set_events(Map<Integer, Integer> events) {
+        this.product_canceling = events;
+    }
+    public void set_constraints(List<Integer> constraints) {
+        manager_constraints = constraints;
+    }
+
+    public String get_store() {
+        return store;
+    }
+
+    public String cancel_product(int id, int product_id_num) {
+        product_canceling.put(id, product_id_num);
+        return "";
     }
 }

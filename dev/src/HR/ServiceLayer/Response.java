@@ -1,5 +1,7 @@
 package HR.ServiceLayer;
 
+import java.util.Objects;
+
 public class Response {
 
     private String errorMessage;
@@ -9,7 +11,7 @@ public class Response {
         this.errorMessage = errorMessage;
     }
     public boolean errorOccurred(){
-        return errorMessage != null;
+        return !Objects.equals(errorMessage, "");
     }
 
 
