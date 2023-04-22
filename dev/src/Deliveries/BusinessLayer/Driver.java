@@ -27,9 +27,8 @@ public class Driver {
         this.phone = phone;
         this.license = new License();
         availability = Availability.Available;
+        // TODO: implement license
     }
-
-
 
     public String getName() {
         return name;
