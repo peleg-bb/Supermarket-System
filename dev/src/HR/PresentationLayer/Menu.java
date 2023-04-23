@@ -3,7 +3,7 @@ package HR.PresentationLayer;
 import HR.DataAccessLayer.Connect;
 
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Menu {
     private final HRMenu employeeCLI = new HRMenu();
@@ -13,7 +13,7 @@ public class Menu {
     }
 
     private void load_hr() {
-        employeeCLI.add_hr(111111111, "Tomer Naydnov", 12345678, 70, "None", new Date(), "Single", true, "123456");
+        employeeCLI.add_hr(111111111, "Tomer Naydnov", 12345678, 70, "None", LocalDate.now(), "Single", true, "123456");
     }
 
     public static void main(String[] args) throws SQLException {

@@ -2,7 +2,7 @@ package HR.BusinessLayer;
 
 import HR.DataAccessLayer.EmployeeDAO;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +13,7 @@ public class Employee {
     private Integer bank_account;
     private double salary;
     private String terms_of_employment;
-    private final Date employment_date;
+    private final LocalDate employment_date;
     private String family_status;
     private boolean is_student;
     private final List<JobType> roles;
@@ -22,7 +22,7 @@ public class Employee {
     private double current_total_salary = 0;
     private double monthly_salary;
 
-    public Employee(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, Date employment_date, String family_status, boolean is_student, EmployeeDAO employeeDAO) {
+    public Employee(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, LocalDate employment_date, String family_status, boolean is_student, EmployeeDAO employeeDAO) {
         this.id = id;
         this.name = name;
         this.bank_account = bank_account;
@@ -270,5 +270,9 @@ public class Employee {
 
     public String get_terms() {
         return terms_of_employment;
+    }
+
+    public double get_monthly_salary() {
+        return monthly_salary;
     }
 }

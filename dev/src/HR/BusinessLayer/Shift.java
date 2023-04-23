@@ -1,9 +1,11 @@
 package HR.BusinessLayer;
 
-import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class Shift {
     private final String store;
@@ -12,9 +14,9 @@ public class Shift {
     private Map<Integer, Integer> product_canceling; //Employee, product_id
     private List<Integer> manager_constraints;
     private boolean confirmed;
-    private final Time start;
-    private final Time end;
-    public Shift(String store, Time start, Time end) {
+    private final LocalTime start;
+    private final LocalTime end;
+    public Shift(String store, LocalTime start, LocalTime end) {
         available_employees = new LinkedList<>();
         employees = new HashMap<>();
         initialize_roles();
@@ -92,7 +94,7 @@ public class Shift {
     }
 
     public String limit_work(int id_num) {
-        if (!manager_constraints.contains(id_num)) {
+        if (manager_constraints.contains(id_num)) {
             return "User already limited on this shift";
         }
         manager_constraints.add(id_num);
@@ -112,18 +114,15 @@ public class Shift {
     }
 
     public double get_length() {
-        LocalTime startLocalTime = start.toLocalTime();
-        LocalTime endLocalTime = end.toLocalTime();
-
-        Duration duration = Duration.between(startLocalTime, endLocalTime);
+        Duration duration = Duration.between(start, end);
         return duration.toHours();
     }
 
-    public Date get_start() {
+    public LocalTime get_start() {
         return start;
     }
 
-    public Date get_end() {
+    public LocalTime get_end() {
         return end;
     }
 

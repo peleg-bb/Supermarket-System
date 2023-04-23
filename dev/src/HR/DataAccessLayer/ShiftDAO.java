@@ -3,8 +3,12 @@ package HR.DataAccessLayer;
 import HR.BusinessLayer.*;
 
 import java.sql.SQLException;
-import java.sql.Time;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ShiftDAO {
     private final Connect conn = Connect.getInstance();
@@ -12,112 +16,96 @@ public class ShiftDAO {
 
 
 
-    public String add_availability(Integer id, Date date_object, ShiftType type, String store) {
+    public String add_availability(Integer id, LocalDate date_object, ShiftType type, String store) {
         try{
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date_object);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
-            int year = calendar.get(Calendar.YEAR);
-            conn.executeUpdate("INSERT INTO Availability (store, shiftType, day, month, year, employeeID, availabilityOrConstraint) VALUES(?,?,?,?,?,?,?)", store, type.toString(), dayOfWeek, month, year, id, 1);
+            int dayOfMonth = date_object.getDayOfMonth();
+            int month = date_object.getMonthValue();
+            int year = date_object.getYear();
+            conn.executeUpdate("INSERT INTO Availability (store, shiftType, day, month, year, employeeID, availabilityOrConstraint) VALUES(?,?,?,?,?,?,?)", store, type.toString(), dayOfMonth, month, year, id, 1);
             return "";
         } catch (SQLException e) {
             return "Employee with id " + id + " is already available in this date";
         }
     }
 
-    public String remove_availability(Integer id, Date date_object, ShiftType type, String store) {
+    public String remove_availability(Integer id, LocalDate date_object, ShiftType type, String store) {
         try{
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date_object);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
-            int year = calendar.get(Calendar.YEAR);
-            conn.executeUpdate("DELETE FROM Availability WHERE employeeID = " + id + " AND store = '" + store + "' AND day = '" + dayOfWeek + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + type.toString() + "'");
+            int dayOfMonth = date_object.getDayOfMonth();
+            int month = date_object.getMonthValue();
+            int year = date_object.getYear();
+            conn.executeUpdate("DELETE FROM Availability WHERE employeeID = " + id + " AND store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + type.toString() + "'");
             return "";
         } catch (SQLException e) {
             return "Employee with id " + id + " is not available in this date";
         }
     }
 
-    public String limit_work(int id_num, Date date_object, ShiftType shift_type, String store) {
+    public String limit_work(int id_num, LocalDate date_object, ShiftType shift_type, String store) {
         try{
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date_object);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
-            int year = calendar.get(Calendar.YEAR);
-            conn.executeUpdate("INSERT INTO Availability (store, shiftType, day, month, year, employeeID, availabilityOrConstraint) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfWeek, month, year, id_num, 0);
+            int dayOfMonth = date_object.getDayOfMonth();
+            int month = date_object.getMonthValue();
+            int year = date_object.getYear();
+            conn.executeUpdate("INSERT INTO Availability (store, shiftType, day, month, year, employeeID, availabilityOrConstraint) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, id_num, 0);
             return "";
         } catch (SQLException e) {
             return "Employee with id " + id_num + " is already assigned / limited in this date.";
         }
     }
 
-    public String remove_worker_limit(int id_num, Date date_object, ShiftType shift_type, String store) {
+    public String remove_worker_limit(int id_num, LocalDate date_object, ShiftType shift_type, String store) {
         try{
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date_object);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
-            int year = calendar.get(Calendar.YEAR);
-            conn.executeUpdate("DELETE FROM Availability WHERE employeeID = " + id_num + " AND store = '" + store + "' AND day = '" + dayOfWeek + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "'");
+            int dayOfMonth = date_object.getDayOfMonth();
+            int month = date_object.getMonthValue();
+            int year = date_object.getYear();
+            conn.executeUpdate("DELETE FROM Availability WHERE employeeID = " + id_num + " AND store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "'");
             return "";
         } catch (SQLException e) {
             return "Employee with id " + id_num + " is not available in this date";
         }
     }
 
-    public String assign_shift(int id_num, Date date_object, ShiftType shift_type, JobType role, String store) {
+    public String assign_shift(int id_num, LocalDate date_object, ShiftType shift_type, JobType role, String store) {
         try{
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date_object);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
-            int year = calendar.get(Calendar.YEAR);
-            conn.executeUpdate("INSERT INTO EmployeesInShift (store, shiftType, day, month, year, employeeID, job) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfWeek, month, year, id_num, role.toString());
+            int dayOfMonth = date_object.getDayOfMonth();
+            int month = date_object.getMonthValue();
+            int year = date_object.getYear();
+            conn.executeUpdate("INSERT INTO EmployeesInShift (store, shiftType, day, month, year, employeeID, job) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, id_num, role.toString());
             return "";
         } catch (SQLException e) {
             return "Employee with id " + id_num + " is already assigned to this shift";
         }
     }
 
-    public String unassign_shift(int id_num, Date date_object, ShiftType shift_type, JobType job, String store) {
+    public String unassign_shift(int id_num, LocalDate date_object, ShiftType shift_type, JobType job, String store) {
         try{
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date_object);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
-            int year = calendar.get(Calendar.YEAR);
-            conn.executeUpdate("DELETE FROM EmployeesInShift WHERE employeeID = " + id_num + " AND store = '" + store + "' AND day = '" + dayOfWeek + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "' AND job = '" + job.toString() + "'");
+            int dayOfMonth = date_object.getDayOfMonth();
+            int month = date_object.getMonthValue();
+            int year = date_object.getYear();
+            conn.executeUpdate("DELETE FROM EmployeesInShift WHERE employeeID = " + id_num + " AND store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "' AND job = '" + job.toString() + "'");
             return "";
         } catch (SQLException e) {
             return "Employee with id " + id_num + " is not assigned to this date";
         }
     }
 
-    public String confirm_shift(Date date_object, ShiftType shift, String store) {
+    public String confirm_shift(LocalDate date_object, ShiftType shift, String store) {
         try{
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date_object);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
-            int year = calendar.get(Calendar.YEAR);
-            conn.executeUpdate("UPDATE Shifts SET confirmed = " + 1 + " WHERE store = '" + store + "' AND day = '" + dayOfWeek + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift.toString() + "'");
+            int dayOfMonth = date_object.getDayOfMonth();
+            int month = date_object.getMonthValue();
+            int year = date_object.getYear();
+            conn.executeUpdate("UPDATE Shifts SET confirmed = " + 1 + " WHERE store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift.toString() + "'");
             return "";
         } catch (SQLException e) {
             return "Couldn't update the data base";
         }
     }
 
-    public void create_shift(Date first_day, ShiftType shift_type, Time morn_start, Time morn_end, String store) {
+    public void create_shift(LocalDate first_day, ShiftType shift_type, LocalTime morn_start, LocalTime morn_end, String store) {
         try{
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(first_day);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
-            int year = calendar.get(Calendar.YEAR);
-            conn.executeUpdate("INSERT INTO Shifts (store, shiftType, day, month, year, start, end, confirmed) VALUES(?,?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfWeek, month, year, morn_start.toString(), morn_end.toString(), 0);
+            int dayOfMonth = first_day.getDayOfMonth();
+            int month = first_day.getMonthValue();
+            int year = first_day.getYear();
+            conn.executeUpdate("INSERT INTO Shifts (store, shiftType, day, month, year, start, end, confirmed) VALUES(?,?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, morn_start.toString(), morn_end.toString(), 0);
         } catch (SQLException ignored) {
         }
     }
@@ -149,7 +137,7 @@ public class ShiftDAO {
         String start = (String) personalDetails.get("start");
         String end = (String) personalDetails.get("end");
         Integer confirmed = (Integer) personalDetails.get("confirmed");
-        Shift shift = new Shift(store, Time.valueOf(start), Time.valueOf(end));
+        Shift shift = new Shift(store, LocalTime.parse(start), LocalTime.parse(end));
         if (confirmed == 1) {
             shift.confirm_shift();
         }
@@ -162,15 +150,8 @@ public class ShiftDAO {
         shift.set_employees(employees);
         shift.initialize_roles();
         shift.set_events(events);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.SUNDAY);
-        calendar.set(Calendar.YEAR, Integer.parseInt(year));
-        int month_num = Integer.parseInt(month) - 1;
-        calendar.set(Calendar.MONTH, month_num);
-        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
-        Date date_object = calendar.getTime();
-
-        ShiftPair pair = new ShiftPair(date_object, ShiftType.valueOf(shiftType));
+        LocalDate localDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+        ShiftPair pair = new ShiftPair(localDate, ShiftType.valueOf(shiftType));
         Map<ShiftPair, Shift> output = new HashMap<>();
         output.put(pair, shift);
         return output;
@@ -244,14 +225,12 @@ public class ShiftDAO {
         }
     }
 
-    public String cancel_product(int id, int product_id_num, Date date_object, ShiftType type, String store) {
+    public String cancel_product(int id, int product_id_num, LocalDate date_object, ShiftType type, String store) {
         try{
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date_object);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
-            int year = calendar.get(Calendar.YEAR);
-            conn.executeUpdate("INSERT INTO ShiftEvents (store, shiftType, day, month, year, employeeId, productId) VALUES(?,?,?,?,?,?,?)", store, type.toString(), dayOfWeek, month, year, id, product_id_num);
+            int dayOfMonth = date_object.getDayOfMonth();
+            int month = date_object.getMonthValue();
+            int year = date_object.getYear();
+            conn.executeUpdate("INSERT INTO ShiftEvents (store, shiftType, day, month, year, employeeId, productId) VALUES(?,?,?,?,?,?,?)", store, type.toString(), dayOfMonth, month, year, id, product_id_num);
             return "";
         } catch (SQLException e) {
             return "Couldn't update the database";

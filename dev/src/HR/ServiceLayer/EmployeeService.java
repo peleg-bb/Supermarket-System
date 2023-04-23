@@ -4,9 +4,9 @@ import HR.BusinessLayer.Facade;
 import HR.BusinessLayer.JobType;
 import HR.BusinessLayer.ShiftType;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class EmployeeService {
 
@@ -21,10 +21,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
@@ -36,10 +36,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
@@ -86,24 +86,19 @@ public class EmployeeService {
 
     public Response add_employee(String id, String name, String bank_account, String salary, String terms_of_employment, String employment_date, String family_status, String is_student, String password) {
         int id_num, bank_account_num, salary_num;
-        Date date_object;
+        LocalDate date_object;
         boolean student;
         try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
         try {bank_account_num = Integer.parseInt(bank_account);} catch (Exception exception) {return new Response("Invalid bank account");}
         try {salary_num = Integer.parseInt(salary);} catch (Exception exception) {return new Response("Invalid salary");}
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(employment_date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(employment_date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
         }
-        if (is_student.equalsIgnoreCase("yes")) {
-            student = true;
-        }
-        else {
-            student = false;
-        }
+        student = is_student.equalsIgnoreCase("yes");
         if (!name.matches("^[a-zA-Z ]+$")) {
             return new Response("Invalid name");
         }
@@ -156,10 +151,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
@@ -168,25 +163,21 @@ public class EmployeeService {
     }
 
     public Response create_weekly_schedule(String first_day, String store, String morn_start, String morn_end, String eve_start, String eve_end) {
-        Date date_object;
-        Time morning_start, morning_end, evening_start, evening_end;
+        LocalDate date_object;
+        LocalTime morning_start, morning_end, evening_start, evening_end;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(first_day);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(first_day, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
         }
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-            Date date1 = dateFormat.parse(morn_start);
-            morning_start = new Time(date1.getTime());
-            Date date2 = dateFormat.parse(morn_end);
-            morning_end = new Time(date2.getTime());
-            Date date3 = dateFormat.parse(eve_start);
-            evening_start = new Time(date3.getTime());
-            Date date4 = dateFormat.parse(eve_end);
-            evening_end = new Time(date4.getTime());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            morning_start = LocalTime.parse(morn_start, formatter);
+            morning_end = LocalTime.parse(morn_end, formatter);
+            evening_start = LocalTime.parse(eve_start, formatter);
+            evening_end = LocalTime.parse(eve_end, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid shifts time");
@@ -199,10 +190,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
@@ -218,10 +209,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
@@ -237,10 +228,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
@@ -254,10 +245,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
@@ -271,10 +262,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
@@ -286,10 +277,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");
@@ -363,7 +354,7 @@ public class EmployeeService {
         return new Response(facade.show_current_salary(this.id));
     }
 
-    public void add_hr(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, Date employment_date, String family_status, boolean is_student, String password) {
+    public void add_hr(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, LocalDate employment_date, String family_status, boolean is_student, String password) {
         facade.add_hr(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password);
     }
 
@@ -385,10 +376,10 @@ public class EmployeeService {
         if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
             return new Response("Invalid shift type");
         }
-        Date date_object;
+        LocalDate date_object;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            date_object = dateFormat.parse(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            date_object = LocalDate.parse(date, formatter);
         }
         catch(Exception exception) {
             return new Response("Invalid date");

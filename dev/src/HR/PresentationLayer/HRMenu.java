@@ -3,7 +3,7 @@ package HR.PresentationLayer;
 import HR.ServiceLayer.EmployeeService;
 import HR.ServiceLayer.Response;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class HRMenu {
@@ -720,7 +720,7 @@ public class HRMenu {
         System.out.print(print_blue("Option:"));
     }
 
-    public void add_hr(int id, String name, int bank_account, double salary, String terms_of_employment, Date employment_date, String family_status, boolean is_student, String password) {
+    public void add_hr(int id, String name, int bank_account, double salary, String terms_of_employment, LocalDate employment_date, String family_status, boolean is_student, String password) {
         service.add_hr(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password);
     }
 }

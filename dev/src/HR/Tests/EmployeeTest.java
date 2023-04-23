@@ -5,25 +5,25 @@ import HR.DataAccessLayer.Connect;
 import org.junit.jupiter.api.Assertions;
 
 import java.sql.SQLException;
-import java.sql.Time;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class EmployeeTest {
-    private static final Facade facade = new Facade();
+    private static Facade facade = null;
 
-    @org.junit.jupiter.api.BeforeAll
-    static void setUp() throws SQLException {
+    @org.junit.jupiter.api.BeforeEach
+     void setUp() throws SQLException {
         Connect.getInstance().deleteRecordsOfTables();
-        facade.add_hr(111111111, "Tomer Naydnov", 1111111, 70, "None", new Date(2023, Calendar.MARCH, 1), "Married", false, "123456");
+        facade = new Facade();
+        facade.add_hr(111111111, "Tomer Naydnov", 1111111, 70, "None", LocalDate.of(2023,3,1), "Married", false, "123456");
         facade.login(111111111, "123456");
-        facade.add_employee(111111111, 222222222, "Gili Cohen", 2222222, 30, "None", new Date(2023, Calendar.FEBRUARY, 1), "Single", true, "123456");
-        facade.add_employee(111111111, 333333333, "Guy Cohen", 3333333, 30, "None", new Date(2023, Calendar.FEBRUARY, 1), "Single", true, "123456");
-        facade.add_employee(111111111, 444444444, "Ohad Banay", 4444444, 35, "None", new Date(2023, Calendar.FEBRUARY, 1), "Single", true, "123456");
-        facade.add_employee(111111111, 555555555, "Rotem Sela", 5555555, 35, "None", new Date(2023, Calendar.FEBRUARY, 1), "Single", true, "123456");
+        facade.add_employee(111111111, 222222222, "Gili Cohen", 2222222, 30, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
+        facade.add_employee(111111111, 333333333, "Guy Cohen", 3333333, 30, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
+        facade.add_employee(111111111, 444444444, "Ohad Banay", 4444444, 35, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
+        facade.add_employee(111111111, 555555555, "Rotem Sela", 5555555, 35, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
         facade.certify_role(111111111, 222222222, JobType.SHIFTMANAGER);
         facade.create_store(111111111, "Tel Aviv");
         facade.assign_to_store(111111111, 222222222, "Tel Aviv");
@@ -31,10 +31,24 @@ class EmployeeTest {
 
     @org.junit.jupiter.api.Test
     void add_availability() {
+        facade.create_weekly_schedule(111111111, LocalDate.of(2023,6,4), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        facade.login(222222222, "123456");
+        String res = facade.add_availability(222222222, LocalDate.of(2023,6,5), ShiftType.MORNING, "Tel Aviv");
+        Assertions.assertEquals("", res);
+        res = facade.add_availability(222222222, LocalDate.of(2023,6,5), ShiftType.MORNING, "test");
+        Assertions.assertNotEquals("", res);
     }
 
     @org.junit.jupiter.api.Test
     void remove_availability() {
+        facade.create_weekly_schedule(111111111, LocalDate.of(2023,6,4), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        facade.login(222222222, "123456");
+        String res = facade.add_availability(222222222, LocalDate.of(2023,6,5), ShiftType.MORNING, "Tel Aviv");
+        Assertions.assertEquals("", res);
+        res = facade.remove_availability(222222222, LocalDate.of(2023,6,5), ShiftType.MORNING, "Tel Aviv");
+        Assertions.assertEquals("", res);
+        res = facade.remove_availability(222222222, LocalDate.of(2023,6,5), ShiftType.MORNING, "Tel Aviv");
+        Assertions.assertNotEquals("", res);
     }
 
     @org.junit.jupiter.api.Test
@@ -51,6 +65,7 @@ class EmployeeTest {
 
     @org.junit.jupiter.api.Test
     void change_bank_account() {
+        facade.login(333333333, "123456");
         String res = facade.change_bank_account(333333333, 33333332, 33333331);
         Assertions.assertNotEquals("", res);
         Assertions.assertNotEquals(33333331 ,facade.get_employee_bank_account(333333333));
@@ -62,6 +77,7 @@ class EmployeeTest {
 
     @org.junit.jupiter.api.Test
     void change_family_status() {
+        facade.login(333333333, "123456");
         String res = facade.change_family_status(333333333, "Singles", "Married");
         assertNotEquals("", res);
         assertNotEquals("Married" ,facade.get_employee_family_status(333333333));
@@ -73,6 +89,7 @@ class EmployeeTest {
 
     @org.junit.jupiter.api.Test
     void change_student_status() {
+        facade.login(333333333, "123456");
         String res = facade.change_student(333333333, false, true);
         assertNotEquals("", res);
         res = facade.change_student(333333333, true, false);
@@ -99,15 +116,25 @@ class EmployeeTest {
     }
 
     @org.junit.jupiter.api.Test
-    void cancel_product() {
-    }
-
-    @org.junit.jupiter.api.Test
     void assign_employee() {
+        String res = facade.assign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        assertNotEquals("", res);
+        facade.create_weekly_schedule(111111111, LocalDate.of(2023,6,4), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        facade.login(222222222, "123456");
+        facade.add_availability(222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv");
+        res = facade.assign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        assertEquals("", res);
     }
 
     @org.junit.jupiter.api.Test
     void remove_employee_assignment() {
+        facade.create_weekly_schedule(111111111, LocalDate.of(2023,6,4), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        facade.login(222222222, "123456");
+        facade.add_availability(222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv");
+        String res = facade.assign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        assertEquals("", res);
+        res = facade.unassign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        assertEquals("", res);
     }
 
     @org.junit.jupiter.api.Test
@@ -116,12 +143,13 @@ class EmployeeTest {
         assertEquals("", res);
         Assertions.assertTrue(facade.certified_to_role(333333333, JobType.STOREKEEPER));
         res = facade.certify_role(111111111, 333333333, JobType.STOREKEEPER);
-        Assertions.assertNotEquals("", res);
+        assertNotEquals("", res);
         Assertions.assertTrue(facade.certified_to_role(333333333, JobType.STOREKEEPER));
     }
 
     @org.junit.jupiter.api.Test
     void remove_job_certification() {
+        facade.certify_role(111111111, 333333333, JobType.STOREKEEPER);
         String res = facade.remove_role(111111111, 333333333, JobType.STOREKEEPER);
         assertEquals("", res);
         Assertions.assertFalse(facade.certified_to_role(333333333, JobType.STOREKEEPER));
@@ -143,6 +171,8 @@ class EmployeeTest {
 
     @org.junit.jupiter.api.Test
     void remove_store_assignment() {
+        facade.create_store(111111111, "test");
+        facade.assign_to_store(111111111, 333333333, "test");
         String res = facade.unassign_to_store(111111111, 333333333, "test1");
         assertNotEquals("", res);
         Assertions.assertTrue(facade.assigned_to_store(333333333, "test"));
@@ -154,15 +184,16 @@ class EmployeeTest {
     @org.junit.jupiter.api.Test
     void add_employee() {
         Assertions.assertFalse(facade.employee_exists(666666666));
-        String res = facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", new Date(2023, Calendar.FEBRUARY, 1), "Single", true, "123456");
+        String res = facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
         Assertions.assertTrue(facade.employee_exists(666666666));
         Assertions.assertEquals("", res);
-        res = facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", new Date(2023, Calendar.FEBRUARY, 1), "Single", true, "123456");
+        res = facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
         Assertions.assertNotEquals("", res);
     }
 
     @org.junit.jupiter.api.Test
     void remove_employee() {
+        facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
         Assertions.assertTrue(facade.employee_exists(666666666));
         String res = facade.remove_employee(111111111, 666666666);
         Assertions.assertFalse(facade.employee_exists(666666666));
@@ -194,44 +225,52 @@ class EmployeeTest {
 
     @org.junit.jupiter.api.Test
     void confirm_shift() {
+        create_schedule();
+        String res = facade.confirm_shift(111111111, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv");
+        Assertions.assertNotEquals("", res);
+        facade.login(222222222, "123456");
+        facade.add_availability(222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv");
+        facade.assign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        res = facade.confirm_shift(111111111, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv");
+        Assertions.assertEquals("", res);
     }
 
     @org.junit.jupiter.api.Test
     void create_schedule() {
-        String res = facade.create_weekly_schedule(111111111, new Date(2023, Calendar.JUNE, 4), "Tel Aviv", Time.valueOf("08:00:00"), Time.valueOf("14:00:00"), Time.valueOf("14:00:00"), Time.valueOf("22:00:00"));
+        String res = facade.create_weekly_schedule(111111111, LocalDate.of(2023,6,4), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         Assertions.assertEquals("", res);
-        Assertions.assertTrue(facade.future_schedule_exists(new Date(2023, Calendar.JUNE, 4), "Tel Aviv"));
-        Assertions.assertFalse(facade.past_schedule_exists(new Date(2023, Calendar.JUNE, 4), "Tel Aviv"));
-        res = facade.create_weekly_schedule(111111111, new Date(2023, Calendar.FEBRUARY, 5), "Tel Aviv", Time.valueOf("08:00:00"), Time.valueOf("14:00:00"), Time.valueOf("14:00:00"), Time.valueOf("22:00:00"));
+        Assertions.assertTrue(facade.future_schedule_exists(LocalDate.of(2023,6,4), "Tel Aviv"));
+        Assertions.assertFalse(facade.past_schedule_exists(LocalDate.of(2023,6,4), "Tel Aviv"));
+        res = facade.create_weekly_schedule(111111111, LocalDate.of(2023,2,5), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         Assertions.assertEquals("", res);
-        //assertFalse(facade.future_schedule_exists(new Date(2023, Calendar.FEBRUARY, 5), "Tel Aviv"));
-        Assertions.assertTrue(facade.past_schedule_exists(new Date(2023, Calendar.FEBRUARY, 5), "Tel Aviv"));
+        Assertions.assertFalse(facade.future_schedule_exists(LocalDate.of(2023,2,5), "Tel Aviv"));
+        Assertions.assertTrue(facade.past_schedule_exists(LocalDate.of(2023,2,5), "Tel Aviv"));
     }
 
     @org.junit.jupiter.api.Test
     void limit_work() {
-        String res = facade.limit_work(111111111,444444444, new Date(2023, Calendar.JUNE, 1), ShiftType.MORNING, "Rishon");
+        String res = facade.limit_work(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
         Assertions.assertNotEquals("", res);
         facade.create_store(111111111, "Rishon");
-        res = facade.limit_work(111111111,444444444, new Date(2023, Calendar.JUNE, 1), ShiftType.MORNING, "Rishon");
+        res = facade.limit_work(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
         Assertions.assertNotEquals("", res);
-        facade.create_weekly_schedule(111111111, new Date(2023, Calendar.MAY, 28), "Rishon", Time.valueOf("08:00"), Time.valueOf("14:00"), Time.valueOf("14:00"), Time.valueOf("22:00"));
-        res = facade.limit_work(111111111,444444444, new Date(2023, Calendar.JUNE, 1), ShiftType.MORNING, "Rishon");
+        facade.create_weekly_schedule(111111111, LocalDate.of(2023,5,28), "Rishon", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        facade.assign_to_store(111111111, 444444444, "Rishon");
+        res = facade.limit_work(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
         Assertions.assertEquals("", res);
-        Assertions.assertTrue(facade.is_limited(444444444, new Date(2023, Calendar.JUNE, 1), ShiftType.MORNING, "Rishon"));
+        Assertions.assertTrue(facade.is_limited(444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon"));
     }
 
     @org.junit.jupiter.api.Test
     void remove_work_limitation() {
-        limit_work();
-        Assertions.assertTrue(facade.is_limited(444444444, new Date(2023, Calendar.JUNE, 1), ShiftType.MORNING, "Rishon"));
-        String res = facade.remove_worker_limit(111111111,444444444, new Date(2023, Calendar.JUNE, 1), ShiftType.MORNING, "Rishon");
+        facade.create_store(111111111, "Rishon");
+        facade.create_weekly_schedule(111111111, LocalDate.of(2023,5,28), "Rishon", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        facade.assign_to_store(111111111, 444444444, "Rishon");
+        facade.limit_work(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
+        Assertions.assertTrue(facade.is_limited(444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon"));
+        String res = facade.remove_worker_limit(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
         Assertions.assertEquals("", res);
-        Assertions.assertFalse(facade.is_limited(444444444, new Date(2023, Calendar.JUNE, 1), ShiftType.MORNING, "Rishon"));
-    }
-
-    @org.junit.jupiter.api.Test
-    void confirm_salary() {
+        Assertions.assertFalse(facade.is_limited(444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon"));
     }
 
     @org.junit.jupiter.api.Test

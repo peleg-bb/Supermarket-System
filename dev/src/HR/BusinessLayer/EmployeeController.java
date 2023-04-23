@@ -2,7 +2,11 @@ package HR.BusinessLayer;
 
 import HR.DataAccessLayer.EmployeeDAO;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class EmployeeController {
     private final Map<Integer, String> login_info; //<id, password>
@@ -51,7 +55,7 @@ public class EmployeeController {
         return employees.get(id).get_stores();
     }
 
-    public String add_employee(Integer id, int id_num, String name, int bank_account_num, int salary_num, String terms_of_employment, Date date_object, String family_status, boolean student, String password) {
+    public String add_employee(Integer id, int id_num, String name, int bank_account_num, int salary_num, String terms_of_employment, LocalDate date_object, String family_status, boolean student, String password) {
         if (!is_HRManager(id)) {
             return "User is not an HR manager";
         }
@@ -294,7 +298,7 @@ public class EmployeeController {
         return employees.get(id).show_current_salary();
     }
 
-    public void add_hr(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, Date employment_date, String family_status, boolean is_student, String password) {
+    public void add_hr(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, LocalDate employment_date, String family_status, boolean is_student, String password) {
         employeeDAO.add_employee(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password);
         Employee employee = new Employee(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, this.employeeDAO);
         employee.certify_role(JobType.HRMANAGER);
@@ -382,5 +386,18 @@ public class EmployeeController {
 
     public boolean assigned_to_store(int id, String store) {
         return employees.get(id).is_certified_to_store(store);
+    }
+
+    public double get_monthly_salary(int manager_id, int employee_id) {
+        if (!is_HRManager(manager_id)) {
+            return 0;
+        }
+        if (!employees.containsKey(employee_id)) {
+            return 0;
+        }
+        if (!is_loggedIn(employee_id)) {
+            return 0;
+        }
+        return employees.get(employee_id).get_monthly_salary();
     }
 }

@@ -4,7 +4,7 @@ import HR.BusinessLayer.Employee;
 import HR.BusinessLayer.JobType;
 
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +42,8 @@ public class EmployeeDAO {
             Integer bank_account = (Integer) personalDetails.get("bankAccount");
             double salary = (Double) personalDetails.get("salary");
             String terms_of_employment = (String) personalDetails.get("termsOfEmployment");
-            long date = (long) personalDetails.get("employmentDate");
-            Date employment_date = new Date(date);
+            String date = (String) personalDetails.get("employmentDate");
+            LocalDate employment_date = LocalDate.parse(date);
             String family_status = (String) personalDetails.get("familyStatus");
             Integer student = (Integer) personalDetails.get("isStudent");
             boolean is_student = student.equals(1);
@@ -78,7 +78,7 @@ public class EmployeeDAO {
         }
     }
 
-    public String add_employee(int id_num, String name, int bank_account_num, double salary_num, String terms_of_employment, Date date_object, String family_status, boolean student, String password) {
+    public String add_employee(int id_num, String name, int bank_account_num, double salary_num, String terms_of_employment, LocalDate date_object, String family_status, boolean student, String password) {
         try{
             int student_index = 0;
             if (student) {

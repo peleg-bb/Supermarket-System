@@ -2,8 +2,8 @@ package HR.BusinessLayer;
 
 import HR.ServiceLayer.Response;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class Facade {
@@ -16,14 +16,14 @@ public class Facade {
         shiftController = new ShiftController();
     }
     //V
-    public String add_availability(Integer id, Date date_object, ShiftType type, String store) {
+    public String add_availability(Integer id, LocalDate date_object, ShiftType type, String store) {
         if (!employeeController.is_loggedIn(id)) {
             return "User not logged in";
         }
         return shiftController.add_availability(id, date_object, type, store);
     }
     //V
-    public String remove_availability(Integer id, Date date_object, ShiftType type, String store) {
+    public String remove_availability(Integer id, LocalDate date_object, ShiftType type, String store) {
         if (!employeeController.is_loggedIn(id)) {
             return "User not logged in";
         }
@@ -54,7 +54,7 @@ public class Facade {
         return employeeController.logout(id_num);
     }
     //V
-    public String add_employee(Integer id, int id_num, String name, int bank_account_num, int salary_num, String terms_of_employment, Date date_object, String family_status, boolean student, String password) {
+    public String add_employee(Integer id, int id_num, String name, int bank_account_num, int salary_num, String terms_of_employment, LocalDate date_object, String family_status, boolean student, String password) {
         return employeeController.add_employee(id, id_num, name, bank_account_num, salary_num, terms_of_employment, date_object, family_status, student, password);
     }
     //V
@@ -114,7 +114,7 @@ public class Facade {
         return shiftController.remove_store(store);
     }
 
-    public String confirm_shift(Integer id, Date date_object, ShiftType shift, String store) {
+    public String confirm_shift(Integer id, LocalDate date_object, ShiftType shift, String store) {
         if (!employeeController.is_HRManager(id)) {
             return "User is not an HR manager";
         }
@@ -125,7 +125,7 @@ public class Facade {
 
     }
     //V
-    public String create_weekly_schedule(Integer id, Date date_object, String store, Time morn_start, Time morn_end, Time eve_start, Time eve_end) {
+    public String create_weekly_schedule(Integer id, LocalDate date_object, String store, LocalTime morn_start, LocalTime morn_end, LocalTime eve_start, LocalTime eve_end) {
         if (!employeeController.is_HRManager(id)) {
             return "User is not an HR manager";
         }
@@ -135,7 +135,7 @@ public class Facade {
         return shiftController.create_weekly_schedule(date_object, store, morn_start, morn_end, eve_start, eve_end);
     }
     //V
-    public String assign_shift(Integer id, int id_num, Date date_object, ShiftType shift_type, String store, JobType role) {
+    public String assign_shift(Integer id, int id_num, LocalDate date_object, ShiftType shift_type, String store, JobType role) {
         if (!employeeController.is_HRManager(id)) {
             return "User is not an HR manager";
         }
@@ -149,7 +149,7 @@ public class Facade {
             return "User is not assigned to this store";
         }
         List<String> certified_stores = employeeController.get_certified_stores(id_num);
-        String res = shiftController.shifts_limit(certified_stores, id_num, date_object, shift_type);
+        String res = shiftController.shifts_limit(certified_stores, id_num, date_object);
         if(!res.equals("")) {
             return res;
         }
@@ -157,11 +157,11 @@ public class Facade {
         return shiftController.assign_shift(id_num, date_object, shift_type, store, role);
     }
     //V
-    public double get_hours(Date date_object, ShiftType shift_type, String store) {
+    public double get_hours(LocalDate date_object, ShiftType shift_type, String store) {
         return shiftController.get_hours(date_object, shift_type, store);
     }
     //V
-    public String unassign_shift(Integer id, int id_num, Date date_object, ShiftType shift_type, String store, JobType job) {
+    public String unassign_shift(Integer id, int id_num, LocalDate date_object, ShiftType shift_type, String store, JobType job) {
         if (!employeeController.is_HRManager(id)) {
             return "User is not an HR manager";
         }
@@ -172,7 +172,7 @@ public class Facade {
         return shiftController.unassign_shift(id_num, date_object, shift_type, store, job);
     }
     //V
-    public String limit_work(Integer id, int id_num, Date date_object, ShiftType shift_type, String store) {
+    public String limit_work(Integer id, int id_num, LocalDate date_object, ShiftType shift_type, String store) {
         if (!employeeController.is_HRManager(id)) {
             return "User is not an HR manager";
         }
@@ -185,7 +185,7 @@ public class Facade {
         return shiftController.limit_work(id_num, date_object, shift_type, store);
     }
     //V
-    public String remove_worker_limit(Integer id, int id_num, Date date_object, ShiftType shift_type, String store) {
+    public String remove_worker_limit(Integer id, int id_num, LocalDate date_object, ShiftType shift_type, String store) {
         if (!employeeController.is_HRManager(id)) {
             return "User is not an HR manager";
         }
@@ -198,7 +198,7 @@ public class Facade {
         return shiftController.remove_worker_limit(id_num, date_object, shift_type, store);
     }
     //V
-    public String show_shift_availability(Integer id, Date date_object, ShiftType shift_type, String store) {
+    public String show_shift_availability(Integer id, LocalDate date_object, ShiftType shift_type, String store) {
         if (!employeeController.is_HRManager(id)) {
             return "User is not an HR manager";
         }
@@ -274,7 +274,7 @@ public class Facade {
         return employeeController.show_current_salary(id);
     }
 
-    public void add_hr(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, Date employment_date, String family_status, boolean is_student, String password) {
+    public void add_hr(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, LocalDate employment_date, String family_status, boolean is_student, String password) {
         employeeController.add_hr(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password);
     }
 
@@ -311,7 +311,7 @@ public class Facade {
         return "";
     }
 
-    public String cancel_product(int id, int product_id_num, Date date_object, ShiftType type, String store) {
+    public String cancel_product(int id, int product_id_num, LocalDate date_object, ShiftType type, String store) {
         if (!employeeController.is_ShiftManager(id)) {
             return "User is not a shift manager and can't cancel a product";
         }
@@ -321,7 +321,7 @@ public class Facade {
         return shiftController.cancel_product(id, product_id_num, date_object, type, store);
     }
 
-    public String show_shift_assigned(int id, Date date_object, ShiftType shift_type, String store) {
+    public String show_shift_assigned(int id, LocalDate date_object, ShiftType shift_type, String store) {
         if (!employeeController.is_HRManager(id)) {
             return "User is not an HR manager";
         }
@@ -379,15 +379,19 @@ public class Facade {
         return employeeController.is_certified_to_role(id, role);
     }
 
-    public boolean is_limited(int id, Date date_object, ShiftType shift_type, String store) {
+    public boolean is_limited(int id, LocalDate date_object, ShiftType shift_type, String store) {
         return shiftController.is_limited(id, date_object, shift_type, store);
     }
 
-    public boolean future_schedule_exists(Date date_object, String store) {
+    public boolean future_schedule_exists(LocalDate date_object, String store) {
         return shiftController.future_schedule_exists(date_object, store);
     }
 
-    public boolean past_schedule_exists(Date date_object, String store) {
+    public boolean past_schedule_exists(LocalDate date_object, String store) {
         return shiftController.past_schedule_exists(date_object, store);
+    }
+
+    public double get_monthly_salary(int manager_id, int employee_id) {
+        return employeeController.get_monthly_salary(manager_id, employee_id);
     }
 }
