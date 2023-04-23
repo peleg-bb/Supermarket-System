@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Connect {
     public Connection conn;
-    public final String url = "jdbc:sqlite:test.db";
+    public final String url = "jdbc:sqlite:HR_Deliveries_Datebase.db";
     private static Connect instance;
 
     public static Connect getInstance() {
