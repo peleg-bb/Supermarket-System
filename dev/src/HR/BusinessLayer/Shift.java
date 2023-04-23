@@ -6,14 +6,14 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class Shift {
-    private String store;
+    private final String store;
     private List<Integer> available_employees;
     private Map<JobType, List<Integer>> employees;
     private Map<Integer, Integer> product_canceling; //Employee, product_id
     private List<Integer> manager_constraints;
     private boolean confirmed;
-    private Time start;
-    private Time end;
+    private final Time start;
+    private final Time end;
     public Shift(String store, Time start, Time end) {
         available_employees = new LinkedList<>();
         employees = new HashMap<>();
@@ -49,7 +49,7 @@ public class Shift {
         if (!available_employees.contains(id)) {
             return "You're not available on this shift";
         }
-        available_employees.remove(Integer.valueOf(id));
+        available_employees.remove(id);
         return "";
     }
 
@@ -58,13 +58,13 @@ public class Shift {
     }
 
     public String is_assigned(Integer id) {
-        String job = "";
+        StringBuilder job = new StringBuilder();
         for (JobType role: employees.keySet()) {
             if (employees.get(role).contains(id)) {
-                job = job + role.toString();
+                job.append(role.toString());
             }
         }
-        return job;
+        return job.toString();
     }
 
     public String confirm_shift() {
@@ -163,5 +163,17 @@ public class Shift {
     public String cancel_product(int id, int product_id_num) {
         product_canceling.put(id, product_id_num);
         return "";
+    }
+
+    public boolean is_confirmed() {
+        return confirmed;
+    }
+
+    public Map<JobType, List<Integer>> show_shift_assigned() {
+        return employees;
+    }
+
+    public boolean is_limited(int id) {
+        return manager_constraints.contains(id);
     }
 }

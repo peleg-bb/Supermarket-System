@@ -5,10 +5,10 @@ import HR.DataAccessLayer.EmployeeDAO;
 import java.util.*;
 
 public class EmployeeController {
-    private Map<Integer, String> login_info; //<id, password>
-    private List<Integer> logged_in;
-    private Map<Integer, Employee> employees;
-    private EmployeeDAO employeeDAO;
+    private final Map<Integer, String> login_info; //<id, password>
+    private final List<Integer> logged_in;
+    private final Map<Integer, Employee> employees;
+    private final EmployeeDAO employeeDAO;
 
     public EmployeeController() {
         login_info = new HashMap<>();
@@ -42,9 +42,6 @@ public class EmployeeController {
         return "";
     }
 
-    public String get_schedule(int id) {
-        return "";
-    }
 
     public boolean is_loggedIn(int id) {
         return logged_in.contains(id);
@@ -306,13 +303,13 @@ public class EmployeeController {
     }
 
     public String show_employees(int hr_id) {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (Integer id: employees.keySet()) {
             if (id != hr_id) {
-                output = output + id + " - " +  employees.get(id).get_name() + "\n";
+                output.append(id).append(" - ").append(employees.get(id).get_name()).append("\n");
             }
         }
-        return output;
+        return output.toString();
     }
 
     public String show_employee_info(int employee_id) {
@@ -347,5 +344,43 @@ public class EmployeeController {
 
     public boolean is_ShiftManager(int id) {
         return employees.get(id).is_shift_manager();
+    }
+
+
+    //Tests functions:
+    public boolean employee_exists(int id) {
+        return employees.containsKey(id);
+    }
+
+    public boolean employee_logged_in(int id) {
+        return logged_in.contains(id);
+    }
+
+    public double get_employee_salary(int id) {
+        return employees.get(id).get_salary();
+    }
+
+    public String get_employee_name(int id) {
+        return employees.get(id).get_name();
+    }
+
+    public int get_employee_bank_account(int id) {
+        return employees.get(id).get_bank();
+    }
+
+    public String get_employee_family_status(int id) {
+        return employees.get(id).get_family_status();
+    }
+
+    public boolean get_employee_student_status(int id) {
+        return employees.get(id).get_student();
+    }
+
+    public String get_employee_terms(int id) {
+        return employees.get(id).get_terms();
+    }
+
+    public boolean assigned_to_store(int id, String store) {
+        return employees.get(id).is_certified_to_store(store);
     }
 }

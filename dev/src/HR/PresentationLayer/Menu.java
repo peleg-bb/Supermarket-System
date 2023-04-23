@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class Menu {
-    private HRMenu employeeCLI = new HRMenu();
+    private final HRMenu employeeCLI = new HRMenu();
 
     public void run() {
         employeeCLI.run();

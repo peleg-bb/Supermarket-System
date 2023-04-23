@@ -208,16 +208,16 @@ public class Facade {
         if (!shiftController.store_exists(store)) {
             return "Store doesn't exists";
         }
-        String output = "";
+        StringBuilder output = new StringBuilder();
         List<Integer> employees =  shiftController.show_shift_availability(date_object, shift_type, store);
         for (Integer employee: employees) {
-            output = output + employeeController.get_name(employee) + ", " + employee + " - ";
+            output.append(employeeController.get_name(employee)).append(", ").append(employee).append(" - ");
             for (JobType role: employeeController.get_certified_roles(employee)) {
-                output = output + role.toString() + ", ";
+                output.append(role.toString()).append(", ");
             }
-            output = output.substring(0, output.length() - 2);
+            output = new StringBuilder(output.substring(0, output.length() - 2));
         }
-        return output;
+        return output.toString();
     }
     //V
     public String change_name(Integer this_id, String old_name, String new_name) {
@@ -319,5 +319,75 @@ public class Facade {
             return "User not logged in currently";
         }
         return shiftController.cancel_product(id, product_id_num, date_object, type, store);
+    }
+
+    public String show_shift_assigned(int id, Date date_object, ShiftType shift_type, String store) {
+        if (!employeeController.is_HRManager(id)) {
+            return "User is not an HR manager";
+        }
+        if (!employeeController.is_loggedIn(id)) {
+            return "User not logged in currently";
+        }
+        if (!shiftController.store_exists(store)) {
+            return "Store doesn't exists";
+        }
+        return shiftController.show_shift_assigned(date_object, shift_type, store);
+    }
+
+    //Tests functions:
+    public boolean employee_exists(int id) {
+        return employeeController.employee_exists(id);
+    }
+
+    public boolean employee_logged_in(int id) {
+        return employeeController.employee_logged_in(id);
+    }
+
+    public boolean store_exists(String store) {
+        return shiftController.store_exists(store);
+    }
+
+    public double get_employee_salary(int id) {
+        return employeeController.get_employee_salary(id);
+    }
+
+    public String get_employee_name(int id) {
+        return employeeController.get_employee_name(id);
+    }
+
+    public int get_employee_bank_account(int id) {
+        return employeeController.get_employee_bank_account(id);
+    }
+
+    public String get_employee_family_status(int id) {
+        return employeeController.get_employee_family_status(id);
+    }
+
+    public boolean get_employee_student_status(int id) {
+        return employeeController.get_employee_student_status(id);
+    }
+
+    public String get_employee_terms(int id) {
+        return employeeController.get_employee_terms(id);
+    }
+
+    public boolean assigned_to_store(int id, String store) {
+        return employeeController.assigned_to_store(id, store);
+    }
+
+    public boolean certified_to_role(int id, JobType role) {
+        return employeeController.is_certified_to_role(id, role);
+    }
+
+    public boolean is_limited(int id, Date date_object, ShiftType shift_type, String store) {
+        return shiftController.is_limited(id, date_object, shift_type, store);
+    }
+
+    public boolean future_schedule_exists(Date date_object, String store) {
+        return shiftController.future_schedule_exists(date_object, store);
+    }
+
+    public boolean past_schedule_exists(Date date_object, String store) {
+        return shiftController.past_schedule_exists(date_object, store);
     }
 }

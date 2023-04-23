@@ -2,15 +2,21 @@ package HR.BusinessLayer;
 
 import HR.DataAccessLayer.ShiftDAO;
 
+import javax.mail.*;
+import javax.mail.internet.*;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Schedule {
-    private String store;
-    private Map<ShiftPair, Shift> shifts;
-    private ShiftDAO shiftDAO;
+    private final String store;
+    private final Map<ShiftPair, Shift> shifts;
+    private final ShiftDAO shiftDAO;
 
 
     public Schedule(String store, Date first_day, Time morn_start, Time morn_end, Time eve_start, Time eve_end, ShiftDAO shiftDAO) {
@@ -35,6 +41,59 @@ public class Schedule {
             shiftDAO.create_shift(first_day, ShiftType.EVENING, eve_start, eve_end, store);
             calendar.add(Calendar.DAY_OF_YEAR, 1);
             first_day = calendar.getTime();
+        }
+        for (ShiftPair pair : shifts.keySet()) {
+            scheduled_confirmation_check(new Date(pair.getDate().getTime() - 24 * 60 * 60 * 1000L), pair,  shifts.get(pair)); // subtract 24 hours from the date
+        }
+    }
+
+    private void scheduled_confirmation_check(Date checkTime, ShiftPair pair, Shift shift) {
+        // Set the time when the task should run (24 hours before the checkTime)
+        long delay = checkTime.getTime() - new Date().getTime();
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.schedule(() -> {
+            try {
+                send_mail(pair, shift);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+        }, delay, TimeUnit.SECONDS);
+    }
+
+    private void send_mail(ShiftPair pair, Shift shift) throws MessagingException {
+        if (!shift.is_confirmed()) {
+            // Set the email properties
+            Properties properties = new Properties();
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+            properties.put("mail.smtp.host", "smtp.gmail.com");
+            properties.put("mail.smtp.port", "587");
+
+            // Set the email account credentials
+            String senderEmail = "206494015.322527375.hrmanager@gmail.com";
+            //String password = "bengurion111";
+
+            // Create a mail session with the email account credentials
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(senderEmail, "mwjrfkjonbnyfzmo");
+                }
+            });
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+            // Format the date as a string in the desired format
+            String myDate = dateFormat.format(pair.getDate());
+
+            // Create a new email message
+            Message emailMessage = new MimeMessage(session);
+            emailMessage.setFrom(new InternetAddress(senderEmail));
+            emailMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse("206494015.322527375.hrmanager@gmail.com"));
+            emailMessage.setSubject("Shift not confirmed alert");
+            emailMessage.setText("ALERT: " + myDate + ", " + pair.getType().toString() + " shift in " + shift.get_store() + " is 24 hours from now and still isn't confirmed!");
+            // Send the email message
+            Transport.send(emailMessage);
         }
     }
 
@@ -72,24 +131,24 @@ public class Schedule {
     }
 
     public String get_availability(Integer id) {
-        String availability = "";
+        StringBuilder availability = new StringBuilder();
         for (ShiftPair pair: shifts.keySet()) {
             if (shifts.get(pair).is_available(id)) {
-                availability = availability + pair.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString() + " - " + pair.getType().toString() + "\n";
+                availability.append(pair.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString()).append(" - ").append(pair.getType().toString()).append("\n");
             }
         }
-        return availability;
+        return availability.toString();
     }
 
     public String get_shifts(Integer id) {
-        String shifts_list = "";
+        StringBuilder shifts_list = new StringBuilder();
         for (ShiftPair pair: shifts.keySet()) {
             String job = shifts.get(pair).is_assigned(id);
             if (!job.equals("")) {
-                shifts_list = shifts_list + pair.getDate().toString() + " - " + pair.getType().toString() + ", as " + job + "\n";
+                shifts_list.append(pair.getDate().toString()).append(" - ").append(pair.getType().toString()).append(", as ").append(job).append("\n");
             }
         }
-        return shifts_list;
+        return shifts_list.toString();
     }
 
     public String confirm_shift(Date date_object, ShiftType shift) {
@@ -136,7 +195,7 @@ public class Schedule {
         return shifts.get(get_shift(date_object, shift_type)).show_shift_availability();
     }
 
-    public int shifts_limit(int id, Date date_object, ShiftType shift_type) {
+    public int shifts_limit(int id, Date date_object) {
         int counter = 0;
         for (ShiftPair pair: shifts.keySet()) {
             if (!shifts.get(pair).is_assigned(id).equals("")) {
@@ -191,10 +250,7 @@ public class Schedule {
         for (ShiftPair pair: shifts.keySet()) {
             if (pair.getDate() == start && pair.getDate() == end && (shifts.get(pair).get_start().before(start) && shifts.get(pair).get_end().after(start)) && (shifts.get(pair).get_start().before(end) && shifts.get(pair).get_end().after(end))) {
                 String res = shifts.get(pair).assign_shift(id, JobType.DRIVER);
-                if (res.equals("")) {
-                    return true;
-                }
-                return false;
+                return res.equals("");
             }
         }
         return false;
@@ -226,5 +282,13 @@ public class Schedule {
             return shifts.get(get_shift(date_object, type)).cancel_product(id, product_id_num);
         }
         return res;
+    }
+
+    public Map<JobType, List<Integer>> show_shift_assigned(Date date_object, ShiftType shift_type) {
+        return shifts.get(get_shift(date_object, shift_type)).show_shift_assigned();
+    }
+
+    public boolean is_limited(int id, Date date_object, ShiftType shift_type) {
+        return shifts.get(get_shift(date_object, shift_type)).is_limited(id);
     }
 }

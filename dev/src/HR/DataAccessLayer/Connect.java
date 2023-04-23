@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Connect {
     public Connection conn;
-    public final String url = "jdbc:sqlite:HR_Deliveries_Database.db";
+    public final String url = "jdbc:sqlite:test.db";
     private static Connect instance;
 
     public static Connect getInstance() {
@@ -119,8 +119,6 @@ public class Connect {
                     ")";
             statement.execute(query);
 
-        } catch (SQLException e) {
-            throw e;
         } finally {
             closeConnect();
         }
@@ -159,15 +157,13 @@ public class Connect {
                 statement.setObject(i + 1, params[i]);
             ResultSet rs = statement.executeQuery();
             return convertResultSetToList((rs));
-        } catch (SQLException throwable) {
-            throw throwable;
         } finally {
             closeConnect();
         }
     }
 
 
-    public int executeUpdate(String query, Object... params) throws SQLException {
+    public void executeUpdate(String query, Object... params) throws SQLException {
         try {
             createStatement();
             PreparedStatement statement = conn.prepareStatement("PRAGMA foreign_keys = ON");
@@ -175,11 +171,7 @@ public class Connect {
             statement = conn.prepareStatement(query);
             for (int i = 0; i < params.length; i++)
                 statement.setObject(i + 1, params[i]);
-
-            int res = statement.executeUpdate();
-            return res;
-        } catch (SQLException throwable) {
-            throw throwable;
+            statement.executeUpdate();
         } finally {
             closeConnect();
         }
@@ -203,8 +195,6 @@ public class Connect {
             createTables();
 
 
-        } catch (SQLException e) {
-            throw e;
         } finally {
             closeConnect();
         }

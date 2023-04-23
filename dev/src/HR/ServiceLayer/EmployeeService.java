@@ -281,6 +281,21 @@ public class EmployeeService {
         }
         return new Response(facade.show_shift_availability(this.id, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
     }
+
+    public Response show_shift_assigned(String date, String shift_type, String store) {
+        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
+            return new Response("Invalid shift type");
+        }
+        Date date_object;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            date_object = dateFormat.parse(date);
+        }
+        catch(Exception exception) {
+            return new Response("Invalid date");
+        }
+        return new Response(facade.show_shift_assigned(this.id, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
+    }
     public boolean is_logged_in() {
         return id != -1;
     }

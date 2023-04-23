@@ -16,9 +16,9 @@ public class Employee {
     private final Date employment_date;
     private String family_status;
     private boolean is_student;
-    private List<JobType> roles;
-    private List<String> certified_stores;
-    private EmployeeDAO employeeDAO;
+    private final List<JobType> roles;
+    private final List<String> certified_stores;
+    private final EmployeeDAO employeeDAO;
     private double current_total_salary = 0;
     private double monthly_salary;
 
@@ -209,20 +209,20 @@ public class Employee {
     }
 
     public String show_role_certifications() {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (JobType job: roles) {
-            output = output + job.toString() + ", ";
+            output.append(job.toString()).append(", ");
         }
-        if (!output.equals("")) {
+        if (!output.toString().equals("")) {
             return output.substring(0, output.length() - 2);
         }
         return "";
     }
 
     public String show_assigned_stores() {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (String store: certified_stores) {
-            output = output + store + ", ";
+            output.append(store).append(", ");
         }
         return output.substring(0, output.length() - 2);
     }
@@ -250,5 +250,25 @@ public class Employee {
 
     public boolean is_shift_manager() {
         return roles.contains(JobType.SHIFTMANAGER);
+    }
+
+    public double get_salary() {
+        return salary;
+    }
+
+    public int get_bank() {
+        return bank_account;
+    }
+
+    public String get_family_status() {
+        return family_status;
+    }
+
+    public boolean get_student() {
+        return is_student;
+    }
+
+    public String get_terms() {
+        return terms_of_employment;
     }
 }

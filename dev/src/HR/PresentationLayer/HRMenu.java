@@ -27,7 +27,7 @@ public class HRMenu {
     }
 
     public void run() {
-        service.load_data();
+        System.out.println(service.load_data().getErrorMessage());
         System.out.println("Welcome to HR system!");
         while(true) {
             while (!service.is_logged_in()) {
@@ -650,6 +650,20 @@ public class HRMenu {
             }
             case "19": {
                 System.out.println("=====================================================================================");
+                System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
+                String date = scanner.nextLine();
+                System.out.print("Please enter the shift's type (morning / evening): ");
+                String shift_type = scanner.nextLine();
+                System.out.print("Please enter the availability store / \"drivers\": ");
+                String store = scanner.nextLine();
+                Response res = service.show_shift_assigned(date, shift_type, store);
+                System.out.println(print_green("Shift's employees:"));
+                System.out.println(res.getErrorMessage());
+                System.out.println("=====================================================================================");
+                break;
+            }
+            case "20": {
+                System.out.println("=====================================================================================");
                 Response res = service.logout();
                 if (res.errorOccurred()) {
                     System.out.println(res.getErrorMessage());
@@ -700,7 +714,8 @@ public class HRMenu {
         System.out.println(print_blue("16. Change an employee's info"));
         System.out.println(print_blue("17. Show employees list"));
         System.out.println(print_blue("18. Show employee's info"));
-        System.out.println(print_blue("19. Logout"));
+        System.out.println(print_blue("19. Show shift's assigned employees"));
+        System.out.println(print_blue("20. Logout"));
         System.out.println(print_blue("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"));
         System.out.print(print_blue("Option:"));
     }

@@ -11,22 +11,9 @@ import java.util.Map;
 
 public class EmployeeDAO {
 
-    private Connect conn = Connect.getInstance();
+    private final Connect conn = Connect.getInstance();
 
     public EmployeeDAO() {}
-
-    public Employee get_employee(String employee_id) {
-        try {
-            List<HashMap<String, Object>> personalDetails = conn.executeQuery("SELECT * FROM Employees WHERE id = ?", employee_id);
-            if (personalDetails.isEmpty()) {
-                return null;
-            }
-            return employee_record(personalDetails);
-        }
-        catch (SQLException exception) {
-            return null;
-        }
-    }
 
     public Map<Employee, String> load_Data() {
         Map<Employee, String> employees = new HashMap<>();
@@ -73,34 +60,9 @@ public class EmployeeDAO {
         }
     }
 
-    private Employee employee_record(List<HashMap<String, Object>> personalDetails) {
-        try {
-            Integer id = (Integer) personalDetails.get(0).get("id");
-            String name = (String) personalDetails.get(0).get("name");
-            Integer bank_account = (Integer) personalDetails.get(0).get("bankAccount");
-            double salary = (Double) personalDetails.get(0).get("salary");
-            String terms_of_employment = (String) personalDetails.get(0).get("termsOfEmployment");
-            long date = (long) personalDetails.get(0).get("employmentDate");
-            Date employment_date = new Date(date);
-            String family_status = (String) personalDetails.get(0).get("familyStatus");
-            Integer student = (Integer) personalDetails.get(0).get("isStudent");
-            boolean is_student = student.equals(1);
-            double current_monthly_salary = (Double) personalDetails.get(0).get("currentSalary");
-            Employee employee = new Employee(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, this);
-            List<HashMap<String, Object>> rolesSet = conn.executeQuery("SELECT jobType FROM Roles WHERE id = ?", id);
-            List<HashMap<String, Object>> stores = conn.executeQuery("SELECT * FROM Stores WHERE id = ?", id);
-            reconstructEmployeeStores(employee, stores);
-            reconstructEmployeeRoles(employee, rolesSet);
-            employee.set_current_salary(current_monthly_salary);
-            return employee;
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
     private void reconstructEmployeeRoles(Employee employee, List<HashMap<String,Object>> rolesSet) throws SQLException {
-        for (int i = 0; i < rolesSet.size(); i++){
-            String role = (String) rolesSet.get(i).get("jobType");
+        for (HashMap<String, Object> stringObjectHashMap : rolesSet) {
+            String role = (String) stringObjectHashMap.get("jobType");
             if (role == null)
                 return;
             employee.add_role(JobType.valueOf(role));
@@ -108,8 +70,8 @@ public class EmployeeDAO {
     }
 
     private void reconstructEmployeeStores(Employee employee, List<HashMap<String,Object>> storesSet) throws SQLException {
-        for (int i = 0; i < storesSet.size(); i++){
-            String store = (String) storesSet.get(i).get("store");
+        for (HashMap<String, Object> stringObjectHashMap : storesSet) {
+            String store = (String) stringObjectHashMap.get("store");
             if (store == null)
                 return;
             employee.add_store(store);

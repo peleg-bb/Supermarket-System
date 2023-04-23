@@ -9,10 +9,10 @@ import java.util.*;
 
 public class ShiftController implements HRIntegrator {
 
-    private Map<String, List<Schedule>> stores_schedules;
+    private final Map<String, List<Schedule>> stores_schedules;
     private List<String> stores;
-    private Map<String, List<Schedule>> schedules_history;
-    private ShiftDAO shiftDAO;
+    private final Map<String, List<Schedule>> schedules_history;
+    private final ShiftDAO shiftDAO;
 
 
     public ShiftController() {
@@ -48,29 +48,29 @@ public class ShiftController implements HRIntegrator {
     }
 
     public String get_availability(Integer id, List<String> certified_stores) {
-        String availability = "";
+        StringBuilder availability = new StringBuilder();
         for (String store: certified_stores) {
             if (stores_schedules.containsKey(store)) {
-                availability = availability + store + ":\n";
+                availability.append(store).append(":\n");
                 for (Schedule schedule : stores_schedules.get(store)) {
-                    availability = availability + schedule.get_availability(id);
+                    availability.append(schedule.get_availability(id));
                 }
             }
         }
-        return availability;
+        return availability.toString();
     }
 
     public String get_shifts(Integer id, List<String> certified_stores) {
-        String shifts = "";
+        StringBuilder shifts = new StringBuilder();
         for (String store: certified_stores) {
             if (stores_schedules.containsKey(store)) {
-                shifts = shifts + store + ":\n";
+                shifts.append(store).append(":\n");
                 for (Schedule schedule : stores_schedules.get(store)) {
-                    shifts = shifts + schedule.get_shifts(id);
+                    shifts.append(schedule.get_shifts(id));
                 }
             }
         }
-        return shifts;
+        return shifts.toString();
 
     }
 
@@ -101,22 +101,29 @@ public class ShiftController implements HRIntegrator {
             return "Store doesn't exists";
         }
         if (stores_schedules.containsKey(store)) {
-            handle_schedules(store);
-            stores_schedules.get(store).add(new Schedule(store, date_object, morn_start, morn_end, eve_start, eve_end, shiftDAO));
+            Schedule schedule = new Schedule(store, date_object, morn_start, morn_end, eve_start, eve_end, shiftDAO);
+            handle_schedules(store, schedule);
         }
         else {
+            Schedule schedule = new Schedule(store, date_object, morn_start, morn_end, eve_start, eve_end, shiftDAO);
             stores_schedules.put(store, new LinkedList<>());
-            stores_schedules.get(store).add(new Schedule(store, date_object, morn_start, morn_end, eve_start, eve_end, shiftDAO));
+            handle_schedules(store, schedule);
         }
         return "";
     }
 
-    private void handle_schedules(String store) {
+    private void handle_schedules(String store, Schedule schedule) {
         Calendar calendar = Calendar.getInstance();
-        for (Schedule schedule: stores_schedules.get(store)) {
-            if (!schedule.current_week(calendar.get(calendar.WEEK_OF_YEAR))) {
-                schedules_history.get(store).add(schedule);
-                stores_schedules.get(store).remove(schedule);
+        if (!schedule.current_week(calendar.get(calendar.WEEK_OF_YEAR))) {
+            schedules_history.get(store).add(schedule);
+        }
+        else {
+            stores_schedules.get(store).add(schedule);
+        }
+        for (Schedule a: stores_schedules.get(store)) {
+            if (!a.current_week(calendar.get(calendar.WEEK_OF_YEAR))) {
+                schedules_history.get(store).add(a);
+                stores_schedules.get(store).remove(a);
             }
         }
     }
@@ -149,8 +156,7 @@ public class ShiftController implements HRIntegrator {
         int weekly_shifts_num = 0;
         for (String schedule: certified_stores) {
             if (get_schedule(schedule, date_object) != null) {
-                int num = get_schedule(schedule, date_object).shifts_limit(id, date_object, shift_type);
-
+                int num = Objects.requireNonNull(get_schedule(schedule, date_object)).shifts_limit(id, date_object);
                 if (num == -1) {
                     return "Employee is already assigned to a shift on this day. 2 shifts in a day isn't allowed.";
                 }
@@ -346,5 +352,49 @@ public class ShiftController implements HRIntegrator {
             return get_schedule(store, date_object).cancel_product(id, product_id_num, date_object, type);
         }
         return "There isn't a schedule for that date";
+    }
+
+    public String show_shift_assigned(Date date_object, ShiftType shift_type, String store) {
+        if (get_schedule(store, date_object) != null) {
+            StringBuilder output = new StringBuilder();
+            Map<JobType, List<Integer>> map = Objects.requireNonNull(get_schedule(store, date_object)).show_shift_assigned(date_object, shift_type);
+            for (JobType job: map.keySet()) {
+                output.append(job.toString()).append(" - ").append(map.get(job)).append("\n");
+            }
+            return output.toString();
+        }
+        return "";
+    }
+
+    public boolean is_limited(int id, Date date_object, ShiftType shift_type, String store) {
+        if (!store_exists(store)) {
+            return false;
+        }
+        if (get_schedule(store, date_object) != null) {
+            return get_schedule(store, date_object).is_limited(id, date_object, shift_type);
+        }
+        return false;
+    }
+
+    private Schedule get_past_schedule(String store, Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        if (!schedules_history.containsKey(store)) {
+            return null;
+        }
+        for (Schedule schedule: schedules_history.get(store)) {
+            if (schedule.current_week(calendar.get(calendar.WEEK_OF_YEAR))) {
+                return schedule;
+            }
+        }
+        return null;
+    }
+
+    public boolean future_schedule_exists(Date date_object, String store) {
+        return get_schedule(store, date_object) != null;
+    }
+
+    public boolean past_schedule_exists(Date date_object, String store) {
+        return get_past_schedule(store, date_object) != null;
     }
 }

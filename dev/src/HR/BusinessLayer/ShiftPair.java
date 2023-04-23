@@ -4,8 +4,8 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class ShiftPair {
-    private Date date;
-    private ShiftType type;
+    private final Date date;
+    private final ShiftType type;
 
 
     public ShiftPair(Date date, ShiftType type) {

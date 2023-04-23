@@ -7,7 +7,7 @@ import java.sql.Time;
 import java.util.*;
 
 public class ShiftDAO {
-    private Connect conn = Connect.getInstance();
+    private final Connect conn = Connect.getInstance();
     public ShiftDAO() {}
 
 
@@ -118,7 +118,7 @@ public class ShiftDAO {
             int month = calendar.get(Calendar.MONTH) + 1; // January is 0, so add 1
             int year = calendar.get(Calendar.YEAR);
             conn.executeUpdate("INSERT INTO Shifts (store, shiftType, day, month, year, start, end, confirmed) VALUES(?,?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfWeek, month, year, morn_start.toString(), morn_end.toString(), 0);
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
         }
     }
 

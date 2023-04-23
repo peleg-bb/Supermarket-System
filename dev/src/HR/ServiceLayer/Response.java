@@ -4,8 +4,7 @@ import java.util.Objects;
 
 public class Response {
 
-    private String errorMessage;
-    public Response(){}
+    private final String errorMessage;
 
     public Response(String errorMessage){
         this.errorMessage = errorMessage;
