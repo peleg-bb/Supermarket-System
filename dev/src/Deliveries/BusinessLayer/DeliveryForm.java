@@ -86,7 +86,7 @@ public class DeliveryForm {
 
     // setMaxWeightAllowed() is called when the truck is loaded with items
     private void setMaxWeightAllowed(int maxWeightAllowed) {
-    this.maxWeightAllowed = maxWeightAllowed;
+        this.maxWeightAllowed = maxWeightAllowed;
         if (dispatchWeightTons > maxWeightAllowed) {
             deliveryManager.replanDelivery(this);
         }
