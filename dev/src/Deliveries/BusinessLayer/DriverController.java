@@ -64,6 +64,7 @@ public class DriverController {
                     availableDrivers.contains(driver.getId())) {
                 if (driver.isLicensed(truck)) {
                     driver.setAvailability(Availability.Busy);
+                    hrManager.assignDrivers(driver.getId(), startTime, finishTime);
                     return driver;
                 }
             }

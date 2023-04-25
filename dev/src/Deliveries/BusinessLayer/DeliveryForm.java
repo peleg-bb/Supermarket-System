@@ -1,9 +1,11 @@
 package Deliveries.BusinessLayer;
 
+import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
 import Deliveries.PresentationLayer.UserInteractionUtil;
+import HR_Deliveries_Interface.HRIntegrator;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -22,6 +24,7 @@ public class DeliveryForm {
     private DeliveryFormsController deliveryFormsController;
     private DeliveryStop stopToCancel;
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
+    private HRIntegrator hrManager;
 
     public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed,
                         Driver driver, Truck truck) {
@@ -38,7 +41,7 @@ public class DeliveryForm {
         deliveryFormsController = DeliveryFormsController.getInstance();
     }
 
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime){
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime) throws DeliveryException {
         this.formId = formId;
         this.destinationSitesToVisit = stops;
         this.destinationSitesVisited = new ArrayList<>();
@@ -201,9 +204,13 @@ public class DeliveryForm {
         this.driver = newDriver;
     }
 
-    private void updateArrivalTimes(){
+    private void updateArrivalTimes() throws DeliveryException{
         for (DeliveryStop stop : destinationSitesVisited) {
             stop.updateArrivalTime(dispatchTime);
+            if (!hrManager.checkAvailability(stop.getDestination().getName(), stop.getEstimatedArrivalTime())) {
+                // TODO: decide what to do if the site is not available
+                throw new DeliveryException("destination site is not available at the estimated arrival time");
+            }
         }
     }
 

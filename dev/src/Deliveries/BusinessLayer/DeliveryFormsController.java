@@ -2,7 +2,9 @@ package Deliveries.BusinessLayer;
 
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.DeliveryIntegrator;
+import HR_Deliveries_Interface.HRIntegrator;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -97,6 +99,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         deliveryForm.setTruck(truck);
         Driver driver = driverController.pickDriver(truck, deliveryForm.getDispatchTime(),
                 deliveryForm.getEstimatedTerminationTime());
+
         deliveryForm.setDriver(driver);
         addDeliveryForm(deliveryForm);
     }
