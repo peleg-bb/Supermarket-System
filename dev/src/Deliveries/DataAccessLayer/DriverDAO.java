@@ -16,7 +16,7 @@ public class DriverDAO {
     public Set<Driver> loadData(){
         Set<Driver> drivers = new HashSet<>();
         try {
-            List<HashMap<String, Object>> driverDetails = conn.executeQuery("SELECT * FROM Drivers JOIN DriverLicenses ON Drivers.id = DriverLicenses.id");
+            List<HashMap<String, Object>> driverDetails = conn.executeQuery("SELECT * FROM Drivers JOIN DriverLicenses ON Drivers.driver_id = DriverLicenses.driver_id");
             for (HashMap<String, Object> driverRecord: driverDetails) {
                 Driver driver = getDriver(driverRecord);
                 drivers.add(driver);
@@ -30,13 +30,13 @@ public class DriverDAO {
 
 
     private Driver getDriver(HashMap<String, Object> driverDetails) {
-        String id = (String) driverDetails.get("driver_id");
+        String id = ((Integer) driverDetails.get("driver_id")).toString();
         String name = (String) driverDetails.get("driver_name");
         String phone = (String) driverDetails.get("phone");
 
-        Integer weightAllowed = Integer.parseInt(driverDetails.get("weight_allowed_tons").toString());
-        boolean regularAllowed = (boolean) driverDetails.get("regular_allowed");
-        boolean refrigeratedAllowed = (boolean) driverDetails.get("refrigerated_allowed");
+        int weightAllowed = Integer.parseInt(driverDetails.get("weight_allowed_tons").toString());
+        Integer regularAllowed = (Integer) driverDetails.get("regular_allowed");
+        Integer refrigeratedAllowed = (Integer) driverDetails.get("refrigerated_allowed");
         License license = new License(weightAllowed, regularAllowed, refrigeratedAllowed);
         return new Driver(id, name, phone, license);
 

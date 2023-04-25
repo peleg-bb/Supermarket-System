@@ -18,13 +18,13 @@ public class License {
         this.truckTypesAllowed.add(TruckType.Refrigerated);
     }
 
-    public License(int weightAllowed, boolean regularAllowed, boolean refrigeratedAllowed) {
+    public License(int weightAllowed, int regularAllowed, int refrigeratedAllowed) {
         this.weightAllowedTons = weightAllowed;
         this.truckTypesAllowed = new HashSet<>();
-        if (regularAllowed) {
+        if (regularAllowed == 1) {
             this.truckTypesAllowed.add(TruckType.Regular);
         }
-        if (refrigeratedAllowed) {
+        if (refrigeratedAllowed == 1) {
             this.truckTypesAllowed.add(TruckType.Refrigerated);
         }
     }

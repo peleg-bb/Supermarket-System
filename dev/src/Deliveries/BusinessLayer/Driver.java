@@ -21,15 +21,6 @@ public class Driver {
 
     private Availability availability;
 
-    public Driver(String name, String id, String phone) {
-        this.name = name;
-        this.id = id;
-        this.phone = phone;
-        this.license = new License();
-        availability = Availability.Available;
-        // TODO: implement license
-    }
-
     public Driver(String name, String id, String phone, License license) {
         this.name = name;
         this.id = id;
