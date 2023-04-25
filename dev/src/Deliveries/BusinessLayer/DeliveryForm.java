@@ -13,7 +13,6 @@ import java.util.ListIterator;
 
 public class DeliveryForm {
     private final int formId;
-    private Date date;
     private Timestamp dispatchTime;
     private WeightMeasurer weightMeasurer;
     private List<DeliveryStop> destinationSitesToVisit;
@@ -33,8 +32,6 @@ public class DeliveryForm {
         this.destinationSitesToVisit = stops;
         this.destinationSitesVisited = new ArrayList<>();
         dispatchTime = new Timestamp(System.currentTimeMillis());
-        // date = today?
-        date = new Date();
         this.originSite = originSite;
         this.maxWeightAllowed = maxWeightAllowed;
         this.driver = driver;

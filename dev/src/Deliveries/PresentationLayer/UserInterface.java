@@ -171,9 +171,8 @@ public class UserInterface {
         String branchContactPhone = scanner.nextLine();
         // ask for a delivery zone
         System.out.println("Please enter the delivery zone of the branch: ");
-        String branchDeliveryZone = scanner.nextLine();
         // create a new branch
-        Site branch = new Site(branchName, branchAddress, branchContactName, branchContactPhone, branchDeliveryZone);
+        Site branch = new Site(branchName, branchAddress, branchContactName, branchContactPhone, 2);
         return branch;
     }
 

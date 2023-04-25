@@ -62,9 +62,9 @@ public class DeliveryManagerImpl implements DeliveryManager {
 
     //maybe private
     public void createDeliveryGroup(){
-        HashMap<String,List<DeliveryStop>> originToZones = createDeliveryLists(pendingDeliveryStops);
+        HashMap<Integer,List<DeliveryStop>> originToZones = createDeliveryLists(pendingDeliveryStops);
         System.out.println(originToZones);
-        for(Map.Entry<String,List<DeliveryStop>> entries: originToZones.entrySet()){
+        for(Map.Entry<Integer,List<DeliveryStop>> entries: originToZones.entrySet()){
             try {
                 DeliveryForm form = createForm(entries.getValue(), entries.getValue().get(0).getOrigin());
                 // might be a bit messy, couldn't think of a better way to get the origin
@@ -135,8 +135,8 @@ public class DeliveryManagerImpl implements DeliveryManager {
     }
 
     //takes a list of the stops for each origin and separates to lists sorted by zones
-    private HashMap<String,List<DeliveryStop>> sortByDeliveryZones(List<DeliveryStop> originsStops){
-       HashMap<String,List<DeliveryStop>> deliveryZonesSorted = new HashMap<>(); //key-delivery zone, value-stops in that delivery zones
+    private HashMap<Integer,List<DeliveryStop>> sortByDeliveryZones(List<DeliveryStop> originsStops){
+       HashMap<Integer,List<DeliveryStop>> deliveryZonesSorted = new HashMap<>(); //key-delivery zone, value-stops in that delivery zones
         for (DeliveryStop stop: originsStops) {
             if (!deliveryZonesSorted.containsKey(stop.getDestination().getDeliveryZone())) {
                     ArrayList<DeliveryStop> deliveryZoneStops = new ArrayList<>();
@@ -150,13 +150,13 @@ public class DeliveryManagerImpl implements DeliveryManager {
         return deliveryZonesSorted;
     }
 
-    public HashMap<String,List<DeliveryStop>> createDeliveryLists(Set<DeliveryStop> pendingDeliveryStops){
-        HashMap<String,List<DeliveryStop>> originToSortedByZones = new HashMap<>();
+    public HashMap<Integer,List<DeliveryStop>> createDeliveryLists(Set<DeliveryStop> pendingDeliveryStops){
+        HashMap<Integer,List<DeliveryStop>> originToSortedByZones = new HashMap<>();
         HashMap<Site,List<DeliveryStop>> originSorted = sortStopsByOrigin(pendingDeliveryStops);
         for(Map.Entry<Site,List<DeliveryStop>> originsStops: originSorted.entrySet()){
             List<DeliveryStop> stops = originsStops.getValue();
-            HashMap<String,List<DeliveryStop>> zoneSorted = sortByDeliveryZones(stops);
-            for (Map.Entry<String,List<DeliveryStop>> entries: zoneSorted.entrySet()) {
+            HashMap<Integer,List<DeliveryStop>> zoneSorted = sortByDeliveryZones(stops);
+            for (Map.Entry<Integer,List<DeliveryStop>> entries: zoneSorted.entrySet()) {
                 originToSortedByZones.put(entries.getKey(),entries.getValue());
             }
         }

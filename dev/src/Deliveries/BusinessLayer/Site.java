@@ -5,9 +5,9 @@ public class Site {
     private final String address;
     private final String contactName;
     private final String contactPhone;
-    private final String deliveryZone;
+    private final int deliveryZone;
 
-    public Site(String name, String address, String contactName, String contactPhone, String deliveryZone) {
+    public Site(String name, String address, String contactName, String contactPhone, int deliveryZone) {
         this.name = name;
         this.address = address;
         this.contactName = contactName;
@@ -38,7 +38,11 @@ public class Site {
         return contactPhone;
     }
 
-    public String getDeliveryZone() {
+    public int getDeliveryZone() {
         return deliveryZone;
+    }
+
+    public int computeDistance(Site otherSite) {
+        return Math.abs(otherSite.getDeliveryZone() - this.getDeliveryZone());
     }
 }
