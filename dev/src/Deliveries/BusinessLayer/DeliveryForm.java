@@ -6,10 +6,7 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
 import Deliveries.PresentationLayer.UserInteractionUtil;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.ListIterator;
+import java.util.*;
 
 public class DeliveryForm {
     private final int formId;
@@ -129,6 +126,8 @@ public class DeliveryForm {
     public void startJourney(){
         // visit the stops in the order they were added
         performWeightCheck();
+        dispatchTime = new Timestamp(System.currentTimeMillis());
+        updateArrivalTimes();
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
         while(iterator.hasNext()){
             DeliveryStop currentStop = iterator.next();
@@ -182,4 +181,23 @@ public class DeliveryForm {
         truck = newTruck;
         setMaxWeightAllowed(truck.getMaxWeightTons());
     }
+
+    private void updateArrivalTimes(){
+        for (DeliveryStop stop : destinationSitesVisited) {
+            stop.updateArrivalTime(dispatchTime);
+        }
+    }
+
+    public List<DeliveryStop> getStopsByTime(Timestamp startTime, Timestamp finishTime, String siteName){
+        List<DeliveryStop> stops = new ArrayList<>();
+        for (DeliveryStop stop : destinationSitesToVisit) {
+            if (stop.getEstimatedArrivalTime().after(startTime) &&
+                    stop.getEstimatedArrivalTime().before(finishTime) &&
+                    stop.getDestination().getName().equals(siteName)) {
+                stops.add(stop);
+            }
+        }
+        return stops;
+    }
+
 }
