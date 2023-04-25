@@ -1,11 +1,14 @@
 package Deliveries.BusinessLayer;
 
+import HR_Deliveries_Interface.DeliveryIntegrator;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DeliveryFormsController {
+public class DeliveryFormsController implements DeliveryIntegrator {
     private final Set<DeliveryForm> pendingDeliveryForms; // Improve to separate by status
     private final Set<DeliveryForm> completedDeliveryForms;
     // singleton
@@ -69,4 +72,12 @@ public class DeliveryFormsController {
         return null;
     }
 
+    @Override
+    public Set<DeliveryStop> getDeliverygetDeliveryByArrivalTime(Timestamp startTime, Timestamp finishTime, String store) {
+        Set<DeliveryStop> deliveryStops = new HashSet<>();
+        for (DeliveryForm deliveryForm : pendingDeliveryForms) {
+            deliveryStops.addAll(deliveryForm.getStopsByTime(startTime, finishTime, store));
+        }
+        return deliveryStops;
+    }
 }

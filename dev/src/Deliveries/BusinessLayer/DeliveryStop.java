@@ -3,6 +3,7 @@ package Deliveries.BusinessLayer;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 public class DeliveryStop {
@@ -12,6 +13,8 @@ public class DeliveryStop {
     private final Site destination;
     private TruckType truckTypeRequired;
     private DeliveryStatus status;
+
+    private Timestamp estimatedArrivalTime;
 
     @Override
     public boolean equals(Object o) {
@@ -92,5 +95,16 @@ public class DeliveryStop {
 
     public void setStatus(DeliveryStatus status) {
         this.status = status;
+    }
+
+    public void updateArrivalTime(Timestamp dispatchlTime) {
+        int distance = origin.computeDistance(destination);
+        int speed = 80;
+        int time = distance / speed;
+        estimatedArrivalTime = new Timestamp(dispatchlTime.getTime() + time);
+    }
+
+    public Timestamp getEstimatedArrivalTime() {
+        return estimatedArrivalTime;
     }
 }
