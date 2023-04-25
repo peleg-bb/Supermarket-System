@@ -59,6 +59,9 @@ public class Facade {
     }
     
     public String remove_employee(Integer hr_id, int employee_id) {
+        if (!employeeController.employee_exists(employee_id)) {
+            return "Employee doesn't exist";
+        }
         List<String> certified_stores = employeeController.get_certified_stores(employee_id);
         if (shiftController.has_future_shifts(certified_stores, employee_id)) {
             return "Employee is assigned to future shifts and can't be deleted.";
@@ -71,6 +74,9 @@ public class Facade {
     }
     
     public String remove_role(Integer hr_id, int employee_id, JobType job) {
+        if (!employeeController.employee_exists(employee_id)) {
+            return "Employee doesn't exist";
+        }
         List<String> certified_stores = employeeController.get_certified_stores(hr_id);
         if (shiftController.has_future_shifts_role(certified_stores, job, employee_id)) {
             return "Employee is assigned to future shifts in this store and can't be deleted.";

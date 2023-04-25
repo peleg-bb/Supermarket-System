@@ -431,8 +431,16 @@ public class EmployeeService {
         return new Response(facade.cancel_product(this.id, product_id, shift_date, shift_type, store));
     }
 
+    /**
+     * A shift manager / storekeeper's function to show a list of scheduled deliveries in a shift
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return Response object with the scheduled deliveries / an error message if occurred
+     */
     public Response show_scheduled_deliveries(LocalDate shift_date, ShiftType shift_type, String store) {
         return new Response(facade.show_scheduled_deliveries(this.id, shift_date, shift_type, store));
     }
+
 
 }
