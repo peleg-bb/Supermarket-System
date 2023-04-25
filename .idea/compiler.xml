@@ -9,8 +9,5 @@
         <module name="ADSS_Group_O" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ADSS_Group_O" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>
