@@ -36,33 +36,33 @@ public class Shift {
         }
     }
 
-    public String add_availability(Integer id) {
-        if (available_employees.contains(id)) {
+    public String add_availability(Integer employee_id) {
+        if (available_employees.contains(employee_id)) {
             return "Already available on this shift";
         }
-        if (manager_constraints.contains(id)) {
+        if (manager_constraints.contains(employee_id)) {
             return "Can't work in this shift";
         }
-        available_employees.add(id);
+        available_employees.add(employee_id);
         return "";
     }
 
-    public String remove_availability(Integer id) {
-        if (!available_employees.contains(id)) {
+    public String remove_availability(Integer employee_id) {
+        if (!available_employees.contains(employee_id)) {
             return "You're not available on this shift";
         }
-        available_employees.remove(id);
+        available_employees.remove(employee_id);
         return "";
     }
 
-    public boolean is_available(Integer id) {
-        return available_employees.contains(id);
+    public boolean is_available(Integer employee_id) {
+        return available_employees.contains(employee_id);
     }
 
-    public String is_assigned(Integer id) {
+    public String is_assigned(Integer employee_id) {
         StringBuilder job = new StringBuilder();
         for (JobType role: employees.keySet()) {
-            if (employees.get(role).contains(id)) {
+            if (employees.get(role).contains(employee_id)) {
                 job.append(role.toString());
             }
         }
@@ -77,35 +77,35 @@ public class Shift {
         return "";
     }
 
-    public String assign_shift(int id_num, JobType role) {
-        if (!available_employees.contains(id_num)) {
+    public String assign_to_shift(int employee_id, JobType role) {
+        if (!available_employees.contains(employee_id)) {
             return "Employee isn't available on this shift";
         }
-        employees.get(role).add(id_num);
+        employees.get(role).add(employee_id);
         return "";
     }
 
-    public String unassign_shift(int id_num, JobType job) {
-        if (!employees.get(job).contains(id_num)) {
+    public String remove_from_shift(int employee_id, JobType role) {
+        if (!employees.get(role).contains(employee_id)) {
             return "Employee isn't assigned to this shift";
         }
-        employees.get(job).remove(Integer.valueOf(id_num));
+        employees.get(role).remove(Integer.valueOf(employee_id));
         return "";
     }
 
-    public String limit_work(int id_num) {
-        if (manager_constraints.contains(id_num)) {
+    public String limit_employee(int employee_id) {
+        if (manager_constraints.contains(employee_id)) {
             return "User already limited on this shift";
         }
-        manager_constraints.add(id_num);
+        manager_constraints.add(employee_id);
         return "";
     }
 
-    public String remove_worker_limit(int id_num) {
-        if (!manager_constraints.contains(id_num)) {
+    public String remove_employee_limit(int employee_id) {
+        if (!manager_constraints.contains(employee_id)) {
             return "User isn't limited on this shift";
         }
-        manager_constraints.remove(Integer.valueOf(id_num));
+        manager_constraints.remove(Integer.valueOf(employee_id));
         return "";
     }
 
@@ -138,8 +138,8 @@ public class Shift {
         return drivers_ids;
     }
 
-    public boolean is_assigned_to_role(int id_num, JobType role) {
-        return employees.get(role).contains(id_num);
+    public boolean is_assigned_to_role(int employee_id, JobType role) {
+        return employees.get(role).contains(employee_id);
     }
 
     public void set_available(List<Integer> employees) {
@@ -159,8 +159,8 @@ public class Shift {
         return store;
     }
 
-    public String cancel_product(int id, int product_id_num) {
-        product_canceling.put(id, product_id_num);
+    public String cancel_product(int employee_id, int product_id) {
+        product_canceling.put(employee_id, product_id);
         return "";
     }
 
@@ -172,7 +172,7 @@ public class Shift {
         return employees;
     }
 
-    public boolean is_limited(int id) {
-        return manager_constraints.contains(id);
+    public boolean is_limited(int employee_id) {
+        return manager_constraints.contains(employee_id);
     }
 }

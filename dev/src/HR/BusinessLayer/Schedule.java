@@ -23,11 +23,11 @@ public class Schedule {
     private final ShiftDAO shiftDAO;
 
 
-    public Schedule(String store, LocalDate first_day, LocalTime morn_start, LocalTime morn_end, LocalTime eve_start, LocalTime eve_end, ShiftDAO shiftDAO) {
+    public Schedule(String store, LocalDate first_day, LocalTime morning_start, LocalTime morning_end, LocalTime evening_start, LocalTime evening_end, ShiftDAO shiftDAO) {
         this.store = store;
         shifts = new HashMap<>();
         this.shiftDAO = shiftDAO;
-        initialize_week_shifts(first_day, morn_start, morn_end, eve_start, eve_end);
+        initialize_week_shifts(first_day, morning_start, morning_end, evening_start, evening_end);
     }
 
     public Schedule(String store, Map<ShiftPair, Shift> shifts, ShiftDAO shiftDAO) {
@@ -35,13 +35,13 @@ public class Schedule {
         this.shifts = shifts;
         this.shiftDAO = shiftDAO;
     }
-    private void initialize_week_shifts(LocalDate first_day, LocalTime morn_start, LocalTime morn_end, LocalTime eve_start, LocalTime eve_end) {
+    private void initialize_week_shifts(LocalDate week_start_date, LocalTime morning_start_time, LocalTime morning_end_time, LocalTime evening_start_time, LocalTime evening_end_time) {
         for (int i = 0; i < 7; i++) {
-            shifts.put(new ShiftPair(first_day, ShiftType.MORNING), new Shift(store, morn_start, morn_end));
-            shifts.put(new ShiftPair(first_day, ShiftType.EVENING), new Shift(store,  eve_start, eve_end));
-            shiftDAO.create_shift(first_day, ShiftType.MORNING, morn_start, morn_end, store);
-            shiftDAO.create_shift(first_day, ShiftType.EVENING, eve_start, eve_end, store);
-            first_day = first_day.plusDays(1);
+            shifts.put(new ShiftPair(week_start_date, ShiftType.MORNING), new Shift(store, morning_start_time, morning_end_time));
+            shifts.put(new ShiftPair(week_start_date, ShiftType.EVENING), new Shift(store,  evening_start_time, evening_end_time));
+            shiftDAO.create_shift(week_start_date, ShiftType.MORNING, morning_start_time, morning_end_time, store);
+            shiftDAO.create_shift(week_start_date, ShiftType.EVENING, evening_start_time, evening_end_time, store);
+            week_start_date = week_start_date.plusDays(1);
         }
         for (ShiftPair pair : shifts.keySet()) {
             scheduled_confirmation_check(shifts.get(pair).get_start(), pair,  shifts.get(pair)); // subtract 24 hours from the date
@@ -99,43 +99,43 @@ public class Schedule {
         }
     }
 
-    public String add_availability(Integer id, LocalDate date_object, ShiftType type) {
-        ShiftPair shiftPair = get_shift(date_object, type);
+    public String add_availability(Integer employee_id, LocalDate shift_date, ShiftType shift_type) {
+        ShiftPair shiftPair = get_shift(shift_date, shift_type);
         if (shiftPair != null) {
-            String res = shiftDAO.add_availability(id, date_object, type, store);
+            String res = shiftDAO.add_availability(employee_id, shift_date, shift_type, store);
             if (res.equals("")) {
-                return shifts.get(shiftPair).add_availability(id);
+                return shifts.get(shiftPair).add_availability(employee_id);
             }
             return res;
         }
         return "Shift doesn't exists";
     }
 
-    private ShiftPair get_shift(LocalDate date_object, ShiftType type) {
+    private ShiftPair get_shift(LocalDate shift_date, ShiftType shift_type) {
         for (ShiftPair shift_pair: shifts.keySet()) {
-            if (shift_pair.equals(date_object, type)) {
+            if (shift_pair.equals(shift_date, shift_type)) {
                 return shift_pair;
             }
         }
         return null;
     }
 
-    public String remove_availability(Integer id, LocalDate date_object, ShiftType type) {
-        ShiftPair shiftPair = get_shift(date_object, type);
+    public String remove_availability(Integer employee_id, LocalDate shift_date, ShiftType shift_type) {
+        ShiftPair shiftPair = get_shift(shift_date, shift_type);
         if (shiftPair != null) {
-            String res = shiftDAO.remove_availability(id, date_object, type, store);
+            String res = shiftDAO.remove_availability(employee_id, shift_date, shift_type, store);
             if (res.equals("")) {
-                return shifts.get(shiftPair).remove_availability(id);
+                return shifts.get(shiftPair).remove_availability(employee_id);
             }
             return res;
         }
         return "Shift doesn't exists";
     }
 
-    public String get_availability(Integer id) {
+    public String get_availability(Integer employee_id) {
         StringBuilder availability = new StringBuilder();
         for (ShiftPair pair: shifts.keySet()) {
-            if (shifts.get(pair).is_available(id)) {
+            if (shifts.get(pair).is_available(employee_id)) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 String formattedDate = pair.getDate().format(formatter);
                 availability.append(formattedDate).append(" - ").append(pair.getType().toString()).append("\n");
@@ -144,10 +144,10 @@ public class Schedule {
         return availability.toString();
     }
 
-    public String get_shifts(Integer id) {
+    public String get_shifts(Integer employee_id) {
         StringBuilder shifts_list = new StringBuilder();
         for (ShiftPair pair: shifts.keySet()) {
-            String job = shifts.get(pair).is_assigned(id);
+            String job = shifts.get(pair).is_assigned(employee_id);
             if (!job.equals("")) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 String formattedDate = pair.getDate().format(formatter);
@@ -157,55 +157,55 @@ public class Schedule {
         return shifts_list.toString();
     }
 
-    public String confirm_shift(LocalDate date_object, ShiftType shift) {
-        String res = shiftDAO.confirm_shift(date_object, shift, store);
+    public String confirm_shift(LocalDate shift_date, ShiftType shift) {
+        String res = shiftDAO.confirm_shift(shift_date, shift, store);
         if (res.equals("")) {
-            return shifts.get(get_shift(date_object, shift)).confirm_shift();
+            return shifts.get(get_shift(shift_date, shift)).confirm_shift();
         }
         return res;
     }
 
-    public String assign_shift(int id_num, LocalDate date_object, ShiftType shift_type, JobType role) {
-        String res = shifts.get(get_shift(date_object, shift_type)).assign_shift(id_num, role);
+    public String assign_to_shift(int employee_id, LocalDate shift_date, ShiftType shift_type, JobType role) {
+        String res = shifts.get(get_shift(shift_date, shift_type)).assign_to_shift(employee_id, role);
         if (res.equals("")) {
-            return shiftDAO.assign_shift(id_num, date_object, shift_type, role, store);
+            return shiftDAO.assign_to_shift(employee_id, shift_date, shift_type, role, store);
         }
         return res;
     }
 
-    public String unassign_shift(int id_num, LocalDate date_object, ShiftType shift_type, JobType job) {
-        String res = shiftDAO.unassign_shift(id_num, date_object, shift_type, job, store);
+    public String remove_from_shift(int employee_id, LocalDate shift_date, ShiftType shift_type, JobType job) {
+        String res = shiftDAO.remove_from_shift(employee_id, shift_date, shift_type, job, store);
         if (res.equals("")) {
-            return shifts.get(get_shift(date_object, shift_type)).unassign_shift(id_num, job);
+            return shifts.get(get_shift(shift_date, shift_type)).remove_from_shift(employee_id, job);
         }
         return res;
     }
 
-    public String limit_work(int id_num, LocalDate date_object, ShiftType shift_type) {
-        String res = shiftDAO.limit_work(id_num, date_object, shift_type, store);
+    public String limit_employee(int employee_id, LocalDate shift_date, ShiftType shift_type) {
+        String res = shiftDAO.limit_employee(employee_id, shift_date, shift_type, store);
         if (res.equals("")) {
-            return shifts.get(get_shift(date_object, shift_type)).limit_work(id_num);
+            return shifts.get(get_shift(shift_date, shift_type)).limit_employee(employee_id);
         }
         return res;
     }
 
-    public String remove_worker_limit(int id_num, LocalDate date_object, ShiftType shift_type) {
-        String res = shiftDAO.remove_worker_limit(id_num, date_object, shift_type, store);
+    public String remove_employee_limit(int employee_id, LocalDate shift_date, ShiftType shift_type) {
+        String res = shiftDAO.remove_employee_limit(employee_id, shift_date, shift_type, store);
         if (res.equals("")) {
-            return shifts.get(get_shift(date_object, shift_type)).remove_worker_limit(id_num);
+            return shifts.get(get_shift(shift_date, shift_type)).remove_employee_limit(employee_id);
         }
         return res;
     }
 
-    public List<Integer> show_shift_availability(LocalDate date_object, ShiftType shift_type) {
-        return shifts.get(get_shift(date_object, shift_type)).show_shift_availability();
+    public List<Integer> show_shift_availability(LocalDate shift_date, ShiftType shift_type) {
+        return shifts.get(get_shift(shift_date, shift_type)).show_shift_availability();
     }
 
-    public int shifts_limit(int id, LocalDate date_object) {
+    public int shifts_limit(int employee_id, LocalDate shift_date) {
         int counter = 0;
         for (ShiftPair pair: shifts.keySet()) {
-            if (!shifts.get(pair).is_assigned(id).equals("")) {
-                if (pair.getDate() == date_object) {
+            if (!shifts.get(pair).is_assigned(employee_id).equals("")) {
+                if (pair.getDate() == shift_date) {
                     return -1;
                 }
                 counter = counter + 1;
@@ -214,10 +214,10 @@ public class Schedule {
         return counter;
     }
 
-    public boolean has_future_shifts(LocalDate date, int id_num) {
+    public boolean has_future_shifts(LocalDate date, int employee_id) {
         for (ShiftPair pair: shifts.keySet()) {
             if (pair.getDate().isAfter(date) || pair.getDate().equals(date)) {
-                if (!shifts.get(pair).is_assigned(id_num).equals("")) {
+                if (!shifts.get(pair).is_assigned(employee_id).equals("")) {
                     return true;
                 }
             }
@@ -225,8 +225,8 @@ public class Schedule {
         return false;
     }
 
-    public double get_hours(LocalDate date_object, ShiftType shift_type) {
-        return shifts.get(get_shift(date_object, shift_type)).get_length();
+    public double get_hours(LocalDate shift_date, ShiftType shift_type) {
+        return shifts.get(get_shift(shift_date, shift_type)).get_length();
     }
 
     public boolean check_availability(Timestamp arrivalTime) {
@@ -253,24 +253,24 @@ public class Schedule {
         return null;
     }
 
-    public boolean assign_drivers(int id, Timestamp startTime, Timestamp endTime) {
+    public boolean assign_drivers(int employee_id, Timestamp startTime, Timestamp endTime) {
         LocalDateTime datetime1 = startTime.toLocalDateTime();
         LocalDate start = datetime1.toLocalDate();
         LocalDateTime datetime2 = endTime.toLocalDateTime();
         LocalDate end = datetime2.toLocalDate();
         for (ShiftPair pair: shifts.keySet()) {
             if (pair.getDate().equals(start) && pair.getDate().equals(end) && (shifts.get(pair).get_start().isBefore(datetime1.toLocalTime()) && shifts.get(pair).get_end().isAfter(datetime1.toLocalTime())) && (shifts.get(pair).get_start().isBefore(datetime2.toLocalTime()) && shifts.get(pair).get_end().isAfter(datetime2.toLocalTime()))) {
-                String res = shifts.get(pair).assign_shift(id, JobType.DRIVER);
+                String res = shifts.get(pair).assign_to_shift(employee_id, JobType.DRIVER);
                 return res.equals("");
             }
         }
         return false;
     }
 
-    public boolean has_future_shifts_role(LocalDate date, JobType role, int id_num) {
+    public boolean has_future_shifts_role(LocalDate date, JobType role, int employee_id) {
         for (ShiftPair pair: shifts.keySet()) {
             if (pair.getDate().isAfter(date) || pair.getDate().equals(date)) {
-                if (shifts.get(pair).is_assigned_to_role(id_num, role)) {
+                if (shifts.get(pair).is_assigned_to_role(employee_id, role)) {
                     return true;
                 }
             }
@@ -286,20 +286,20 @@ public class Schedule {
         return week_day >= day;
     }
 
-    public String cancel_product(int id, int product_id_num, LocalDate date_object, ShiftType type) {
-        String res = shiftDAO.cancel_product(id, product_id_num, date_object, type, store);
+    public String cancel_product(int employee_id, int product_id, LocalDate shift_date, ShiftType shift_type) {
+        String res = shiftDAO.cancel_product(employee_id, product_id, shift_date, shift_type, store);
         if (res.equals("")) {
-            return shifts.get(get_shift(date_object, type)).cancel_product(id, product_id_num);
+            return shifts.get(get_shift(shift_date, shift_type)).cancel_product(employee_id, product_id);
         }
         return res;
     }
 
-    public Map<JobType, List<Integer>> show_shift_assigned(LocalDate date_object, ShiftType shift_type) {
-        return shifts.get(get_shift(date_object, shift_type)).show_shift_assigned();
+    public Map<JobType, List<Integer>> show_shift_assigned(LocalDate shift_date, ShiftType shift_type) {
+        return shifts.get(get_shift(shift_date, shift_type)).show_shift_assigned();
     }
 
-    public boolean is_limited(int id, LocalDate date_object, ShiftType shift_type) {
-        return shifts.get(get_shift(date_object, shift_type)).is_limited(id);
+    public boolean is_limited(int employee_id, LocalDate shift_date, ShiftType shift_type) {
+        return shifts.get(get_shift(shift_date, shift_type)).is_limited(employee_id);
     }
 
     public int get_week() {

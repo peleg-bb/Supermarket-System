@@ -1,5 +1,6 @@
 package HR.PresentationLayer;
 
+import HR.BusinessLayer.FamilyStatus;
 import HR.DataAccessLayer.Connect;
 
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ public class Menu {
     }
 
     private void load_hr() {
-        employeeCLI.add_hr(111111111, "Tomer Naydnov", 12345678, 70, "None", LocalDate.now(), "Single", true, "123456");
+        employeeCLI.add_hr(111111111, "Tomer Naydnov", 12345678, 70, "None", LocalDate.now(), FamilyStatus.SINGLE, true, "123456");
     }
 
     public static void main(String[] args) throws SQLException {

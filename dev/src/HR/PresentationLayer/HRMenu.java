@@ -1,9 +1,13 @@
 package HR.PresentationLayer;
 
+import HR.BusinessLayer.FamilyStatus;
+import HR.BusinessLayer.JobType;
+import HR.BusinessLayer.ShiftType;
 import HR.ServiceLayer.EmployeeService;
 import HR.ServiceLayer.Response;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class HRMenu {
@@ -39,19 +43,23 @@ public class HRMenu {
 
     public void login_screen() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your id: ");
-        String id = scanner.nextLine();
-        System.out.println("Enter your password: ");
-        String password = scanner.nextLine();
-        Response res = service.login(id, password);
-        while(res.errorOccurred()) {
-            System.out.println(print_red(res.getErrorMessage()));
-            System.out.println("Please try again:\n");
+        while(true) {
             System.out.println("Enter your id: ");
-            id = scanner.nextLine();
+            String id = scanner.nextLine();
+            Integer id_parsed = HRCommandParser.int_parser(id);
+            if (id_parsed == null) {
+                System.out.println("Invalid id. Please try again.");
+                continue;
+            }
             System.out.println("Enter your password: ");
-            password = scanner.nextLine();
-            res = service.login(id, password);
+            String password = scanner.nextLine();
+            Response res = service.login(id_parsed, password);
+            if (res.errorOccurred()) {
+                System.out.println(print_red(res.getErrorMessage()));
+                System.out.println("Please try again.");
+                continue;
+            }
+            break;
         }
     }
 
@@ -77,11 +85,21 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the shift's type (morning / evening): ");
                 String shift_type = scanner.nextLine();
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
                 System.out.print("Please enter the availability store / \"drivers\": ");
                 String store = scanner.nextLine();
-                Response res = service.add_availability(date, shift_type, store);
+                Response res = service.add_availability(date_parsed, shift_parsed, store);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -96,11 +114,21 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the shift's type (morning / evening): ");
                 String shift_type = scanner.nextLine();
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
                 System.out.print("Please enter the availability store / \"drivers\": ");
                 String store = scanner.nextLine();
-                Response res = service.remove_availability(date, shift_type, store);
+                Response res = service.remove_availability(date_parsed, shift_parsed, store);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -155,9 +183,19 @@ public class HRMenu {
                         System.out.println("=====================================================================================");
                         System.out.print("Please enter your old bank account: ");
                         String old_bank_account = scanner.nextLine();
+                        Integer old_bank_parsed = HRCommandParser.int_parser(old_bank_account);
+                        if (old_bank_parsed == null) {
+                            System.out.println(print_red("Invalid old bank account number."));
+                            break;
+                        }
                         System.out.print("Please enter your new bank account: ");
                         String new_bank_account = scanner.nextLine();
-                        Response res = service.change_bank_account(old_bank_account, new_bank_account);
+                        Integer new_bank_parsed = HRCommandParser.int_parser(new_bank_account);
+                        if (new_bank_parsed == null) {
+                            System.out.println(print_red("Invalid new bank account number."));
+                            break;
+                        }
+                        Response res = service.change_bank_account(old_bank_parsed, new_bank_parsed);
                         if (res.errorOccurred()) {
                             System.out.println("\n");
                             System.out.println(print_red(res.getErrorMessage()));
@@ -172,9 +210,19 @@ public class HRMenu {
                         System.out.println("=====================================================================================");
                         System.out.print("Please enter your old family status: ");
                         String old_family_status = scanner.nextLine();
+                        FamilyStatus old_family_status_parsed = HRCommandParser.family_status_parser(old_family_status);
+                        if (old_family_status_parsed == null) {
+                            System.out.println(print_red("Invalid old family status."));
+                            break;
+                        }
                         System.out.print("Please enter your new family status: ");
                         String new_family_status = scanner.nextLine();
-                        Response res = service.change_family_status(old_family_status, new_family_status);
+                        FamilyStatus new_family_status_parsed = HRCommandParser.family_status_parser(new_family_status);
+                        if (new_family_status_parsed == null) {
+                            System.out.println(print_red("Invalid new family status."));
+                            break;
+                        }
+                        Response res = service.change_family_status(old_family_status_parsed, new_family_status_parsed);
                         if (res.errorOccurred()) {
                             System.out.println("\n");
                             System.out.println(print_red(res.getErrorMessage()));
@@ -189,9 +237,19 @@ public class HRMenu {
                         System.out.println("=====================================================================================");
                         System.out.print("Were you a student before (yes / no)? ");
                         String old_student_status = scanner.nextLine();
+                        Object old_student_parsed = HRCommandParser.student_parser(old_student_status);
+                        if (old_student_parsed == null) {
+                            System.out.println(print_red("Invalid input."));
+                            break;
+                        }
                         System.out.print("Are you a student now (yes / no)? ");
                         String new_student_status = scanner.nextLine();
-                        Response res = service.change_student(old_student_status, new_student_status);
+                        Object new_student_parsed = HRCommandParser.student_parser(new_student_status);
+                        if (new_student_parsed == null) {
+                            System.out.println(print_red("Invalid input."));
+                            break;
+                        }
+                        Response res = service.change_student((boolean) old_student_parsed, (boolean) new_student_parsed);
                         if (res.errorOccurred()) {
                             System.out.println("\n");
                             System.out.println(print_red(res.getErrorMessage()));
@@ -233,13 +291,28 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the shift's type (morning / evening): ");
                 String shift_type = scanner.nextLine();
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
                 System.out.print("Please enter the store: ");
                 String store = scanner.nextLine();
                 System.out.print("Please enter the product id: ");
-                String product = scanner.nextLine();
-                Response res = service.cancel_product(product, date, shift_type, store);
+                String product_id = scanner.nextLine();
+                Integer product_parsed = HRCommandParser.int_parser(product_id);
+                if (product_parsed == null) {
+                    System.out.println(print_red("Invalid product id."));
+                    break;
+                }
+                Response res = service.cancel_product(product_parsed, date_parsed, shift_parsed, store);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -272,19 +345,39 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the shift's type (morning / evening): ");
                 String shift_type = scanner.nextLine();
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
                 System.out.print("Please enter the store / \"drivers\": ");
                 String store = scanner.nextLine();
                 System.out.print("Available employees for this shift: ");
                 System.out.println("\n");
-                System.out.println(service.show_shift_availability(date, shift_type, store).getErrorMessage());
+                System.out.println(service.show_shift_availability(date_parsed, shift_parsed, store).getErrorMessage());
                 System.out.println("\n");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter the role: ");
                 String role = scanner.nextLine();
-                Response res = service.assign_shift(id, date, shift_type, store, role);
+                JobType role_parsed = HRCommandParser.job_type_parser(role);
+                if (role_parsed == null) {
+                    System.out.println(print_red("Invalid job."));
+                    break;
+                }
+                Response res = service.assign_to_shift(id_parsed, date_parsed, shift_parsed, store, role_parsed);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -300,15 +393,35 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the shift's type (morning / evening): ");
                 String shift_type = scanner.nextLine();
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
                 System.out.print("Please enter the store / \"drivers\": ");
                 String store = scanner.nextLine();
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter the role: ");
                 String role = scanner.nextLine();
-                Response res = service.unassign_shift(id, date, shift_type, store, role);
+                JobType role_parsed = HRCommandParser.job_type_parser(role);
+                if (role_parsed == null) {
+                    System.out.println(print_red("Invalid job."));
+                    break;
+                }
+                Response res = service.remove_from_shift(id_parsed, date_parsed, shift_parsed, store, role_parsed);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -324,9 +437,19 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter the role: ");
                 String role = scanner.nextLine();
-                Response res = service.certify_role(id, role);
+                JobType role_parsed = HRCommandParser.job_type_parser(role);
+                if (role_parsed == null) {
+                    System.out.println(print_red("Invalid job."));
+                    break;
+                }
+                Response res = service.certify_role(id_parsed, role_parsed);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -342,9 +465,19 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter the role: ");
                 String role = scanner.nextLine();
-                Response res = service.remove_role(id, role);
+                JobType role_parsed = HRCommandParser.job_type_parser(role);
+                if (role_parsed == null) {
+                    System.out.println(print_red("Invalid job."));
+                    break;
+                }
+                Response res = service.remove_role(id_parsed, role_parsed);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -360,9 +493,14 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter the store: ");
                 String store = scanner.nextLine();
-                Response res = service.assign_to_store(id, store);
+                Response res = service.assign_to_store(id_parsed, store);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -378,9 +516,14 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter the store: ");
                 String store = scanner.nextLine();
-                Response res = service.unassign_to_store(id, store);
+                Response res = service.remove_from_store(id_parsed, store);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -396,23 +539,57 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter the employee's name: ");
                 String name = scanner.nextLine();
+                if (!HRCommandParser.name_checker(name)) {
+                    System.out.println(print_red("Invalid name."));
+                    break;
+                }
                 System.out.print("Please enter the employee's bank account: ");
                 String bank_account = scanner.nextLine();
+                Integer bank_parsed = HRCommandParser.int_parser(bank_account);
+                if (bank_parsed == null) {
+                    System.out.println(print_red("Invalid bank account number."));
+                    break;
+                }
                 System.out.print("Please enter the employee's salary: ");
                 String salary = scanner.nextLine();
+                Double salary_parsed = HRCommandParser.double_parser(salary);
+                if (salary_parsed == null) {
+                    System.out.println(print_red("Invalid salary."));
+                    break;
+                }
                 System.out.print("Please enter the employee's terms of employment: ");
                 String terms_of_employment = scanner.nextLine();
                 System.out.print("Please enter the employment date (dd-mm-yyyy): ");
                 String employment_date = scanner.nextLine();
+                LocalDate employment_date_parsed = HRCommandParser.date_parser(employment_date);
+                if (employment_date_parsed == null) {
+                    System.out.println(print_red("Invalid employment date."));
+                    break;
+                }
                 System.out.print("Please enter the employee's family status: ");
                 String family_status = scanner.nextLine();
+                FamilyStatus family_status_parsed = HRCommandParser.family_status_parser(family_status);
+                if (family_status_parsed == null) {
+                    System.out.println(print_red("Invalid family status."));
+                    break;
+                }
                 System.out.print("Is the employee a student? ");
                 String is_student = scanner.nextLine();
+                Object student_parsed = HRCommandParser.student_parser(is_student);
+                if (student_parsed == null) {
+                    System.out.println(print_red("Invalid family status."));
+                    break;
+                }
                 System.out.print("Please enter the employee's password: ");
                 String password = scanner.nextLine();
-                Response res = service.add_employee(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password);
+                Response res = service.add_employee(id_parsed, name, bank_parsed, salary_parsed, terms_of_employment, employment_date_parsed, family_status_parsed, (boolean) student_parsed, password);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -428,7 +605,12 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
-                Response res = service.remove_employee(id);
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
+                Response res = service.remove_employee(id_parsed);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -476,11 +658,21 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the store's name / \"drivers\": ");
                 String store = scanner.nextLine();
                 System.out.print("Please enter the shift's type (morning / evening): ");
                 String shift_type = scanner.nextLine();
-                Response res = service.confirm_shift(date, shift_type, store);
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
+                Response res = service.confirm_shift(date_parsed, shift_parsed, store);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -496,17 +688,42 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the week's first day date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the store's name / \"drivers\": ");
                 String store = scanner.nextLine();
                 System.out.print("Please enter the schedule's morning shifts start time (hh:mm): ");
                 String morn_start = scanner.nextLine();
+                LocalTime morn_start_parsed = HRCommandParser.time_parser(morn_start);
+                if (morn_start_parsed == null) {
+                    System.out.println(print_red("Invalid morning start time."));
+                    break;
+                }
                 System.out.print("Please enter the schedule's morning shifts end time (hh:mm): ");
                 String morn_end = scanner.nextLine();
+                LocalTime morn_end_parsed = HRCommandParser.time_parser(morn_end);
+                if (morn_end_parsed == null) {
+                    System.out.println(print_red("Invalid morning end time."));
+                    break;
+                }
                 System.out.print("Please enter the schedule's evening shifts start time (hh:mm): ");
                 String eve_start = scanner.nextLine();
+                LocalTime eve_start_parsed = HRCommandParser.time_parser(eve_start);
+                if (eve_start_parsed == null) {
+                    System.out.println(print_red("Invalid evening start time."));
+                    break;
+                }
                 System.out.print("Please enter the schedule's evening shifts end time (hh:mm): ");
                 String eve_end = scanner.nextLine();
-                Response res = service.create_weekly_schedule(date, store, morn_start, morn_end, eve_start, eve_end);
+                LocalTime eve_end_parsed = HRCommandParser.time_parser(eve_end);
+                if (eve_end_parsed == null) {
+                    System.out.println(print_red("Invalid evening end time."));
+                    break;
+                }
+                Response res = service.create_weekly_schedule(date_parsed, store, morn_start_parsed, morn_end_parsed, eve_start_parsed, eve_end_parsed);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -522,13 +739,28 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the shift's type (morning / evening): ");
                 String shift_type = scanner.nextLine();
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
                 System.out.print("Please enter the availability store / \"drivers\": ");
                 String store = scanner.nextLine();
-                Response res = service.limit_work(id, date, shift_type, store);
+                Response res = service.limit_employee(id_parsed, date_parsed, shift_parsed, store);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -543,13 +775,28 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the shift's type (morning / evening): ");
                 String shift_type = scanner.nextLine();
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
                 System.out.print("Please enter the availability store / \"drivers\": ");
                 String store = scanner.nextLine();
-                Response res = service.remove_worker_limit(id, date, shift_type, store);
+                Response res = service.remove_employee_limit(id_parsed, date_parsed, shift_parsed, store);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -564,9 +811,19 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
                 System.out.print("Please enter a bonus for the employee / 0 if none: ");
                 String bonus = scanner.nextLine();
-                Response res = service.confirm_monthly_salary(id, bonus);
+                Double bonus_parsed = HRCommandParser.double_parser(bonus);
+                if (bonus_parsed == null) {
+                    System.out.println(print_red("Invalid bonus."));
+                    break;
+                }
+                Response res = service.confirm_monthly_salary(id_parsed, bonus_parsed);
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
@@ -590,11 +847,26 @@ public class HRMenu {
                         System.out.println("=====================================================================================");
                         System.out.print("Please enter the employee's id: ");
                         String id = scanner.nextLine();
+                        Integer id_parsed = HRCommandParser.int_parser(id);
+                        if (id_parsed == null) {
+                            System.out.println(print_red("Invalid employee id."));
+                            break;
+                        }
                         System.out.print("Please enter the employee's old salary: ");
                         String old_salary = scanner.nextLine();
+                        Double old_salary_parsed = HRCommandParser.double_parser(old_salary);
+                        if (old_salary_parsed == null) {
+                            System.out.println(print_red("Invalid old salary."));
+                            break;
+                        }
                         System.out.print("Please enter the employee's new salary: ");
                         String new_salary = scanner.nextLine();
-                        Response res = service.change_employee_salary(id, old_salary, new_salary);
+                        Double new_salary_parsed = HRCommandParser.double_parser(new_salary);
+                        if (new_salary_parsed == null) {
+                            System.out.println(print_red("Invalid new salary."));
+                            break;
+                        }
+                        Response res = service.change_employee_salary(id_parsed, old_salary_parsed, new_salary_parsed);
                         if (res.errorOccurred()) {
                             System.out.println("\n");
                             System.out.println(print_red(res.getErrorMessage()));
@@ -609,9 +881,14 @@ public class HRMenu {
                         System.out.println("=====================================================================================");
                         System.out.print("Please enter the employee's id: ");
                         String id = scanner.nextLine();
+                        Integer id_parsed = HRCommandParser.int_parser(id);
+                        if (id_parsed == null) {
+                            System.out.println(print_red("Invalid employee id."));
+                            break;
+                        }
                         System.out.print("Please enter the employee's new terms of employment account: ");
                         String new_terms = scanner.nextLine();
-                        Response res = service.change_employee_terms(id, new_terms);
+                        Response res = service.change_employee_terms(id_parsed, new_terms);
                         if (res.errorOccurred()) {
                             System.out.println("\n");
                             System.out.println(print_red(res.getErrorMessage()));
@@ -642,7 +919,12 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
-                Response res = service.show_employee_info(id);
+                Integer id_parsed = HRCommandParser.int_parser(id);
+                if (id_parsed == null) {
+                    System.out.println(print_red("Invalid employee id."));
+                    break;
+                }
+                Response res = service.show_employee_info(id_parsed);
                 System.out.println(print_green("Employee's Information:"));
                 System.out.println(res.getErrorMessage());
                 System.out.println("=====================================================================================");
@@ -652,11 +934,21 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
                 System.out.print("Please enter the shift's type (morning / evening): ");
                 String shift_type = scanner.nextLine();
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
                 System.out.print("Please enter the availability store / \"drivers\": ");
                 String store = scanner.nextLine();
-                Response res = service.show_shift_assigned(date, shift_type, store);
+                Response res = service.show_shift_assigned(date_parsed, shift_parsed, store);
                 System.out.println(print_green("Shift's employees:"));
                 System.out.println(res.getErrorMessage());
                 System.out.println("=====================================================================================");
@@ -720,7 +1012,7 @@ public class HRMenu {
         System.out.print(print_blue("Option:"));
     }
 
-    public void add_hr(int id, String name, int bank_account, double salary, String terms_of_employment, LocalDate employment_date, String family_status, boolean is_student, String password) {
+    public void add_hr(int id, String name, int bank_account, double salary, String terms_of_employment, LocalDate employment_date, FamilyStatus family_status, boolean is_student, String password) {
         service.add_hr(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password);
     }
 }
