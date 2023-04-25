@@ -388,4 +388,11 @@ public class Facade {
     public double get_monthly_salary(int manager_id, int employee_id) {
         return employeeController.get_monthly_salary(manager_id, employee_id);
     }
+
+    public String show_scheduled_deliveries(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
+        if (!employeeController.is_ShiftManager(employee_id) && employeeController.is_storekeeper(employee_id)) {
+            return "Employee is not a shift manager or a storekeeper";
+        }
+        return shiftController.show_scheduled_deliveries(shift_date, shift_type, store);
+    }
 }

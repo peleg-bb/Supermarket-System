@@ -308,4 +308,8 @@ public class Schedule {
         WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1); // week starts on Sunday
         return key.getDate().get(weekFields.weekOfWeekBasedYear());
     }
+
+    public String show_scheduled_deliveries(LocalDate shift_date, ShiftType shift_type) {
+        return shifts.get(get_shift(shift_date, shift_type)).show_scheduled_deliveries(shift_date);
+    }
 }

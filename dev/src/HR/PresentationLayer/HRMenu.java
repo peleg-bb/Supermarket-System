@@ -5,6 +5,7 @@ import HR.BusinessLayer.JobType;
 import HR.BusinessLayer.ShiftType;
 import HR.ServiceLayer.EmployeeService;
 import HR.ServiceLayer.Response;
+import HR_Deliveries_Interface.DeliveryIntegrator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -323,7 +324,38 @@ public class HRMenu {
                 System.out.println("=====================================================================================");
                 break;
             }
-            case "11":
+            case "11": {
+                System.out.println("=====================================================================================");
+                System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
+                String date = scanner.nextLine();
+                LocalDate date_parsed = HRCommandParser.date_parser(date);
+                if (date_parsed == null) {
+                    System.out.println(print_red("Invalid date."));
+                    break;
+                }
+                System.out.print("Please enter the shift's type (morning / evening): ");
+                String shift_type = scanner.nextLine();
+                ShiftType shift_parsed = HRCommandParser.shift_type_parser(shift_type);
+                if (shift_parsed == null) {
+                    System.out.println(print_red("Invalid shift type."));
+                    break;
+                }
+                System.out.print("Please enter the store: ");
+                String store = scanner.nextLine();
+                System.out.print("Please enter the product id: ");
+                String product_id = scanner.nextLine();
+                Integer product_parsed = HRCommandParser.int_parser(product_id);
+                if (product_parsed == null) {
+                    System.out.println(print_red("Invalid product id."));
+                    break;
+                }
+                Response res = service.show_scheduled_deliveries(date_parsed, shift_parsed, store);
+                System.out.println("Scheduled deliveries for that shift: ");
+                System.out.println(res.getErrorMessage());
+                System.out.println("=====================================================================================");
+                break;
+            }
+            case "12":
                 System.out.println("=====================================================================================");
                 Response res = service.logout();
                 if (res.errorOccurred()) {
@@ -980,7 +1012,8 @@ public class HRMenu {
         System.out.println(print_blue("8. Show my personal information"));
         System.out.println(print_blue("9. Show my current expected salary"));
         System.out.println(print_blue("10. Cancel a product"));
-        System.out.println(print_blue("11. Logout"));
+        System.out.println(print_blue("11. Show scheduled deliveries"));
+        System.out.println(print_blue("12. Logout"));
         System.out.println(print_blue("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"));
         System.out.print(print_blue("Option:"));
     }

@@ -1,6 +1,12 @@
 package HR.BusinessLayer;
 
+import Deliveries.BusinessLayer.DeliveryManagerImpl;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryManager;
+import HR_Deliveries_Interface.DeliveryIntegrator;
+
+import java.lang.reflect.Method;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -174,5 +180,9 @@ public class Shift {
 
     public boolean is_limited(int employee_id) {
         return manager_constraints.contains(employee_id);
+    }
+
+    public String show_scheduled_deliveries(LocalDate shift_date) {
+        return ""; //NOT FINISHED
     }
 }

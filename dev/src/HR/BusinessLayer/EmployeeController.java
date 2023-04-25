@@ -406,4 +406,11 @@ public class EmployeeController {
         }
         return employees.get(employee_id).get_monthly_salary();
     }
+
+    public boolean is_storekeeper(int employee_id) {
+        if (employees.containsKey(employee_id)) {
+            return employees.get(employee_id).is_certified_to_role(JobType.STOREKEEPER);
+        }
+        return false;
+    }
 }

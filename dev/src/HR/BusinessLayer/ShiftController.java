@@ -423,4 +423,15 @@ public class ShiftController implements HRIntegrator {
     public boolean past_schedule_exists(LocalDate date_object, String store) {
         return get_past_schedule(store, date_object) != null;
     }
+
+    public String show_scheduled_deliveries(LocalDate shift_date, ShiftType shift_type, String store) {
+        if (!store_exists(store)) {
+            return "Store doesn't exists";
+        }
+        Schedule schedule = get_schedule(store, shift_date);
+        if (schedule != null) {
+            return schedule.show_scheduled_deliveries(shift_date, shift_type);
+        }
+        return "No schedule available for that date";
+    }
 }

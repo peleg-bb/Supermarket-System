@@ -431,4 +431,8 @@ public class EmployeeService {
         return new Response(facade.cancel_product(this.id, product_id, shift_date, shift_type, store));
     }
 
+    public Response show_scheduled_deliveries(LocalDate shift_date, ShiftType shift_type, String store) {
+        return new Response(facade.show_scheduled_deliveries(this.id, shift_date, shift_type, store));
+    }
+
 }

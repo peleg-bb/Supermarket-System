@@ -18,12 +18,12 @@ class EmployeeTest {
      void setUp() throws SQLException {
         Connect.getInstance().deleteRecordsOfTables();
         facade = new Facade();
-        facade.add_hr(111111111, "Tomer Naydnov", 1111111, 70, "None", LocalDate.of(2023,3,1), "Married", false, "123456");
+        facade.add_hr(111111111, "Tomer Naydnov", 1111111, 70, "None", LocalDate.of(2023,3,1), FamilyStatus.MARRIED, false, "123456");
         facade.login(111111111, "123456");
-        facade.add_employee(111111111, 222222222, "Gili Cohen", 2222222, 30, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
-        facade.add_employee(111111111, 333333333, "Guy Cohen", 3333333, 30, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
-        facade.add_employee(111111111, 444444444, "Ohad Banay", 4444444, 35, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
-        facade.add_employee(111111111, 555555555, "Rotem Sela", 5555555, 35, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
+        facade.add_employee(111111111, 222222222, "Gili Cohen", 2222222, 30, "None", LocalDate.of(2023,2,1), FamilyStatus.SINGLE, true, "123456");
+        facade.add_employee(111111111, 333333333, "Guy Cohen", 3333333, 30, "None", LocalDate.of(2023,2,1), FamilyStatus.SINGLE, true, "123456");
+        facade.add_employee(111111111, 444444444, "Ohad Banay", 4444444, 35, "None", LocalDate.of(2023,2,1), FamilyStatus.SINGLE, true, "123456");
+        facade.add_employee(111111111, 555555555, "Rotem Sela", 5555555, 35, "None", LocalDate.of(2023,2,1), FamilyStatus.SINGLE, true, "123456");
         facade.certify_role(111111111, 222222222, JobType.SHIFTMANAGER);
         facade.create_store(111111111, "Tel Aviv");
         facade.assign_to_store(111111111, 222222222, "Tel Aviv");
@@ -78,13 +78,13 @@ class EmployeeTest {
     @org.junit.jupiter.api.Test
     void change_family_status() {
         facade.login(333333333, "123456");
-        String res = facade.change_family_status(333333333, "Singles", "Married");
+        String res = facade.change_family_status(333333333, FamilyStatus.DIVORCED, FamilyStatus.MARRIED);
         assertNotEquals("", res);
-        assertNotEquals("Married" ,facade.get_employee_family_status(333333333));
-        assertEquals("Single" ,facade.get_employee_family_status(333333333));
-        res = facade.change_family_status(333333333, "Single", "Married");
+        assertNotEquals(FamilyStatus.MARRIED ,facade.get_employee_family_status(333333333));
+        assertEquals(FamilyStatus.SINGLE ,facade.get_employee_family_status(333333333));
+        res = facade.change_family_status(333333333, FamilyStatus.SINGLE, FamilyStatus.MARRIED);
         assertEquals("", res);
-        assertEquals("Married" ,facade.get_employee_family_status(333333333));
+        assertEquals(FamilyStatus.MARRIED ,facade.get_employee_family_status(333333333));
     }
 
     @org.junit.jupiter.api.Test
@@ -117,12 +117,12 @@ class EmployeeTest {
 
     @org.junit.jupiter.api.Test
     void assign_employee() {
-        String res = facade.assign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        String res = facade.assign_to_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
         assertNotEquals("", res);
         facade.create_weekly_schedule(111111111, LocalDate.of(2023,6,4), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         facade.login(222222222, "123456");
         facade.add_availability(222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv");
-        res = facade.assign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        res = facade.assign_to_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
         assertEquals("", res);
     }
 
@@ -131,9 +131,9 @@ class EmployeeTest {
         facade.create_weekly_schedule(111111111, LocalDate.of(2023,6,4), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         facade.login(222222222, "123456");
         facade.add_availability(222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv");
-        String res = facade.assign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        String res = facade.assign_to_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
         assertEquals("", res);
-        res = facade.unassign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        res = facade.remove_from_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
         assertEquals("", res);
     }
 
@@ -173,10 +173,10 @@ class EmployeeTest {
     void remove_store_assignment() {
         facade.create_store(111111111, "test");
         facade.assign_to_store(111111111, 333333333, "test");
-        String res = facade.unassign_to_store(111111111, 333333333, "test1");
+        String res = facade.remove_from_store(111111111, 333333333, "test1");
         assertNotEquals("", res);
         Assertions.assertTrue(facade.assigned_to_store(333333333, "test"));
-        res = facade.unassign_to_store(111111111, 333333333, "test");
+        res = facade.remove_from_store(111111111, 333333333, "test");
         assertEquals("", res);
         Assertions.assertFalse(facade.assigned_to_store(333333333, "test"));
     }
@@ -184,16 +184,16 @@ class EmployeeTest {
     @org.junit.jupiter.api.Test
     void add_employee() {
         Assertions.assertFalse(facade.employee_exists(666666666));
-        String res = facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
+        String res = facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", LocalDate.of(2023,2,1), FamilyStatus.SINGLE, true, "123456");
         Assertions.assertTrue(facade.employee_exists(666666666));
         Assertions.assertEquals("", res);
-        res = facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
+        res = facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", LocalDate.of(2023,2,1), FamilyStatus.SINGLE, true, "123456");
         Assertions.assertNotEquals("", res);
     }
 
     @org.junit.jupiter.api.Test
     void remove_employee() {
-        facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", LocalDate.of(2023,2,1), "Single", true, "123456");
+        facade.add_employee(111111111, 666666666, "Ehud Manor", 6666666, 38, "None", LocalDate.of(2023,2,1), FamilyStatus.SINGLE, true, "123456");
         Assertions.assertTrue(facade.employee_exists(666666666));
         String res = facade.remove_employee(111111111, 666666666);
         Assertions.assertFalse(facade.employee_exists(666666666));
@@ -230,7 +230,7 @@ class EmployeeTest {
         Assertions.assertNotEquals("", res);
         facade.login(222222222, "123456");
         facade.add_availability(222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv");
-        facade.assign_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
+        facade.assign_to_shift(111111111,222222222, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv", JobType.SHIFTMANAGER);
         res = facade.confirm_shift(111111111, LocalDate.of(2023,6,4), ShiftType.MORNING, "Tel Aviv");
         Assertions.assertEquals("", res);
     }
@@ -249,14 +249,14 @@ class EmployeeTest {
 
     @org.junit.jupiter.api.Test
     void limit_work() {
-        String res = facade.limit_work(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
+        String res = facade.limit_employee(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
         Assertions.assertNotEquals("", res);
         facade.create_store(111111111, "Rishon");
-        res = facade.limit_work(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
+        res = facade.limit_employee(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
         Assertions.assertNotEquals("", res);
         facade.create_weekly_schedule(111111111, LocalDate.of(2023,5,28), "Rishon", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         facade.assign_to_store(111111111, 444444444, "Rishon");
-        res = facade.limit_work(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
+        res = facade.limit_employee(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
         Assertions.assertEquals("", res);
         Assertions.assertTrue(facade.is_limited(444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon"));
     }
@@ -266,9 +266,9 @@ class EmployeeTest {
         facade.create_store(111111111, "Rishon");
         facade.create_weekly_schedule(111111111, LocalDate.of(2023,5,28), "Rishon", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         facade.assign_to_store(111111111, 444444444, "Rishon");
-        facade.limit_work(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
+        facade.limit_employee(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
         Assertions.assertTrue(facade.is_limited(444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon"));
-        String res = facade.remove_worker_limit(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
+        String res = facade.remove_employee_limit(111111111,444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon");
         Assertions.assertEquals("", res);
         Assertions.assertFalse(facade.is_limited(444444444, LocalDate.of(2023,6,1), ShiftType.MORNING, "Rishon"));
     }
