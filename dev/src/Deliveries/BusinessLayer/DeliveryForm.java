@@ -24,11 +24,11 @@ public class DeliveryForm {
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
 
     public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed,
-                        Driver driver, Truck truck){
+                        Driver driver, Truck truck) {
         this.formId = formId;
         this.destinationSitesToVisit = stops;
         this.destinationSitesVisited = new ArrayList<>();
-        dispatchTime = new Timestamp(System.currentTimeMillis());
+        this.dispatchTime = new Timestamp(System.currentTimeMillis());
         this.originSite = originSite;
         this.maxWeightAllowed = maxWeightAllowed;
         this.driver = driver;
@@ -36,6 +36,18 @@ public class DeliveryForm {
         this.weightMeasurer = new UserInteractionUtil();
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
+    }
+
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime){
+        this.formId = formId;
+        this.destinationSitesToVisit = stops;
+        this.destinationSitesVisited = new ArrayList<>();
+        this.dispatchTime = dispatchTime;
+        this.originSite = originSite;
+        this.weightMeasurer = new UserInteractionUtil();
+        deliveryManager = DeliveryManagerImpl.getInstance();
+        deliveryFormsController = DeliveryFormsController.getInstance();
+        updateArrivalTimes();
     }
 
     public void addDeliveryStop(DeliveryStop deliveryStop) {
@@ -126,8 +138,6 @@ public class DeliveryForm {
     public void startJourney(){
         // visit the stops in the order they were added
         performWeightCheck();
-        dispatchTime = new Timestamp(System.currentTimeMillis());
-        updateArrivalTimes();
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
         while(iterator.hasNext()){
             DeliveryStop currentStop = iterator.next();
@@ -177,9 +187,18 @@ public class DeliveryForm {
     }
 
     public void setTruck(Truck newTruck) {
-        truck.freeTruck();
+        if (truck != null){
+            truck.freeTruck();
+        }
         truck = newTruck;
         setMaxWeightAllowed(truck.getMaxWeightTons());
+    }
+
+    public void setDriver(Driver newDriver) {
+        if (driver != null){
+            driver.freeDriver();
+        }
+        this.driver = newDriver;
     }
 
     private void updateArrivalTimes(){
@@ -198,6 +217,21 @@ public class DeliveryForm {
             }
         }
         return stops;
+    }
+
+    public Timestamp getDispatchTime() {
+        return dispatchTime;
+    }
+
+    public Timestamp getEstimatedTerminationTime() {
+        // Returns the estimated arrival time of the last stop
+        Timestamp lastStop = destinationSitesVisited.get(0).getEstimatedArrivalTime();
+        for (DeliveryStop stop : destinationSitesVisited) {
+            if (stop.getEstimatedArrivalTime().after(lastStop)) {
+                lastStop = stop.getEstimatedArrivalTime();
+            }
+        }
+        return lastStop;
     }
 
 }

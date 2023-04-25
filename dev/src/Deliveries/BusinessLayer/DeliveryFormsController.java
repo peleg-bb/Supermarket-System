@@ -1,5 +1,7 @@
 package Deliveries.BusinessLayer;
 
+import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import HR_Deliveries_Interface.DeliveryIntegrator;
 
 import java.sql.Timestamp;
@@ -13,11 +15,17 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     private final Set<DeliveryForm> completedDeliveryForms;
     // singleton
     private static DeliveryFormsController instance;
+    private int deliveryFormCount;
+    private final TruckController truckController;
+    private final DriverController driverController;
 
 
     private DeliveryFormsController() {
         pendingDeliveryForms = new HashSet<>();
         completedDeliveryForms = new HashSet<>();
+        deliveryFormCount = 0;
+        truckController = TruckController.getInstance();
+        driverController = DriverController.getInstance();
         // As of now doesn't have to be a singleton
     }
 
@@ -29,7 +37,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     }
 
 
-    public void addDeliveryForm(DeliveryForm deliveryForm) {
+    private void addDeliveryForm(DeliveryForm deliveryForm) {
         pendingDeliveryForms.add(deliveryForm);
     }
 
@@ -79,5 +87,29 @@ public class DeliveryFormsController implements DeliveryIntegrator {
             deliveryStops.addAll(deliveryForm.getStopsByTime(startTime, finishTime, store));
         }
         return deliveryStops;
+    }
+
+    public void createForm(List<DeliveryStop> stops, Site origin) throws DeliveryException {
+        DeliveryForm deliveryForm = new DeliveryForm(deliveryFormCount++, stops, origin,
+                new Timestamp(System.currentTimeMillis()));
+        TruckType truckType = getTruckType(stops);
+        Truck truck = truckController.pickTruck(truckType);
+        deliveryForm.setTruck(truck);
+        Driver driver = driverController.pickDriver(truck, deliveryForm.getDispatchTime(),
+                deliveryForm.getEstimatedTerminationTime());
+        deliveryForm.setDriver(driver);
+        addDeliveryForm(deliveryForm);
+    }
+
+    private TruckType getTruckType(List<DeliveryStop> destinationSitesToVisit) {
+        TruckType truckType = TruckType.Regular;
+        // for each delivery stop, check if the truck type is the same
+        for (DeliveryStop stop : destinationSitesToVisit) {
+            if (stop.getTruckTypeRequired() == TruckType.Refrigerated) {
+                truckType = TruckType.Refrigerated;
+                return truckType;
+            }
+        }
+        return truckType;
     }
 }

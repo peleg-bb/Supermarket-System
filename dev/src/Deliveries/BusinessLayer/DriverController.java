@@ -3,22 +3,22 @@ package Deliveries.BusinessLayer;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import HR.BusinessLayer.ShiftController;
+import HR_Deliveries_Interface.HRIntegrator;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.*;
 
 public class DriverController {
     private final HashSet<Driver> drivers;
-
+    private HRIntegrator hrManager;
     private static DriverController instance = null;
 
     // Singleton Constructor
     private DriverController() {
         drivers = new HashSet<>();
         generateFleet(20);
-
+        HRIntegrator hrManager = new ShiftController();
     }
 
     public void generateFleet(int numberOfDrivers) {
@@ -57,9 +57,11 @@ public class DriverController {
         return instance;
     }
 
-    public Driver pickDriver(Truck truck) throws DeliveryException {
+    public Driver pickDriver(Truck truck, Timestamp startTime, Timestamp finishTime) throws DeliveryException {
+        List<String> availableDrivers = hrManager.getAvailableDrivers(startTime, finishTime);
         for (Driver driver : drivers) {
-            if (driver.getAvailability().equals(Availability.Available)) {
+            if (driver.getAvailability().equals(Availability.Available) &&
+                    availableDrivers.contains(driver.getId())) {
                 if (driver.isLicensed(truck)) {
                     driver.setAvailability(Availability.Busy);
                     return driver;
