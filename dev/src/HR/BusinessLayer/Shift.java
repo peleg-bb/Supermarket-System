@@ -1,12 +1,15 @@
 package HR.BusinessLayer;
 
+import Deliveries.BusinessLayer.DeliveryFormsController;
 import Deliveries.BusinessLayer.DeliveryManagerImpl;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryManager;
 import HR_Deliveries_Interface.DeliveryIntegrator;
 
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -183,6 +186,11 @@ public class Shift {
     }
 
     public String show_scheduled_deliveries(LocalDate shift_date) {
-        return ""; //NOT FINISHED
+        DeliveryIntegrator object = DeliveryFormsController.getInstance();
+        LocalDateTime start_localDateTime = LocalDateTime.of(shift_date, start);
+        Timestamp start_timestamp = Timestamp.valueOf(start_localDateTime);
+        LocalDateTime end_localDateTime = LocalDateTime.of(shift_date, end);
+        Timestamp end_timestamp = Timestamp.valueOf(end_localDateTime);
+        return object.getDeliverygetDeliveryByArrivalTime(start_timestamp, end_timestamp, store).toString();
     }
 }
