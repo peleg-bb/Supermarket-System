@@ -94,10 +94,12 @@ public class DeliveryManagerImpl implements DeliveryManager {
         // else do nothing, will be handled by the UI according to submission 1
     }
 
-    private void replaceTruck(DeliveryForm form) throws DeliveryException{
+    private void replaceTruck(DeliveryForm form) throws DeliveryException {
         Truck newTruck = truckController.pickTruck(form.getTruckType(), form.getDispatchWeightTons());
         form.setTruck(newTruck);
-        // TODO: replace driver
+        Driver newDriver = driverController.pickDriver(newTruck, form.getDispatchTime(),
+                form.getEstimatedTerminationTime());
+        form.setDriver(newDriver);
     }
 
     private HashMap<Site,List<DeliveryStop>> sortStopsByOrigin(Set<DeliveryStop> pendingDeliveryStops){

@@ -26,21 +26,6 @@ public class DeliveryForm {
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
     private HRIntegrator hrManager;
 
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, int maxWeightAllowed,
-                        Driver driver, Truck truck) {
-        this.formId = formId;
-        this.destinationSitesToVisit = stops;
-        this.destinationSitesVisited = new ArrayList<>();
-        this.dispatchTime = new Timestamp(System.currentTimeMillis());
-        this.originSite = originSite;
-        this.maxWeightAllowed = maxWeightAllowed;
-        this.driver = driver;
-        this.truck = truck;
-        this.weightMeasurer = new UserInteractionUtil();
-        deliveryManager = DeliveryManagerImpl.getInstance();
-        deliveryFormsController = DeliveryFormsController.getInstance();
-    }
-
     public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime) throws DeliveryException {
         this.formId = formId;
         this.destinationSitesToVisit = stops;
@@ -232,8 +217,8 @@ public class DeliveryForm {
 
     public Timestamp getEstimatedTerminationTime() {
         // Returns the estimated arrival time of the last stop
-        Timestamp lastStop = destinationSitesVisited.get(0).getEstimatedArrivalTime();
-        for (DeliveryStop stop : destinationSitesVisited) {
+        Timestamp lastStop = destinationSitesToVisit.get(0).getEstimatedArrivalTime();
+        for (DeliveryStop stop : destinationSitesToVisit) {
             if (stop.getEstimatedArrivalTime().after(lastStop)) {
                 lastStop = stop.getEstimatedArrivalTime();
             }
