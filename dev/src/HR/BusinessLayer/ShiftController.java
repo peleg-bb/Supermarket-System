@@ -31,52 +31,52 @@ public class ShiftController implements HRIntegrator {
         return stores.contains(store);
     }
 
-    public String add_availability(Integer id, LocalDate date_object, ShiftType type, String store) {
+    public String add_availability(Integer employee_id, LocalDate shift_date, ShiftType type, String store) {
         if (!store_exists(store)) {
             return "Store doesn't exists";
         }
         if (stores_schedules.containsKey(store)) {
-            Schedule schedule = get_schedule(store, date_object);
+            Schedule schedule = get_schedule(store, shift_date);
             if (schedule != null) {
-                return schedule.add_availability(id, date_object, type);
+                return schedule.add_availability(employee_id, shift_date, type);
             }
         }
         return "No schedule available for that date";
     }
 
-    public String remove_availability(Integer id, LocalDate date_object, ShiftType type, String store) {
+    public String remove_availability(Integer employee_id, LocalDate shift_date, ShiftType type, String store) {
         if (!store_exists(store)) {
             return "Store doesn't exists";
         }
         if (stores_schedules.containsKey(store)) {
-            Schedule schedule = get_schedule(store, date_object);
+            Schedule schedule = get_schedule(store, shift_date);
             if (schedule != null) {
-                return schedule.remove_availability(id, date_object, type);
+                return schedule.remove_availability(employee_id, shift_date, type);
             }
         }
         return "No schedule available for that date";
     }
 
-    public String get_availability(Integer id, List<String> certified_stores) {
+    public String get_availability(Integer employee_id, List<String> certified_stores) {
         StringBuilder availability = new StringBuilder();
         for (String store: certified_stores) {
             if (stores_schedules.containsKey(store)) {
                 availability.append(store).append(":\n");
                 for (Schedule schedule : stores_schedules.get(store)) {
-                    availability.append(schedule.get_availability(id));
+                    availability.append(schedule.get_availability(employee_id));
                 }
             }
         }
         return availability.toString();
     }
 
-    public String get_shifts(Integer id, List<String> certified_stores) {
+    public String get_shifts(Integer employee_id, List<String> certified_stores) {
         StringBuilder shifts = new StringBuilder();
         for (String store: certified_stores) {
             if (stores_schedules.containsKey(store)) {
                 shifts.append(store).append(":\n");
                 for (Schedule schedule : stores_schedules.get(store)) {
-                    shifts.append(schedule.get_shifts(id));
+                    shifts.append(schedule.get_shifts(employee_id));
                 }
             }
         }
@@ -99,22 +99,22 @@ public class ShiftController implements HRIntegrator {
         return "Store doesn't exists";
     }
 
-    public String confirm_shift(LocalDate date_object, ShiftType shift, String store) {
+    public String confirm_shift(LocalDate shift_date, ShiftType shift_type, String store) {
         if (!store_exists(store)) {
             return "Store doesn't exists";
         }
-        Schedule schedule = get_schedule(store, date_object);
+        Schedule schedule = get_schedule(store, shift_date);
         if (schedule != null) {
-            return schedule.confirm_shift(date_object, shift);
+            return schedule.confirm_shift(shift_date, shift_type);
         }
         return "Schedule doesn't exist";
     }
 
-    public String create_weekly_schedule(LocalDate date_object, String store, LocalTime morn_start, LocalTime morn_end, LocalTime eve_start, LocalTime eve_end) {
+    public String create_weekly_schedule(LocalDate week_start_date, String store, LocalTime morning_start_time, LocalTime morning_end_time, LocalTime evening_start_time, LocalTime evening_end_time) {
         if (!store_exists(store)) {
             return "Store doesn't exists";
         }
-        Schedule schedule = new Schedule(store, date_object, morn_start, morn_end, eve_start, eve_end, shiftDAO);
+        Schedule schedule = new Schedule(store, week_start_date, morning_start_time, morning_end_time, evening_start_time, evening_end_time, shiftDAO);
         if (!stores_schedules.containsKey(store)) {
             stores_schedules.put(store, new LinkedList<>());
         }
@@ -154,23 +154,23 @@ public class ShiftController implements HRIntegrator {
         return null;
     }
 
-    public String assign_shift(int id_num, LocalDate date_object, ShiftType shift_type, String store, JobType role) {
+    public String assign_to_shift(int employee_id, LocalDate shift_date, ShiftType shift_type, String store, JobType role) {
         if (!store_exists(store)) {
             return "Store doesn't exists";
         }
-        Schedule schedule = get_schedule(store, date_object);
+        Schedule schedule = get_schedule(store, shift_date);
         if (schedule != null) {
-            return schedule.assign_shift(id_num, date_object, shift_type, role);
+            return schedule.assign_to_shift(employee_id, shift_date, shift_type, role);
         }
         return "No schedule available for that date";
     }
 
-    public String shifts_limit(List<String> certified_stores, int id, LocalDate date_object) {
+    public String shifts_limit(List<String> certified_stores, int employee_id, LocalDate shift_date) {
         int weekly_shifts_num = 0;
         for (String schedule_name: certified_stores) {
-            Schedule schedule = get_schedule(schedule_name, date_object);
+            Schedule schedule = get_schedule(schedule_name, shift_date);
             if (schedule != null) {
-                int num = schedule.shifts_limit(id, date_object);
+                int num = schedule.shifts_limit(employee_id, shift_date);
                 if (num == -1) {
                     return "Employee is already assigned to a shift on this day. 2 shifts in a day isn't allowed.";
                 }
@@ -183,52 +183,52 @@ public class ShiftController implements HRIntegrator {
         return "";
     }
 
-    public String unassign_shift(int id_num, LocalDate date_object, ShiftType shift_type, String store, JobType job) {
+    public String remove_from_shift(int employee_id, LocalDate shift_date, ShiftType shift_type, String store, JobType role) {
         if (!store_exists(store)) {
             return "Store doesn't exists";
         }
-        Schedule schedule = get_schedule(store, date_object);
+        Schedule schedule = get_schedule(store, shift_date);
         if (schedule != null) {
-            return schedule.unassign_shift(id_num, date_object, shift_type, job);
+            return schedule.remove_from_shift(employee_id, shift_date, shift_type, role);
         }
         return "No schedule available for that date";
     }
 
-    public String limit_work(int id_num, LocalDate date_object, ShiftType shift_type, String store) {
+    public String limit_employee(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
         if (!store_exists(store)) {
             return "Store doesn't exists";
         }
-        Schedule schedule = get_schedule(store, date_object);
+        Schedule schedule = get_schedule(store, shift_date);
         if (schedule != null) {
-            return schedule.limit_work(id_num, date_object, shift_type);
+            return schedule.limit_employee(employee_id, shift_date, shift_type);
         }
         return "No schedule available for that date";
     }
 
-    public String remove_worker_limit(int id_num, LocalDate date_object, ShiftType shift_type, String store) {
+    public String remove_employee_limit(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
         if (!store_exists(store)) {
             return "Store doesn't exists";
         }
-        Schedule schedule = get_schedule(store, date_object);
+        Schedule schedule = get_schedule(store, shift_date);
         if (schedule != null) {
-            return schedule.remove_worker_limit(id_num, date_object, shift_type);
+            return schedule.remove_employee_limit(employee_id, shift_date, shift_type);
         }
         return "No schedule available for that date";
     }
 
-    public List<Integer> show_shift_availability(LocalDate date_object, ShiftType shift_type, String store) {
-        Schedule schedule = get_schedule(store, date_object);
+    public List<Integer> show_shift_availability(LocalDate shift_date, ShiftType shift_type, String store) {
+        Schedule schedule = get_schedule(store, shift_date);
         if (schedule != null) {
-            return schedule.show_shift_availability(date_object, shift_type);
+            return schedule.show_shift_availability(shift_date, shift_type);
         }
         return new LinkedList<>();
     }
 
-    public boolean has_future_shifts(List<String> certified_stores, int id_num) {
+    public boolean has_future_shifts(List<String> certified_stores, int employee_id) {
         for (String store: certified_stores) {
             if (stores_schedules.containsKey(store)) {
                 for (Schedule schedule : stores_schedules.get(store)) {
-                    if (schedule.has_future_shifts(LocalDate.now(), id_num)) {
+                    if (schedule.has_future_shifts(LocalDate.now(), employee_id)) {
                         return true;
                     }
                 }
@@ -293,7 +293,7 @@ public class ShiftController implements HRIntegrator {
     }
 
     @Override
-    public boolean assignShifts(String driverId, Timestamp startTime, Timestamp endTime) {
+    public boolean assignDrivers(String driverId, Timestamp startTime, Timestamp endTime) {
         int id_num;
         try {id_num = Integer.parseInt(driverId);} catch (Exception exception) {return false;}
         LocalDateTime localDateTime = startTime.toLocalDateTime();
@@ -373,10 +373,10 @@ public class ShiftController implements HRIntegrator {
         return weeksMap;
     }
 
-    public String cancel_product(int id, int product_id_num, LocalDate date_object, ShiftType type, String store) {
-        Schedule schedule = get_schedule(store, date_object);
+    public String cancel_product(int employee_id, int product_id, LocalDate shift_date, ShiftType shift_type, String store) {
+        Schedule schedule = get_schedule(store, shift_date);
         if (schedule != null) {
-            return schedule.cancel_product(id, product_id_num, date_object, type);
+            return schedule.cancel_product(employee_id, product_id, shift_date, shift_type);
         }
         return "There isn't a schedule for that date";
     }

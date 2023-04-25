@@ -21,289 +21,289 @@ public class EmployeeController {
         employeeDAO = new EmployeeDAO();
     }
 
-    public String login(int id, String password) {
-        if (!login_info.containsKey(id)) {
+    public String login(int employee_id, String password) {
+        if (!login_info.containsKey(employee_id)) {
             return "User doesn't exists";
         }
-        if (!login_info.get(id).equals(password)) {
+        if (!login_info.get(employee_id).equals(password)) {
             return "Password is wrong";
         }
-        if (is_loggedIn(id)) {
+        if (is_loggedIn(employee_id)) {
             return "User already logged in";
         }
-        logged_in.add(id);
+        logged_in.add(employee_id);
         return "";
     }
 
-    public String logout(int id) {
-        if (!login_info.containsKey(id)) {
+    public String logout(int employee_id) {
+        if (!login_info.containsKey(employee_id)) {
             return "User doesn't exists";
         }
-        if (!is_loggedIn(id)) {
+        if (!is_loggedIn(employee_id)) {
             return "User already logged out";
         }
-        logged_in.remove(Integer.valueOf(id));
+        logged_in.remove(Integer.valueOf(employee_id));
         return "";
     }
 
 
-    public boolean is_loggedIn(int id) {
-        return logged_in.contains(id);
+    public boolean is_loggedIn(int employee_id) {
+        return logged_in.contains(employee_id);
     }
 
-    public List<String> get_certified_stores(Integer id) {
-        return employees.get(id).get_stores();
+    public List<String> get_certified_stores(Integer employee_id) {
+        return employees.get(employee_id).get_stores();
     }
 
-    public String add_employee(Integer id, int id_num, String name, int bank_account_num, int salary_num, String terms_of_employment, LocalDate date_object, String family_status, boolean student, String password) {
-        if (!is_HRManager(id)) {
+    public String add_employee(Integer hr_id, int employee_id, String name, int bank_account_num, double salary_num, String terms_of_employment, LocalDate date_object, FamilyStatus family_status, boolean student, String password) {
+        if (!is_HRManager(hr_id)) {
             return "User is not an HR manager";
         }
-        if (employees.containsKey(id_num)) {
+        if (employees.containsKey(employee_id)) {
             return "Employee already exists";
         }
-        if (!is_loggedIn(id)) {
+        if (!is_loggedIn(hr_id)) {
             return "User not logged in currently";
         }
-        String res = employeeDAO.add_employee(id_num, name, bank_account_num, salary_num, terms_of_employment, date_object, family_status, student, password);
+        String res = employeeDAO.add_employee(employee_id, name, bank_account_num, salary_num, terms_of_employment, date_object, family_status, student, password);
         if (res.equals("")) {
-            employees.put(id_num, new Employee(id_num, name, bank_account_num, salary_num, terms_of_employment, date_object, family_status, student, this.employeeDAO));
-            login_info.put(id_num, password);
+            employees.put(employee_id, new Employee(employee_id, name, bank_account_num, salary_num, terms_of_employment, date_object, family_status, student, this.employeeDAO));
+            login_info.put(employee_id, password);
             return res;
         }
         return res;
     }
 
-    public boolean is_HRManager(int id) {
-        if (!employees.containsKey(id)) {
+    public boolean is_HRManager(int employee_id) {
+        if (!employees.containsKey(employee_id)) {
             return false;
         }
-        return employees.get(id).is_HR();
+        return employees.get(employee_id).is_HR();
     }
 
-    public String remove_employee(Integer id, int id_num) {
-        if (!is_HRManager(id)) {
-            return "User is not an HR manager";
-        }
-        if (!employees.containsKey(id_num)) {
-            return "Employee doesn't exists";
-        }
-        if (!is_loggedIn(id)) {
-            return "User not logged in currently";
-        }
-        String res = employeeDAO.remove_employee(id_num);
-        if (res.equals("")) {
-            employees.remove(id_num);
-            login_info.remove(id_num);
-            return res;
-        }
-        return res;
-    }
-
-    public String certify_role(Integer id, int id_num, JobType role) {
-        if (!is_HRManager(id)) {
-            return "User is not an HR manager";
-        }
-        if (!employees.containsKey(id_num)) {
-            return "Employee doesn't exists";
-        }
-        if (!is_loggedIn(id)) {
-            return "User not logged in currently";
-        }
-        return employees.get(id_num).certify_role(role);
-    }
-
-    public String remove_role(Integer id, int id_num, JobType job) {
-        if (!is_HRManager(id)) {
-            return "User is not an HR manager";
-        }
-        if (!employees.containsKey(id_num)) {
-            return "Employee doesn't exists";
-        }
-        if (!is_loggedIn(id)) {
-            return "User not logged in currently";
-        }
-        return employees.get(id_num).remove_role(job);
-    }
-
-    public String assign_to_store(Integer id, int id_num, String store) {
-        if (!is_HRManager(id)) {
-            return "User is not an HR manager";
-        }
-        if (!employees.containsKey(id_num)) {
-            return "Employee doesn't exists";
-        }
-        if (!is_loggedIn(id)) {
-            return "User not logged in currently";
-        }
-        return employees.get(id_num).assign_to_store(store);
-    }
-
-    public String unassign_to_store(Integer id, int id_num, String store) {
-        if (!is_HRManager(id)) {
-            return "User is not an HR manager";
-        }
-        if (!employees.containsKey(id_num)) {
-            return "Employee doesn't exists";
-        }
-        if (!is_loggedIn(id)) {
-            return "User not logged in currently";
-        }
-        return employees.get(id_num).unassign_to_store(store);
-    }
-
-    public boolean is_certified_to_role(int id_num, JobType role) {
-        return employees.get(id_num).is_certified_to_role(role);
-    }
-
-    public boolean is_certified_to_store(int id_num, String store) {
-        return employees.get(id_num).is_certified_to_store(store);
-    }
-
-    public List<JobType> get_certified_roles(Integer id) {
-        return employees.get(id).get_roles();
-    }
-
-    public String get_name(Integer id) {
-        return employees.get(id).get_name();
-    }
-
-    public String change_name(Integer this_id, String old_name, String new_name) {
-        if (!is_loggedIn(this_id)) {
-            return "User not logged in currently";
-        }
-        return employees.get(this_id).change_name(old_name, new_name);
-    }
-
-    public String change_bank_account(Integer this_id, Integer old_bank_account, Integer new_bank_account) {
-        if (!is_loggedIn(this_id)) {
-            return "User not logged in currently";
-        }
-        return employees.get(this_id).change_bank_account(old_bank_account, new_bank_account);
-    }
-
-    public String change_family_status(Integer this_id, String old_family_status, String new_family_status) {
-        if (!is_loggedIn(this_id)) {
-            return "User not logged in currently";
-        }
-        return employees.get(this_id).change_family_status(old_family_status, new_family_status);
-    }
-
-    public String change_student(Integer this_id, boolean old_student_status, boolean new_student_status) {
-        if (!is_loggedIn(this_id)) {
-            return "User not logged in currently";
-        }
-        return employees.get(this_id).change_student(old_student_status, new_student_status);
-    }
-
-    public String change_employee_salary(Integer this_id, Integer employee_id, Integer old_salary, Integer new_salary) {
-        if (!is_HRManager(this_id)) {
+    public String remove_employee(Integer hr_id, int employee_id) {
+        if (!is_HRManager(hr_id)) {
             return "User is not an HR manager";
         }
         if (!employees.containsKey(employee_id)) {
             return "Employee doesn't exists";
         }
-        if (!is_loggedIn(this_id)) {
+        if (!is_loggedIn(hr_id)) {
+            return "User not logged in currently";
+        }
+        String res = employeeDAO.remove_employee(employee_id);
+        if (res.equals("")) {
+            employees.remove(employee_id);
+            login_info.remove(employee_id);
+            return res;
+        }
+        return res;
+    }
+
+    public String certify_role(Integer hr_id, int employee_id, JobType role) {
+        if (!is_HRManager(hr_id)) {
+            return "User is not an HR manager";
+        }
+        if (!employees.containsKey(employee_id)) {
+            return "Employee doesn't exists";
+        }
+        if (!is_loggedIn(hr_id)) {
+            return "User not logged in currently";
+        }
+        return employees.get(employee_id).certify_role(role);
+    }
+
+    public String remove_role(Integer hr_id, int employee_id, JobType job) {
+        if (!is_HRManager(hr_id)) {
+            return "User is not an HR manager";
+        }
+        if (!employees.containsKey(employee_id)) {
+            return "Employee doesn't exists";
+        }
+        if (!is_loggedIn(hr_id)) {
+            return "User not logged in currently";
+        }
+        return employees.get(employee_id).remove_role(job);
+    }
+
+    public String assign_to_store(Integer hr_id, int employee_id, String store) {
+        if (!is_HRManager(hr_id)) {
+            return "User is not an HR manager";
+        }
+        if (!employees.containsKey(employee_id)) {
+            return "Employee doesn't exists";
+        }
+        if (!is_loggedIn(hr_id)) {
+            return "User not logged in currently";
+        }
+        return employees.get(employee_id).assign_to_store(store);
+    }
+
+    public String remove_from_store(Integer hr_id, int employee_id, String store) {
+        if (!is_HRManager(hr_id)) {
+            return "User is not an HR manager";
+        }
+        if (!employees.containsKey(employee_id)) {
+            return "Employee doesn't exists";
+        }
+        if (!is_loggedIn(hr_id)) {
+            return "User not logged in currently";
+        }
+        return employees.get(employee_id).remove_from_store(store);
+    }
+
+    public boolean is_certified_to_role(int employee_id, JobType role) {
+        return employees.get(employee_id).is_certified_to_role(role);
+    }
+
+    public boolean is_certified_to_store(int employee_id, String store) {
+        return employees.get(employee_id).is_certified_to_store(store);
+    }
+
+    public List<JobType> get_certified_roles(Integer employee_id) {
+        return employees.get(employee_id).get_roles();
+    }
+
+    public String get_name(Integer employee_id) {
+        return employees.get(employee_id).get_name();
+    }
+
+    public String change_name(Integer employee_id, String old_name, String new_name) {
+        if (!is_loggedIn(employee_id)) {
+            return "User not logged in currently";
+        }
+        return employees.get(employee_id).change_name(old_name, new_name);
+    }
+
+    public String change_bank_account(Integer employee_id, Integer old_bank_account, Integer new_bank_account) {
+        if (!is_loggedIn(employee_id)) {
+            return "User not logged in currently";
+        }
+        return employees.get(employee_id).change_bank_account(old_bank_account, new_bank_account);
+    }
+
+    public String change_family_status(Integer employee_id, FamilyStatus old_family_status, FamilyStatus new_family_status) {
+        if (!is_loggedIn(employee_id)) {
+            return "User not logged in currently";
+        }
+        return employees.get(employee_id).change_family_status(old_family_status, new_family_status);
+    }
+
+    public String change_student(Integer employee_id, boolean old_student_status, boolean new_student_status) {
+        if (!is_loggedIn(employee_id)) {
+            return "User not logged in currently";
+        }
+        return employees.get(employee_id).change_student(old_student_status, new_student_status);
+    }
+
+    public String change_employee_salary(Integer hr_id, Integer employee_id, double old_salary, double new_salary) {
+        if (!is_HRManager(hr_id)) {
+            return "User is not an HR manager";
+        }
+        if (!employees.containsKey(employee_id)) {
+            return "Employee doesn't exists";
+        }
+        if (!is_loggedIn(hr_id)) {
             return "User not logged in currently";
         }
         return employees.get(employee_id).change_employee_salary(old_salary, new_salary);
     }
 
-    public String change_employee_terms(Integer this_id, Integer employee_id, String new_terms) {
-        if (!is_HRManager(this_id)) {
+    public String change_employee_terms(Integer hr_id, Integer employee_id, String new_terms) {
+        if (!is_HRManager(hr_id)) {
             return "User is not an HR manager";
         }
         if (!employees.containsKey(employee_id)) {
             return "Employee doesn't exists";
         }
-        if (!is_loggedIn(this_id)) {
+        if (!is_loggedIn(hr_id)) {
             return "User not logged in currently";
         }
         return employees.get(employee_id).change_employee_terms(new_terms);
     }
 
-    public String unassign_all_from_store(int id_num, String store) {
-        if (!is_HRManager(id_num)) {
+    public String unassign_all_from_store(int hr_id, String store) {
+        if (!is_HRManager(hr_id)) {
             return "User is not an HR manager";
         }
-        if (!is_loggedIn(id_num)) {
+        if (!is_loggedIn(hr_id)) {
             return "User not logged in currently";
         }
         for (Integer id: employees.keySet()) {
             if (employees.get(id).is_certified_to_store(store)) {
-                employees.get(id).unassign_to_store(store);
+                employees.get(id).remove_from_store(store);
             }
         }
         return "";
     }
 
-    public void add_hours_to_employee(int id_num, double hours) {
-        employees.get(id_num).add_hours(hours);
+    public void add_hours_to_employee(int employee_id, double hours) {
+        employees.get(employee_id).add_hours(hours);
     }
 
-    public void remove_hours_from_employee(int id_num, double hours) {
-        employees.get(id_num).remove_hours(hours);
+    public void remove_hours_from_employee(int employee_id, double hours) {
+        employees.get(employee_id).remove_hours(hours);
     }
 
-    public String confirm_monthly_salary(int this_id, int id_num, int bonus_num) {
-        if (!is_HRManager(this_id)) {
+    public String confirm_monthly_salary(int hr_id, int employee_id, double bonus_num) {
+        if (!is_HRManager(hr_id)) {
             return "User is not an HR manager";
         }
-        if (!employees.containsKey(id_num)) {
+        if (!employees.containsKey(employee_id)) {
             return "Employee doesn't exists";
         }
-        if (!is_loggedIn(this_id)) {
+        if (!is_loggedIn(hr_id)) {
             return "User not logged in currently";
         }
-        return employees.get(id_num).confirm_monthly_salary(bonus_num);
+        return employees.get(employee_id).confirm_monthly_salary(bonus_num);
     }
 
-    public String show_personal_info(Integer id) {
-        if (!employees.containsKey(id)) {
+    public String show_personal_info(Integer employee_id) {
+        if (!employees.containsKey(employee_id)) {
             return "Employee doesn't exists";
         }
-        if (!is_loggedIn(id)) {
+        if (!is_loggedIn(employee_id)) {
             return "User not logged in currently";
         }
-        return employees.get(id).show_personal_info();
+        return employees.get(employee_id).show_personal_info();
     }
 
-    public String show_role_certifications(Integer id) {
-        if (!employees.containsKey(id)) {
+    public String show_role_certifications(Integer employee_id) {
+        if (!employees.containsKey(employee_id)) {
             return "Employee doesn't exists";
         }
-        if (!is_loggedIn(id)) {
+        if (!is_loggedIn(employee_id)) {
             return "User not logged in currently";
         }
-        return employees.get(id).show_role_certifications();
+        return employees.get(employee_id).show_role_certifications();
     }
 
-    public String show_assigned_stores(Integer id) {
-        if (!employees.containsKey(id)) {
+    public String show_assigned_stores(Integer employee_id) {
+        if (!employees.containsKey(employee_id)) {
             return "Employee doesn't exists";
         }
-        if (!is_loggedIn(id)) {
+        if (!is_loggedIn(employee_id)) {
             return "User not logged in currently";
         }
-        return employees.get(id).show_assigned_stores();
+        return employees.get(employee_id).show_assigned_stores();
     }
 
-    public String show_current_salary(Integer id) {
-        if (!employees.containsKey(id)) {
+    public String show_current_salary(Integer employee_id) {
+        if (!employees.containsKey(employee_id)) {
             return "Employee doesn't exists";
         }
-        if (!is_loggedIn(id)) {
+        if (!is_loggedIn(employee_id)) {
             return "User not logged in currently";
         }
-        return employees.get(id).show_current_salary();
+        return employees.get(employee_id).show_current_salary();
     }
 
-    public void add_hr(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, LocalDate employment_date, String family_status, boolean is_student, String password) {
-        employeeDAO.add_employee(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password);
-        Employee employee = new Employee(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, this.employeeDAO);
+    public void add_hr(Integer employee_id, String name, Integer bank_account, double salary, String terms_of_employment, LocalDate employment_date, FamilyStatus family_status, boolean is_student, String password) {
+        employeeDAO.add_employee(employee_id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password);
+        Employee employee = new Employee(employee_id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, this.employeeDAO);
         employee.certify_role(JobType.HRMANAGER);
-        employees.put(id, employee);
-        login_info.put(id, password);
+        employees.put(employee_id, employee);
+        login_info.put(employee_id, password);
     }
 
     public String show_employees(int hr_id) {
@@ -316,7 +316,13 @@ public class EmployeeController {
         return output.toString();
     }
 
-    public String show_employee_info(int employee_id) {
+    public String show_employee_info(Integer hr_id, int employee_id) {
+        if (!is_HRManager(hr_id)) {
+            return "User is not an HR manager";
+        }
+        if (!is_loggedIn(hr_id)) {
+            return "User not logged in currently";
+        }
         if (!employees.containsKey(employee_id)) {
             return "Employee doesn't exist";
         }
@@ -346,46 +352,46 @@ public class EmployeeController {
         return null;
     }
 
-    public boolean is_ShiftManager(int id) {
-        return employees.get(id).is_shift_manager();
+    public boolean is_ShiftManager(int employee_id) {
+        return employees.get(employee_id).is_shift_manager();
     }
 
 
     //Tests functions:
-    public boolean employee_exists(int id) {
-        return employees.containsKey(id);
+    public boolean employee_exists(int employee_id) {
+        return employees.containsKey(employee_id);
     }
 
-    public boolean employee_logged_in(int id) {
-        return logged_in.contains(id);
+    public boolean employee_logged_in(int employee_id) {
+        return logged_in.contains(employee_id);
     }
 
-    public double get_employee_salary(int id) {
-        return employees.get(id).get_salary();
+    public double get_employee_salary(int employee_id) {
+        return employees.get(employee_id).get_salary();
     }
 
-    public String get_employee_name(int id) {
-        return employees.get(id).get_name();
+    public String get_employee_name(int employee_id) {
+        return employees.get(employee_id).get_name();
     }
 
-    public int get_employee_bank_account(int id) {
-        return employees.get(id).get_bank();
+    public int get_employee_bank_account(int employee_id) {
+        return employees.get(employee_id).get_bank();
     }
 
-    public String get_employee_family_status(int id) {
-        return employees.get(id).get_family_status();
+    public FamilyStatus get_employee_family_status(int employee_id) {
+        return employees.get(employee_id).get_family_status();
     }
 
-    public boolean get_employee_student_status(int id) {
-        return employees.get(id).get_student();
+    public boolean get_employee_student_status(int employee_id) {
+        return employees.get(employee_id).get_student();
     }
 
-    public String get_employee_terms(int id) {
-        return employees.get(id).get_terms();
+    public String get_employee_terms(int employee_id) {
+        return employees.get(employee_id).get_terms();
     }
 
-    public boolean assigned_to_store(int id, String store) {
-        return employees.get(id).is_certified_to_store(store);
+    public boolean assigned_to_store(int employee_id, String store) {
+        return employees.get(employee_id).is_certified_to_store(store);
     }
 
     public double get_monthly_salary(int manager_id, int employee_id) {

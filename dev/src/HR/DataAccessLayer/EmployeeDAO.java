@@ -1,6 +1,7 @@
 package HR.DataAccessLayer;
 
 import HR.BusinessLayer.Employee;
+import HR.BusinessLayer.FamilyStatus;
 import HR.BusinessLayer.JobType;
 
 import java.sql.SQLException;
@@ -48,7 +49,7 @@ public class EmployeeDAO {
             Integer student = (Integer) personalDetails.get("isStudent");
             boolean is_student = student.equals(1);
             double current_monthly_salary = (Double) personalDetails.get("currentSalary");
-            Employee employee = new Employee(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, this);
+            Employee employee = new Employee(id, name, bank_account, salary, terms_of_employment, employment_date, FamilyStatus.valueOf(family_status), is_student, this);
             List<HashMap<String, Object>> rolesSet = conn.executeQuery("SELECT jobType FROM Roles WHERE id = ?", id);
             List<HashMap<String, Object>> stores = conn.executeQuery("SELECT * FROM Stores WHERE id = ?", id);
             reconstructEmployeeStores(employee, stores);
@@ -78,22 +79,22 @@ public class EmployeeDAO {
         }
     }
 
-    public String add_employee(int id_num, String name, int bank_account_num, double salary_num, String terms_of_employment, LocalDate date_object, String family_status, boolean student, String password) {
+    public String add_employee(int employee_id, String name, int bank_account, double salary, String terms_of_employment, LocalDate shift_date, FamilyStatus family_status, boolean student, String password) {
         try{
             int student_index = 0;
             if (student) {
                 student_index = 1;
             }
-            conn.executeUpdate("INSERT INTO Employees (id, name, password, salary, termsOfEmployment, familyStatus, isStudent, bankAccount, employmentDate, currentSalary) VALUES(?,?,?,?,?,?,?,?,?,?)",id_num, name, password, salary_num, terms_of_employment, family_status, student_index, bank_account_num, date_object, 0);
+            conn.executeUpdate("INSERT INTO Employees (id, name, password, salary, termsOfEmployment, familyStatus, isStudent, bankAccount, employmentDate, currentSalary) VALUES(?,?,?,?,?,?,?,?,?,?)",employee_id, name, password, salary, terms_of_employment, family_status.toString(), student_index, bank_account, shift_date, 0);
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id_num + " is already registered in the system";
+            return "Employee with id " + employee_id + " is already registered in the system";
         }
     }
 
-    public String remove_employee(int id_num) {
+    public String remove_employee(int employee_id) {
         try {
-            conn.executeUpdate("DELETE FROM Employees WHERE id = " + id_num);
+            conn.executeUpdate("DELETE FROM Employees WHERE id = " + employee_id);
             return "";
         }
         catch (SQLException e){
@@ -101,96 +102,96 @@ public class EmployeeDAO {
         }
     }
 
-    public String certify_role(Integer id, String job) {
+    public String certify_role(Integer employee_id, String role) {
         try{
-            conn.executeUpdate("INSERT INTO Roles (id, jobType) VALUES(?,?)", id, job);
+            conn.executeUpdate("INSERT INTO Roles (id, jobType) VALUES(?,?)", employee_id, role);
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id + " is already certified to this role";
+            return "Employee with id " + employee_id + " is already certified to this role";
         }
     }
 
 
-    public String remove_role(Integer id, String job) {
+    public String remove_role(Integer employee_id, String role) {
         try{
-            conn.executeUpdate("DELETE FROM Roles WHERE id = " + id + " AND jobType = '" + job + "'");
+            conn.executeUpdate("DELETE FROM Roles WHERE id = " + employee_id + " AND jobType = '" + role + "'");
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id + " isn't certified to this role";
+            return "Employee with id " + employee_id + " isn't certified to this role";
         }
     }
 
-    public String certify_store(Integer id, String store) {
+    public String assign_to_store(Integer employee_id, String store) {
         try{
-            conn.executeUpdate("INSERT INTO Stores (id, store) VALUES(?,?)", id, store);
+            conn.executeUpdate("INSERT INTO Stores (id, store) VALUES(?,?)", employee_id, store);
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id + " is already certified to this store";
+            return "Employee with id " + employee_id + " is already certified to this store";
         }
     }
 
 
-    public String remove_store(Integer id, String store) {
+    public String remove_from_store(Integer employee_id, String store) {
         try{
-            conn.executeUpdate("DELETE FROM Stores WHERE id = " + id + " AND store = '" + store + "'");
+            conn.executeUpdate("DELETE FROM Stores WHERE id = " + employee_id + " AND store = '" + store + "'");
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id + " isn't certified to this store";
+            return "Employee with id " + employee_id + " isn't certified to this store";
         }
     }
 
-    public String change_name(Integer id, String new_name) {
+    public String change_name(Integer employee_id, String new_name) {
         try{
-            conn.executeUpdate("UPDATE Employees SET name = '" + new_name + "' WHERE id = " + id);
-            return "";
-        } catch (SQLException e) {
-            return "Couldn't update the data base";
-        }
-    }
-
-    public String change_bank_account(Integer id, Integer new_bank_account) {
-        try{
-            conn.executeUpdate("UPDATE Employees SET bankAccount = " + new_bank_account + " WHERE id = " + id);
+            conn.executeUpdate("UPDATE Employees SET name = '" + new_name + "' WHERE id = " + employee_id);
             return "";
         } catch (SQLException e) {
             return "Couldn't update the data base";
         }
     }
 
-    public String change_family_status(Integer id, String new_family_status) {
+    public String change_bank_account(Integer employee_id, Integer new_bank_account) {
         try{
-            conn.executeUpdate("UPDATE Employees SET familyStatus = '" + new_family_status + "' WHERE id = " + id);
+            conn.executeUpdate("UPDATE Employees SET bankAccount = " + new_bank_account + " WHERE id = " + employee_id);
             return "";
         } catch (SQLException e) {
             return "Couldn't update the data base";
         }
     }
 
-    public String change_student(Integer id, boolean new_student_status) {
+    public String change_family_status(Integer employee_id, FamilyStatus new_family_status) {
+        try{
+            conn.executeUpdate("UPDATE Employees SET familyStatus = '" + new_family_status.toString() + "' WHERE id = " + employee_id);
+            return "";
+        } catch (SQLException e) {
+            return "Couldn't update the data base";
+        }
+    }
+
+    public String change_student(Integer employee_id, boolean new_student_status) {
         int student = 0;
         if (new_student_status) {
             student = 1;
         }
         try{
-            conn.executeUpdate("UPDATE Employees SET isStudent = " + student + " WHERE id = " + id);
+            conn.executeUpdate("UPDATE Employees SET isStudent = " + student + " WHERE id = " + employee_id);
             return "";
         } catch (SQLException e) {
             return "Couldn't update the data base";
         }
     }
 
-    public String change_employee_salary(Integer id, Integer new_salary) {
+    public String change_employee_salary(Integer employee_id, double new_salary) {
         try{
-            conn.executeUpdate("UPDATE Employees SET salary = " + new_salary + " WHERE id = " + id);
+            conn.executeUpdate("UPDATE Employees SET salary = " + new_salary + " WHERE id = " + employee_id);
             return "";
         } catch (SQLException e) {
             return "Couldn't update the data base";
         }
     }
 
-    public String change_employee_terms(Integer id, String new_terms) {
+    public String change_employee_terms(Integer employee_id, String new_terms) {
         try{
-            conn.executeUpdate("UPDATE Employees SET termsOfEmployment = '" + new_terms + "' WHERE id = " + id);
+            conn.executeUpdate("UPDATE Employees SET termsOfEmployment = '" + new_terms + "' WHERE id = " + employee_id);
             return "";
         } catch (SQLException e) {
             return "Couldn't update the data base";

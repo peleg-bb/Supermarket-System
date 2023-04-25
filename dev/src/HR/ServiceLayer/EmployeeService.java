@@ -1,12 +1,12 @@
 package HR.ServiceLayer;
 
 import HR.BusinessLayer.Facade;
+import HR.BusinessLayer.FamilyStatus;
 import HR.BusinessLayer.JobType;
 import HR.BusinessLayer.ShiftType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class EmployeeService {
 
@@ -17,59 +17,62 @@ public class EmployeeService {
         facade = new Facade();
     }
 
-    public Response add_availability(String date, String shift_type, String store) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        return new Response(facade.add_availability(id, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
+    /**
+     * An employee's function to add an availability to a specified shift
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return Response object with an error message if occurred
+     */
+    public Response add_availability(LocalDate shift_date, ShiftType shift_type, String store) {
+        return new Response(facade.add_availability(id, shift_date, shift_type, store));
+    }
+    /**
+     * An employee's function to remove an availability from a specified shift
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return Response object with an error message if occurred
+     */
+    public Response remove_availability(LocalDate shift_date, ShiftType shift_type, String store) {
+        return new Response(facade.remove_availability(id, shift_date, shift_type, store));
     }
 
-    public Response remove_availability(String date, String shift_type, String store) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        return new Response(facade.remove_availability(id, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
-    }
-
+    /**
+     * An employee's function to show its availability
+     * @return Response object with the employee's availability / an error message if occurred
+     */
     public Response get_availability() {
         return new Response(facade.get_availability(id));
     }
 
+    /**
+     * An employee's function to show its shifts
+     * @return Response object with the employee's shifts / an error message if occurred
+     */
     public Response get_shifts() {
         return new Response(facade.get_shifts(id));
     }
 
-    public Response login(String id, String password) {
-        try {
-            int id_num = Integer.parseInt(id);
-            Response response = new Response(facade.login(id_num, password));
-            if (response.errorOccurred()) {
-                return response;
-            }
-            this.id = id_num;
+    /**
+     * An employee's function to log-in into the HR system
+     * @param id Employee's id
+     * @param password Employee's password
+     * @return Response object with an error message if occurred
+     */
+    public Response login(int id, String password) {
+        Response response = new Response(facade.login(id, password));
+        if (response.errorOccurred()) {
             return response;
         }
-        catch (Exception exception) {
-            return new Response("Invalid id");
-        }
+        this.id = id;
+        return response;
     }
 
+    /**
+     * An employee's function to log-out of the HR system
+     * @return Response object with an error message if occurred
+     */
     public Response logout() {
         try {
             Response response = new Response(facade.logout(this.id));
@@ -84,309 +87,348 @@ public class EmployeeService {
         }
     }
 
-    public Response add_employee(String id, String name, String bank_account, String salary, String terms_of_employment, String employment_date, String family_status, String is_student, String password) {
-        int id_num, bank_account_num, salary_num;
-        LocalDate date_object;
-        boolean student;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        try {bank_account_num = Integer.parseInt(bank_account);} catch (Exception exception) {return new Response("Invalid bank account");}
-        try {salary_num = Integer.parseInt(salary);} catch (Exception exception) {return new Response("Invalid salary");}
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(employment_date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        student = is_student.equalsIgnoreCase("yes");
-        if (!name.matches("^[a-zA-Z ]+$")) {
-            return new Response("Invalid name");
-        }
-        return new Response(facade.add_employee(this.id, id_num, name, bank_account_num, salary_num, terms_of_employment, date_object, family_status, student, password));
+    /**
+     * An HR Manager's function to add a new employee to the system
+     * @param employee_id Employee's id
+     * @param name Employee's name
+     * @param bank_account Employee's bank account number
+     * @param salary Employee's salary
+     * @param terms_of_employment Employee's terms of employment
+     * @param employment_date Employee's date of employment (dd-mm-yyyy)
+     * @param family_status Employee's family status (MARRIED, DIVORCED, WIDOWED, SINGLE)
+     * @param is_student Employee's student indicator (true, false)
+     * @param password Employee's password to HR system
+     * @return Response object with an error message if occurred
+     */
+    public Response add_employee(int employee_id, String name, int bank_account, double salary, String terms_of_employment, LocalDate employment_date, FamilyStatus family_status, boolean is_student, String password) {
+        return new Response(facade.add_employee(this.id, employee_id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password));
     }
 
-    public Response remove_employee(String id) {
-        int id_num;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        return new Response(facade.remove_employee(this.id, id_num));
+    /**
+     * An HR Manager's function to remove an existing employee from the system
+     * @param employee_id Employee's id
+     * @return Response object with an error message if occurred
+     */
+    public Response remove_employee(int employee_id) {
+        return new Response(facade.remove_employee(this.id, employee_id));
     }
 
-    public Response certify_role(String id, String role) {
-        int id_num;
-        JobType job;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        try {job = JobType.valueOf(role.toUpperCase()); } catch (Exception exception) {return new Response("Invalid role");}
-        return new Response(facade.certify_role(this.id, id_num, job));
+    /**
+     * An HR Manager's function to certify an employee to a specified role
+     * @param employee_id Employee's id
+     * @param role Added role
+     * @return Response object with an error message if occurred
+     */
+    public Response certify_role(int employee_id, JobType role) {
+        return new Response(facade.certify_role(this.id, employee_id, role));
     }
 
-    public Response remove_role(String id, String role) {
-        int id_num;
-        JobType job;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        try {job = JobType.valueOf(role.toUpperCase()); } catch (Exception exception) {return new Response("Invalid role");}
-        return new Response(facade.remove_role(this.id, id_num, job));
+    /**
+     * An HR Manager's function to remove a role certification from an employee
+     * @param employee_id Employee's id
+     * @param role Removed role
+     * @return Response object with an error message if occurred
+     */
+    public Response remove_role(int employee_id, JobType role) {
+        return new Response(facade.remove_role(this.id, employee_id, role));
     }
 
-    public Response assign_to_store(String id, String store) {
-        int id_num;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        return new Response(facade.assign_to_store(this.id, id_num, store));
+    /**
+     * An HR Manager's function to assign an employee to a store
+     * @param employee_id Employee's id
+     * @param store Assigned store's name
+     * @return Response object with an error message if occurred
+     */
+    public Response assign_to_store(int employee_id, String store) {
+        return new Response(facade.assign_to_store(this.id, employee_id, store));
     }
 
-    public Response unassign_to_store(String id, String store) {
-        int id_num;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        return new Response(facade.unassign_to_store(this.id, id_num, store));
+    /**
+     * An HR Manager's function to remove an employee from a store
+     * @param employee_id Employee's id
+     * @param store Removed store's name
+     * @return Response object with an error message if occurred
+     */
+    public Response remove_from_store(int employee_id, String store) {
+        return new Response(facade.remove_from_store(this.id, employee_id, store));
     }
 
+    /**
+     * An HR Manager's function to create a new store
+     * @param store Created store's name
+     * @return Response object with an error message if occurred
+     */
     public Response create_store(String store) {
         return new Response(facade.create_store(this.id, store));
     }
 
+    /**
+     * An HR Manager's function to remove an existing store
+     * @param store Created store's name
+     * @return Response object with an error message if occurred
+     */
     public Response remove_store(String store) {
         return new Response(facade.remove_store(this.id, store));
     }
 
-    public Response confirm_shift(String date, String shift_type, String store) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        return new Response(facade.confirm_shift(this.id, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
+    /**
+     * An HR Manager's function to confirm a shift (shift has a shift manager)
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return Response object with an error message if occurred
+     */
+    public Response confirm_shift(LocalDate shift_date, ShiftType shift_type, String store) {
+        return new Response(facade.confirm_shift(this.id, shift_date, shift_type, store));
     }
 
-    public Response create_weekly_schedule(String first_day, String store, String morn_start, String morn_end, String eve_start, String eve_end) {
-        LocalDate date_object;
-        LocalTime morning_start, morning_end, evening_start, evening_end;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(first_day, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-            morning_start = LocalTime.parse(morn_start, formatter);
-            morning_end = LocalTime.parse(morn_end, formatter);
-            evening_start = LocalTime.parse(eve_start, formatter);
-            evening_end = LocalTime.parse(eve_end, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid shifts time");
-        }
-
-        return new Response(facade.create_weekly_schedule(this.id, date_object, store, morning_start, morning_end, evening_start, evening_end));
+    /**
+     * An HR Manager's function to create a weekly schedule for a specified store - a 7 days schedule
+     * @param week_start_date Schedule's first day's date
+     * @param store Store's name
+     * @param morning_start_time Morning shift's starting time
+     * @param morning_end_time Morning shift's ending time
+     * @param evening_start_time Evening shift's starting time
+     * @param evening_end_time Evening shift's ending time
+     * @return Response object with an error message if occurred
+     */
+    public Response create_weekly_schedule(LocalDate week_start_date, String store, LocalTime morning_start_time, LocalTime morning_end_time, LocalTime evening_start_time, LocalTime evening_end_time) {
+        return new Response(facade.create_weekly_schedule(this.id, week_start_date, store, morning_start_time, morning_end_time, evening_start_time, evening_end_time));
     }
 
-    public Response assign_shift(String id, String date, String shift_type, String store, String role) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        int id_num;
-        JobType job;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        try {job = JobType.valueOf(role.toUpperCase()); } catch (Exception exception) {return new Response("Invalid role");}
-        return new Response(facade.assign_shift(this.id, id_num, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store, job));
+    /**
+     * An HR Manager's function to assign an employee to a specified shift
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @param role Assigned role
+     * @return Response object with an error message if occurred
+     */
+    public Response assign_to_shift(int employee_id, LocalDate shift_date, ShiftType shift_type, String store, JobType role) {
+        return new Response(facade.assign_to_shift(this.id, employee_id, shift_date, shift_type, store, role));
     }
 
-    public Response unassign_shift(String id, String date, String shift_type, String store, String role) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        int id_num;
-        JobType job;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        try {job = JobType.valueOf(role.toUpperCase()); } catch (Exception exception) {return new Response("Invalid role");}
-        return new Response(facade.unassign_shift(this.id, id_num, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store, job));
+    /**
+     * An HR Manager's function to remove an employee from a specified shift
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @param role Assigned role
+     * @return Response object with an error message if occurred
+     */
+    public Response remove_from_shift(int employee_id, LocalDate shift_date, ShiftType shift_type, String store, JobType role) {
+        return new Response(facade.remove_from_shift(this.id, employee_id, shift_date, shift_type, store, role));
     }
 
-    public Response limit_work(String id, String date, String shift_type, String store) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        int id_num;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        return new Response(facade.limit_work(this.id, id_num, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
+    /**
+     * An HR Manager's function to limit an employee's work on a specified shift
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return Response object with an error message if occurred
+     */
+    public Response limit_employee(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
+        return new Response(facade.limit_employee(this.id, employee_id, shift_date, shift_type, store));
     }
 
-    public Response remove_worker_limit(String id, String date, String shift_type, String store) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        int id_num;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        return new Response(facade.remove_worker_limit(this.id, id_num, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
+    /**
+     * An HR Manager's function to remove an employee's work limit from a specified shift
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return Response object with an error message if occurred
+     */
+    public Response remove_employee_limit(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
+        return new Response(facade.remove_employee_limit(this.id, employee_id, shift_date, shift_type, store));
     }
 
-    public Response show_shift_availability(String date, String shift_type, String store) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        return new Response(facade.show_shift_availability(this.id, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
+    /**
+     * An HR Manager's function to show a list of shift available employees
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return Response object with a list of shift available employees / an error message if occurred
+     */
+    public Response show_shift_availability(LocalDate shift_date, ShiftType shift_type, String store) {
+        return new Response(facade.show_shift_availability(this.id, shift_date, shift_type, store));
     }
 
-    public Response show_shift_assigned(String date, String shift_type, String store) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        return new Response(facade.show_shift_assigned(this.id, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
+    /**
+     * An HR Manager's function to show a list of shift assigned employees
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return Response object with a list of shift assigned employees / an error message if occurred
+     */
+    public Response show_shift_assigned(LocalDate shift_date, ShiftType shift_type, String store) {
+        return new Response(facade.show_shift_assigned(this.id, shift_date, shift_type, store));
     }
+
     public boolean is_logged_in() {
         return id != -1;
     }
 
+    /**
+     * An employee's function to change its name
+     * @param old_name Employee's old name
+     * @param new_name Employee's new name
+     * @return Response object with an error message if occurred
+     */
     public Response change_name(String old_name, String new_name) {
         return new Response(facade.change_name(this.id, old_name, new_name));
     }
 
-    public Response change_bank_account(String old_bank_account, String new_bank_account) {
-        int old_bank_num, new_bank_num;
-        try {old_bank_num = Integer.parseInt(old_bank_account);} catch (Exception exception) {return new Response("Invalid old bank account");}
-        try {new_bank_num = Integer.parseInt(new_bank_account);} catch (Exception exception) {return new Response("Invalid new bank account");}
-        return new Response(facade.change_bank_account(this.id, old_bank_num, new_bank_num));
+    /**
+     * An employee's function to change its bank account number
+     * @param old_bank_account Employee's old bank account number
+     * @param new_bank_account Employee's new bank account number
+     * @return Response object with an error message if occurred
+     */
+    public Response change_bank_account(int old_bank_account, int new_bank_account) {
+        return new Response(facade.change_bank_account(this.id, old_bank_account, new_bank_account));
     }
 
-    public Response change_family_status(String old_family_status, String new_family_status) {
+    /**
+     * An employee's function to change its family status
+     * @param old_family_status Employee's old bank account number
+     * @param new_family_status Employee's new bank account number
+     * @return Response object with an error message if occurred
+     */
+    public Response change_family_status(FamilyStatus old_family_status, FamilyStatus new_family_status) {
         return new Response(facade.change_family_status(this.id, old_family_status, new_family_status));
     }
 
-    public Response change_student(String old_student_status, String new_student_status) {
-        boolean old_value, new_value;
-        old_value = old_student_status.equalsIgnoreCase("yes");
-        new_value = new_student_status.equalsIgnoreCase("yes");
-        return new Response(facade.change_student(this.id, old_value, new_value));
+    /**
+     * An employee's function to change its student indicator
+     * @param old_student_status Employee's old bank account number
+     * @param new_student_status Employee's new bank account number
+     * @return Response object with an error message if occurred
+     */
+    public Response change_student(boolean old_student_status, boolean new_student_status) {
+        return new Response(facade.change_student(this.id, old_student_status, new_student_status));
     }
 
-    public Response change_employee_salary(String employee_id, String old_salary, String new_salary) {
-        int id_num, new_salary_num, old_salary_num;
-        try {id_num = Integer.parseInt(employee_id);} catch (Exception exception) {return new Response("Invalid id");}
-        try {old_salary_num = Integer.parseInt(old_salary);} catch (Exception exception) {return new Response("Invalid old salary");}
-        try {new_salary_num = Integer.parseInt(new_salary);} catch (Exception exception) {return new Response("Invalid new salary");}
-        return new Response(facade.change_employee_salary(this.id, id_num, old_salary_num, new_salary_num));
+    /**
+     * An HR Manager's function to change an employee's salary
+     * @param employee_id Employee's id
+     * @param old_salary Employee's old salary
+     * @param new_salary Employee's new salary
+     * @return Response object with an error message if occurred
+     */
+    public Response change_employee_salary(int employee_id, double old_salary, double new_salary) {
+        return new Response(facade.change_employee_salary(this.id, employee_id, old_salary, new_salary));
     }
 
-    public Response change_employee_terms(String employee_id, String new_terms) {
-        int id_num;
-        try {id_num = Integer.parseInt(employee_id);} catch (Exception exception) {return new Response("Invalid id");}
-        return new Response(facade.change_employee_terms(this.id, id_num, new_terms));
+    /**
+     * An HR Manager's function to change an employee's terms of employment
+     * @param employee_id Employee's id
+     * @param new_terms Employee's new bank account number
+     * @return Response object with an error message if occurred
+     */
+    public Response change_employee_terms(int employee_id, String new_terms) {
+        return new Response(facade.change_employee_terms(this.id, employee_id, new_terms));
     }
 
-    public Response confirm_monthly_salary(String employee_id, String bonus) {
-        int id_num, bonus_num;
-        try {id_num = Integer.parseInt(employee_id);} catch (Exception exception) {return new Response("Invalid id");}
-        try {bonus_num = Integer.parseInt(bonus);} catch (Exception exception) {return new Response("Invalid id");}
-        return new Response(facade.confirm_monthly_salary(this.id, id_num, bonus_num));
+    /**
+     * An HR Manager's function to change an employee's terms of employment
+     * @param employee_id Employee's id
+     * @param bonus Employee's bonus to the monthly salary
+     * @return Response object with an error message if occurred
+     */
+    public Response confirm_monthly_salary(int employee_id, double bonus) {
+        return new Response(facade.confirm_monthly_salary(this.id, employee_id, bonus));
     }
 
     public boolean is_hr() {
         return facade.is_hr(this.id);
     }
 
+    /**
+     * An employee's function to show its personal information
+     * @return Response object with the employee's information / an error message if occurred
+     */
     public Response show_personal_info() {
         return new Response(facade.show_personal_info(this.id));
     }
 
+    /**
+     * An employee's function to show its role certification
+     * @return Response object with the employee's role certification / an error message if occurred
+     */
     public Response show_role_certifications() {
         return new Response(facade.show_role_certifications(this.id));
     }
 
+    /**
+     * An employee's function to show its assigned stores
+     * @return Response object with the employee's assigned stores / an error message if occurred
+     */
     public Response show_assigned_stores() {
         return new Response(facade.show_assigned_stores(this.id));
     }
 
+    /**
+     * An employee's function to show its current salary
+     * @return Response object with the employee's current salary / an error message if occurred
+     */
     public Response show_current_salary() {
         return new Response(facade.show_current_salary(this.id));
     }
 
-    public void add_hr(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, LocalDate employment_date, String family_status, boolean is_student, String password) {
+    /**
+     * An HR Manager's function to add a new HR Manager to the system
+     * @param id Employee's id
+     * @param name Employee's name
+     * @param bank_account Employee's bank account number
+     * @param salary Employee's salary
+     * @param terms_of_employment Employee's terms of employment
+     * @param employment_date Employee's date of employment (dd-mm-yyyy)
+     * @param family_status Employee's family status (MARRIED, DIVORCED, WIDOWED, SINGLE)
+     * @param is_student Employee's student indicator (true, false)
+     * @param password Employee's password to HR system
+     */
+    public void add_hr(int id, String name, int bank_account, double salary, String terms_of_employment, LocalDate employment_date, FamilyStatus family_status, boolean is_student, String password) {
         facade.add_hr(id, name, bank_account, salary, terms_of_employment, employment_date, family_status, is_student, password);
     }
 
+    /**
+     * An HR Manager's function to show the existing employees
+     * @return Response object with the existing employees / an error message if occurred
+     */
     public Response show_employees() {
         return new Response(facade.show_employees(this.id));
     }
 
-    public Response show_employee_info(String id) {
-        int id_num;
-        try {id_num = Integer.parseInt(id);} catch (Exception exception) {return new Response("Invalid id");}
-        return new Response(facade.show_employee_info(this.id, id_num));
+    /**
+     * An HR Manager's function to show the specified employee's information
+     * @return Response object with the employee's information / an error message if occurred
+     */
+    public Response show_employee_info(int id) {
+        return new Response(facade.show_employee_info(this.id, id));
     }
 
+    /**
+     * A function that loads the data from the database
+     * @return Response object with an error message if occurred
+     */
     public Response load_data() {
         return new Response(facade.load_data());
     }
 
-    public Response cancel_product(String product_id, String date, String shift_type, String store) {
-        if (!shift_type.equalsIgnoreCase("morning") && !shift_type.equalsIgnoreCase("evening")) {
-            return new Response("Invalid shift type");
-        }
-        LocalDate date_object;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            date_object = LocalDate.parse(date, formatter);
-        }
-        catch(Exception exception) {
-            return new Response("Invalid date");
-        }
-        int product_id_num;
-        try {product_id_num = Integer.parseInt(product_id);} catch (Exception exception) {return new Response("Invalid id");}
-        return new Response(facade.cancel_product(this.id, product_id_num, date_object, ShiftType.valueOf(shift_type.toUpperCase()), store));
+    /**
+     * A shift manager's function to cancel a product
+     * @param product_id Product's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return Response object with an error message if occurred
+     */
+    public Response cancel_product(int product_id, LocalDate shift_date, ShiftType shift_type, String store) {
+        return new Response(facade.cancel_product(this.id, product_id, shift_date, shift_type, store));
     }
 
 }

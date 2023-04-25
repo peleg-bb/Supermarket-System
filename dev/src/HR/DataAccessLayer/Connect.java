@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Connect {
     public Connection conn;
-    public final String url = "jdbc:sqlite:HR_Deliveries_Database.db";
+    public final String url = "jdbc:sqlite:test.db";
     private static Connect instance;
 
     public static Connect getInstance() {
@@ -191,6 +191,8 @@ public class Connect {
             query = "DROP TABLE IF EXISTS Shifts";
             stmt.execute(query);
             query = "DROP TABLE IF EXISTS Stores";
+            stmt.execute(query);
+            query = "DROP TABLE IF EXISTS ShiftEvents";
             stmt.execute(query);
             createTables();
 

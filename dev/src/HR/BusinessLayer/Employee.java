@@ -14,15 +14,15 @@ public class Employee {
     private double salary;
     private String terms_of_employment;
     private final LocalDate employment_date;
-    private String family_status;
+    private FamilyStatus family_status;
     private boolean is_student;
     private final List<JobType> roles;
     private final List<String> certified_stores;
     private final EmployeeDAO employeeDAO;
-    private double current_total_salary = 0;
+    private double current_total_salary;
     private double monthly_salary;
 
-    public Employee(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, LocalDate employment_date, String family_status, boolean is_student, EmployeeDAO employeeDAO) {
+    public Employee(Integer id, String name, Integer bank_account, double salary, String terms_of_employment, LocalDate employment_date, FamilyStatus family_status, boolean is_student, EmployeeDAO employeeDAO) {
         this.id = id;
         this.name = name;
         this.bank_account = bank_account;
@@ -32,8 +32,10 @@ public class Employee {
         this.family_status = family_status;
         this.is_student = is_student;
         this.employeeDAO = employeeDAO;
-        roles = new LinkedList<>();
-        certified_stores = new LinkedList<>();
+        this.roles = new LinkedList<>();
+        this.certified_stores = new LinkedList<>();
+        this.current_total_salary = 0;
+        this.monthly_salary = 0;
     }
 
     public List<String> get_stores() {
@@ -56,11 +58,11 @@ public class Employee {
         return res;
     }
 
-    public String remove_role(JobType job) {
-        if (roles.contains(job)) {
-            String res = employeeDAO.remove_role(this.id, job.toString());
+    public String remove_role(JobType role) {
+        if (roles.contains(role)) {
+            String res = employeeDAO.remove_role(this.id, role.toString());
             if (res.equals("")) {
-                roles.remove(job);
+                roles.remove(role);
                 return res;
             }
             return res;
@@ -72,7 +74,7 @@ public class Employee {
         if (certified_stores.contains(store)) {
             return "Already assigned to this store";
         }
-        String res = employeeDAO.certify_store(this.id, store);
+        String res = employeeDAO.assign_to_store(this.id, store);
         if (res.equals("")) {
             certified_stores.add(store);
             return res;
@@ -80,9 +82,9 @@ public class Employee {
         return "";
     }
 
-    public String unassign_to_store(String store) {
+    public String remove_from_store(String store) {
         if (certified_stores.contains(store)) {
-            String res = employeeDAO.remove_store(this.id, store);
+            String res = employeeDAO.remove_from_store(this.id, store);
             if (res.equals("")) {
                 certified_stores.remove(store);
                 return res;
@@ -132,8 +134,8 @@ public class Employee {
         return res;
     }
 
-    public String change_family_status(String old_family_status, String new_family_status) {
-        if (!this.family_status.equalsIgnoreCase(old_family_status)) {
+    public String change_family_status(FamilyStatus old_family_status, FamilyStatus new_family_status) {
+        if (this.family_status != old_family_status) {
             return "Old value isn't right";
         }
         String res = employeeDAO.change_family_status(this.id, new_family_status);
@@ -156,7 +158,7 @@ public class Employee {
         return res;
     }
 
-    public String change_employee_salary(Integer old_salary, Integer new_salary) {
+    public String change_employee_salary(double old_salary, double new_salary) {
         if (this.salary != old_salary) {
             return "Old value isn't right";
         }
@@ -185,7 +187,7 @@ public class Employee {
         current_total_salary = current_total_salary - (hours * salary);
     }
 
-    public String confirm_monthly_salary(int bonus_num) {
+    public String confirm_monthly_salary(double bonus_num) {
         monthly_salary = current_total_salary + bonus_num;
         current_total_salary = 0;
         return "";
@@ -260,7 +262,7 @@ public class Employee {
         return bank_account;
     }
 
-    public String get_family_status() {
+    public FamilyStatus get_family_status() {
         return family_status;
     }
 

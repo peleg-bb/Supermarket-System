@@ -14,99 +14,159 @@ public class ShiftDAO {
     private final Connect conn = Connect.getInstance();
     public ShiftDAO() {}
 
-
-
-    public String add_availability(Integer id, LocalDate date_object, ShiftType type, String store) {
+    /**
+     * A function that adds employee's availability to the database
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return "" / an error messaged if occurred
+     */
+    public String add_availability(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
         try{
-            int dayOfMonth = date_object.getDayOfMonth();
-            int month = date_object.getMonthValue();
-            int year = date_object.getYear();
-            conn.executeUpdate("INSERT INTO Availability (store, shiftType, day, month, year, employeeID, availabilityOrConstraint) VALUES(?,?,?,?,?,?,?)", store, type.toString(), dayOfMonth, month, year, id, 1);
+            int dayOfMonth = shift_date.getDayOfMonth();
+            int month = shift_date.getMonthValue();
+            int year = shift_date.getYear();
+            conn.executeUpdate("INSERT INTO Availability (store, shiftType, day, month, year, employeeID, availabilityOrConstraint) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, employee_id, 1);
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id + " is already available in this date";
+            return "Employee with id " + employee_id + " is already available in this date";
         }
     }
 
-    public String remove_availability(Integer id, LocalDate date_object, ShiftType type, String store) {
+    /**
+     * A function that removes employee's availability from the database
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return "" / an error messaged if occurred
+     */
+    public String remove_availability(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
         try{
-            int dayOfMonth = date_object.getDayOfMonth();
-            int month = date_object.getMonthValue();
-            int year = date_object.getYear();
-            conn.executeUpdate("DELETE FROM Availability WHERE employeeID = " + id + " AND store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + type.toString() + "'");
+            int dayOfMonth = shift_date.getDayOfMonth();
+            int month = shift_date.getMonthValue();
+            int year = shift_date.getYear();
+            conn.executeUpdate("DELETE FROM Availability WHERE employeeID = " + employee_id + " AND store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "'");
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id + " is not available in this date";
+            return "Employee with id " + employee_id + " is not available in this date";
         }
     }
 
-    public String limit_work(int id_num, LocalDate date_object, ShiftType shift_type, String store) {
+    /**
+     * A function that adds a work limit of an employee in a shift to the database
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return "" / an error messaged if occurred
+     */
+    public String limit_employee(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
         try{
-            int dayOfMonth = date_object.getDayOfMonth();
-            int month = date_object.getMonthValue();
-            int year = date_object.getYear();
-            conn.executeUpdate("INSERT INTO Availability (store, shiftType, day, month, year, employeeID, availabilityOrConstraint) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, id_num, 0);
+            int dayOfMonth = shift_date.getDayOfMonth();
+            int month = shift_date.getMonthValue();
+            int year = shift_date.getYear();
+            conn.executeUpdate("INSERT INTO Availability (store, shiftType, day, month, year, employeeID, availabilityOrConstraint) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, employee_id, 0);
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id_num + " is already assigned / limited in this date.";
+            return "Employee with id " + employee_id + " is already assigned / limited in this date.";
         }
     }
 
-    public String remove_worker_limit(int id_num, LocalDate date_object, ShiftType shift_type, String store) {
+    /**
+     * A function that removes a work limit of an employee in a shift from the database
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return "" / an error messaged if occurred
+     */
+    public String remove_employee_limit(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
         try{
-            int dayOfMonth = date_object.getDayOfMonth();
-            int month = date_object.getMonthValue();
-            int year = date_object.getYear();
-            conn.executeUpdate("DELETE FROM Availability WHERE employeeID = " + id_num + " AND store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "'");
+            int dayOfMonth = shift_date.getDayOfMonth();
+            int month = shift_date.getMonthValue();
+            int year = shift_date.getYear();
+            conn.executeUpdate("DELETE FROM Availability WHERE employeeID = " + employee_id + " AND store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "'");
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id_num + " is not available in this date";
+            return "Employee with id " + employee_id + " is not available in this date";
         }
     }
 
-    public String assign_shift(int id_num, LocalDate date_object, ShiftType shift_type, JobType role, String store) {
+    /**
+     * A function that assigns an employee to a shift in the database
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return "" / an error messaged if occurred
+     */
+    public String assign_to_shift(int employee_id, LocalDate shift_date, ShiftType shift_type, JobType role, String store) {
         try{
-            int dayOfMonth = date_object.getDayOfMonth();
-            int month = date_object.getMonthValue();
-            int year = date_object.getYear();
-            conn.executeUpdate("INSERT INTO EmployeesInShift (store, shiftType, day, month, year, employeeID, job) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, id_num, role.toString());
+            int dayOfMonth = shift_date.getDayOfMonth();
+            int month = shift_date.getMonthValue();
+            int year = shift_date.getYear();
+            conn.executeUpdate("INSERT INTO EmployeesInShift (store, shiftType, day, month, year, employeeID, job) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, employee_id, role.toString());
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id_num + " is already assigned to this shift";
+            return "Employee with id " + employee_id + " is already assigned to this shift";
         }
     }
 
-    public String unassign_shift(int id_num, LocalDate date_object, ShiftType shift_type, JobType job, String store) {
+    /**
+     * A function that remove an employee from a shift in the database
+     * @param employee_id Employee's id
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return "" / an error messaged if occurred
+     */
+    public String remove_from_shift(int employee_id, LocalDate shift_date, ShiftType shift_type, JobType role, String store) {
         try{
-            int dayOfMonth = date_object.getDayOfMonth();
-            int month = date_object.getMonthValue();
-            int year = date_object.getYear();
-            conn.executeUpdate("DELETE FROM EmployeesInShift WHERE employeeID = " + id_num + " AND store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "' AND job = '" + job.toString() + "'");
+            int dayOfMonth = shift_date.getDayOfMonth();
+            int month = shift_date.getMonthValue();
+            int year = shift_date.getYear();
+            conn.executeUpdate("DELETE FROM EmployeesInShift WHERE employeeID = " + employee_id + " AND store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "' AND job = '" + role.toString() + "'");
             return "";
         } catch (SQLException e) {
-            return "Employee with id " + id_num + " is not assigned to this date";
+            return "Employee with id " + employee_id + " is not assigned to this date";
         }
     }
 
-    public String confirm_shift(LocalDate date_object, ShiftType shift, String store) {
+    /**
+     * A function that confirms a shift in the database
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     * @return "" / an error messaged if occurred
+     */
+    public String confirm_shift(LocalDate shift_date, ShiftType shift_type, String store) {
         try{
-            int dayOfMonth = date_object.getDayOfMonth();
-            int month = date_object.getMonthValue();
-            int year = date_object.getYear();
-            conn.executeUpdate("UPDATE Shifts SET confirmed = " + 1 + " WHERE store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift.toString() + "'");
+            int dayOfMonth = shift_date.getDayOfMonth();
+            int month = shift_date.getMonthValue();
+            int year = shift_date.getYear();
+            conn.executeUpdate("UPDATE Shifts SET confirmed = " + 1 + " WHERE store = '" + store + "' AND day = '" + dayOfMonth + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type.toString() + "'");
             return "";
         } catch (SQLException e) {
             return "Couldn't update the data base";
         }
     }
 
-    public void create_shift(LocalDate first_day, ShiftType shift_type, LocalTime morn_start, LocalTime morn_end, String store) {
+    /**
+     * A function that creates a shift in the database
+     * @param shift_date Shift's date (dd-mm-yyyy)
+     * @param shift_type Shift's type (MORNING/EVENING)
+     * @param store Store's name
+     */
+    public void create_shift(LocalDate shift_date, ShiftType shift_type, LocalTime start_time, LocalTime end_time, String store) {
         try{
-            int dayOfMonth = first_day.getDayOfMonth();
-            int month = first_day.getMonthValue();
-            int year = first_day.getYear();
-            conn.executeUpdate("INSERT INTO Shifts (store, shiftType, day, month, year, start, end, confirmed) VALUES(?,?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, morn_start.toString(), morn_end.toString(), 0);
-        } catch (SQLException ignored) {
+            int dayOfMonth = shift_date.getDayOfMonth();
+            int month = shift_date.getMonthValue();
+            int year = shift_date.getYear();
+            conn.executeUpdate("INSERT INTO Shifts (store, shiftType, day, month, year, start, end, confirmed) VALUES(?,?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, start_time.toString(), end_time.toString(), 0);
+        }
+        catch (SQLException ignored) {
         }
     }
 
@@ -157,10 +217,10 @@ public class ShiftDAO {
         return output;
     }
 
-    private List<Integer> shift_manager_constraints(String store, String shiftType, String day, String month, String year) {
+    private List<Integer> shift_manager_constraints(String store, String shift_type, String day, String month, String year) {
         try {
             List<Integer> output = new LinkedList<>();
-            List<HashMap<String, Object>> shift_manager_constraints = conn.executeQuery("SELECT * FROM Availability WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shiftType + "' AND availabilityOrConstraint = 0");
+            List<HashMap<String, Object>> shift_manager_constraints = conn.executeQuery("SELECT * FROM Availability WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type + "' AND availabilityOrConstraint = 0");
             for (HashMap<String, Object> record: shift_manager_constraints) {
                 Integer id = (Integer) record.get("employeeID");
                 output.add(id);
@@ -172,10 +232,10 @@ public class ShiftDAO {
         }
     }
 
-    private Map<Integer, Integer> shift_events(String store, Shift shift, String day, String month, String year) {
+    private Map<Integer, Integer> shift_events(String store, Shift shift_type, String day, String month, String year) {
         try {
             Map<Integer, Integer> output = new HashMap<>();
-            List<HashMap<String, Object>> shift_events = conn.executeQuery("SELECT * FROM ShiftEvents WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift + "'");
+            List<HashMap<String, Object>> shift_events = conn.executeQuery("SELECT * FROM ShiftEvents WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type + "'");
             for (HashMap<String, Object> record: shift_events) {
                 Integer id = (Integer) record.get("employeeId");
                 Integer product_id = (Integer) record.get("productId");
@@ -188,10 +248,10 @@ public class ShiftDAO {
         }
     }
 
-    private Map<JobType, List<Integer>> shift_employees(String store, Shift shift, String day, String month, String year) {
+    private Map<JobType, List<Integer>> shift_employees(String store, Shift shift_type, String day, String month, String year) {
         try {
             Map<JobType, List<Integer>> output = new HashMap<>();
-            List<HashMap<String, Object>> shift_events = conn.executeQuery("SELECT * FROM EmployeesInShift WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift + "'");
+            List<HashMap<String, Object>> shift_events = conn.executeQuery("SELECT * FROM EmployeesInShift WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type + "'");
             for (HashMap<String, Object> record: shift_events) {
                 String Job = (String) record.get("job");
                 Integer employeeID = (Integer) record.get("employeeID");
@@ -210,10 +270,11 @@ public class ShiftDAO {
         }
     }
 
-    private List<Integer> shift_available(String store, String shiftType, String day, String month, String year) {
+
+    private List<Integer> shift_available(String store, String shift_type, String day, String month, String year) {
         try {
             List<Integer> output = new LinkedList<>();
-            List<HashMap<String, Object>> shift_manager_constraints = conn.executeQuery("SELECT * FROM Availability WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shiftType + "' AND availabilityOrConstraint = 1");
+            List<HashMap<String, Object>> shift_manager_constraints = conn.executeQuery("SELECT * FROM Availability WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type + "' AND availabilityOrConstraint = 1");
             for (HashMap<String, Object> record: shift_manager_constraints) {
                 Integer id = (Integer) record.get("employeeID");
                 output.add(id);
@@ -225,12 +286,13 @@ public class ShiftDAO {
         }
     }
 
-    public String cancel_product(int id, int product_id_num, LocalDate date_object, ShiftType type, String store) {
+
+    public String cancel_product(int employee_id, int product_id, LocalDate shift_date, ShiftType shift_type, String store) {
         try{
-            int dayOfMonth = date_object.getDayOfMonth();
-            int month = date_object.getMonthValue();
-            int year = date_object.getYear();
-            conn.executeUpdate("INSERT INTO ShiftEvents (store, shiftType, day, month, year, employeeId, productId) VALUES(?,?,?,?,?,?,?)", store, type.toString(), dayOfMonth, month, year, id, product_id_num);
+            int dayOfMonth = shift_date.getDayOfMonth();
+            int month = shift_date.getMonthValue();
+            int year = shift_date.getYear();
+            conn.executeUpdate("INSERT INTO ShiftEvents (store, shiftType, day, month, year, employeeId, productId) VALUES(?,?,?,?,?,?,?)", store, shift_type.toString(), dayOfMonth, month, year, employee_id, product_id);
             return "";
         } catch (SQLException e) {
             return "Couldn't update the database";

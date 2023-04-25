@@ -12,8 +12,6 @@ public class Response {
     public boolean errorOccurred(){
         return !Objects.equals(errorMessage, "");
     }
-
-
     public String getErrorMessage() {
         return errorMessage;
     }
