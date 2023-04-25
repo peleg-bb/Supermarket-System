@@ -3,6 +3,7 @@ package Deliveries.BusinessLayer;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import Deliveries.DataAccessLayer.DriverDAO;
 import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.HRIntegrator;
 
@@ -13,10 +14,14 @@ public class DriverController {
     private final HashSet<Driver> drivers;
     private HRIntegrator hrManager;
     private static DriverController instance = null;
+    private final DriverDAO driverDAO;
+
 
     // Singleton Constructor
     private DriverController() {
+        driverDAO = new DriverDAO();
         drivers = new HashSet<>();
+        drivers.addAll(driverDAO.loadData());
         generateFleet(20);
         HRIntegrator hrManager = new ShiftController();
     }

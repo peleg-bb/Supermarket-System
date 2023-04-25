@@ -30,6 +30,15 @@ public class Driver {
         // TODO: implement license
     }
 
+    public Driver(String name, String id, String phone, License license) {
+        this.name = name;
+        this.id = id;
+        this.phone = phone;
+        this.license = license;
+        availability = Availability.Available;
+    }
+
+
     public String getName() {
         return name;
     }
