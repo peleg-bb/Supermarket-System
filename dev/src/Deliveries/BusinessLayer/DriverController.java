@@ -23,7 +23,7 @@ public class DriverController {
         drivers = new HashSet<>();
         drivers.addAll(driverDAO.loadData());
         generateFleet(40);
-        HRIntegrator hrManager = new ShiftController();
+        hrManager = ShiftController.getInstance();
     }
 
     public void generateFleet(int numberOfDrivers) {

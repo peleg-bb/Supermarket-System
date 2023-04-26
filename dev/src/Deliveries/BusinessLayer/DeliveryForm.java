@@ -5,6 +5,7 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
 import Deliveries.PresentationLayer.UserInteractionUtil;
+import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.HRIntegrator;
 
 import java.sql.Timestamp;
@@ -35,6 +36,7 @@ public class DeliveryForm {
         this.weightMeasurer = new UserInteractionUtil();
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
+        hrManager = ShiftController.getInstance();
         updateArrivalTimes();
     }
 
