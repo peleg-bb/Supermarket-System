@@ -30,7 +30,7 @@ public class DriverDAO {
 
 
     private Driver getDriver(HashMap<String, Object> driverDetails) {
-        String id = ((Integer) driverDetails.get("driver_id")).toString();
+        String id = (String) driverDetails.get("driver_id");
         String name = (String) driverDetails.get("driver_name");
         String phone = (String) driverDetails.get("phone");
 

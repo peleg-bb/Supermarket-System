@@ -42,6 +42,10 @@ public class Driver {
         return availability;
     }
 
+    public boolean isAvailable() {
+        return availability == Availability.Available;
+    }
+
     public String getId() {
         return id;
     }

@@ -67,16 +67,20 @@ public class DriverController {
     public Driver pickDriver(Truck truck, Timestamp startTime, Timestamp finishTime) throws DeliveryException {
         List<String> availableDrivers = hrManager.getAvailableDrivers(startTime, finishTime);
         for (Driver driver : drivers) {
-            if (driver.getAvailability().equals(Availability.Available) &&
+            if (driver.isAvailable() &&
                     availableDrivers.contains(driver.getId())) {
                 if (driver.isLicensed(truck)) {
                     driver.setAvailability(Availability.Busy);
-                    hrManager.assignDrivers(driver.getId(), startTime, finishTime);
+                    notifyHR(startTime, finishTime, driver);
                     return driver;
                 }
             }
         }
         throw new DeliveryException("No available drivers with license for truck " + truck);
+    }
+
+    private void notifyHR(Timestamp startTime, Timestamp finishTime, Driver driver) {
+        hrManager.assignDrivers(driver.getId(), startTime, finishTime);
     }
 
 }
