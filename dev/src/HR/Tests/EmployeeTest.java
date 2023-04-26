@@ -17,6 +17,8 @@ class EmployeeTest {
     @org.junit.jupiter.api.BeforeEach
      void setUp() throws SQLException {
         Connect.getInstance().deleteRecordsOfTables();
+        ShiftController.reset_instance();
+        EmployeeController.reset_instance();
         facade = new Facade();
         facade.add_hr(111111111, "Tomer Naydnov", 1111111, 70, "None", LocalDate.of(2023,3,1), FamilyStatus.MARRIED, false, "123456");
         facade.login(111111111, "123456");
@@ -294,6 +296,11 @@ class EmployeeTest {
         res = facade.logout(222222222);
         Assertions.assertNotEquals("", res);
         Assertions.assertFalse(facade.employee_logged_in(222222222));
+    }
+
+    @org.junit.jupiter.api.AfterAll
+    public static void tearDown() throws Exception {
+        Connect.getInstance().deleteRecordsOfTables();
     }
 
 

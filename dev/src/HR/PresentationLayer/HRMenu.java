@@ -1049,7 +1049,7 @@ public class HRMenu {
         service.add_hr(111111111, "Tomer Naydnov", 12345678, 70, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
         service.login(111111111, "123456");
         service.create_store("Tel Aviv");
-        service.create_store("Be'er Sheva");
+        service.create_store("Beer Sheva");
         service.create_store("Rishon Le Zion");
         service.create_store("Raanana");
         service.create_store("Haifa");
@@ -1057,7 +1057,7 @@ public class HRMenu {
         service.create_store("Ashdod");
         service.create_store("Eilat");
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
-        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Be'er Sheva", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Beer Sheva", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Rishon Le Zion", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Raanana", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Haifa", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
@@ -1067,7 +1067,7 @@ public class HRMenu {
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "drivers", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.add_employee(222222222, "Agni Rudolf", 2222222, 30, "None", LocalDate.of(2023, 1, 1), FamilyStatus.WIDOWED, false, "123456");
         service.assign_to_store(222222222,"Tel Aviv");
-        service.assign_to_store(222222222,"Be'er Sheva");
+        service.assign_to_store(222222222,"Beer Sheva");
         service.assign_to_store(222222222,"Ashdod");
         service.certify_role(222222222, JobType.STOREKEEPER);
         service.certify_role(222222222, JobType.CASHIER);
@@ -1077,7 +1077,7 @@ public class HRMenu {
         service.certify_role(333333333, JobType.CASHIER);
         service.add_employee(444444444, "Peggy Sara", 4444444, 44, "Can work only morning shifts", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
         service.assign_to_store(444444444,"Tel Aviv");
-        service.assign_to_store(444444444,"Be'er Sheva");
+        service.assign_to_store(444444444,"Beer Sheva");
         service.certify_role(444444444, JobType.SHIFTMANAGER);
         service.certify_role(444444444, JobType.GENERAL);
         service.certify_role(444444444, JobType.USHER);
@@ -1148,10 +1148,10 @@ public class HRMenu {
         service.assign_to_store(277777777,"drivers");
         service.certify_role(277777777, JobType.DRIVER);
         service.add_employee(288888888, "Terra Minta", 2888888, 46, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, false, "123456");
-        service.assign_to_store(288888888,"Be'er Sheva");
+        service.assign_to_store(288888888,"Beer Sheva");
         service.certify_role(288888888, JobType.SHIFTMANAGER);
         service.add_employee(299999999, "Luanna Mansel", 2999999, 30, "None", LocalDate.of(2023, 1, 1), FamilyStatus.DIVORCED, true, "123456");
-        service.assign_to_store(299999999,"Be'er Sheva");
+        service.assign_to_store(299999999,"Beer Sheva");
         service.certify_role(299999999, JobType.CLEANING);
         service.logout();
         service.login(222222222, "123456");
@@ -1159,9 +1159,9 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "Tel Aviv");
         service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "Ashdod");
         service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "Ashdod");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "Be'er Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "Beer Sheva");
         service.logout();
         service.login(333333333, "123456");
         service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "Tel Aviv");
@@ -1175,9 +1175,9 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "Tel Aviv");
         service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "Tel Aviv");
         service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.MORNING, "Tel Aviv");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.EVENING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "Be'er Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.EVENING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "Beer Sheva");
         service.logout();
         service.login(555555555, "123456");
         service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "Eilat");
@@ -1333,20 +1333,20 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "drivers");
         service.logout();
         service.login(288888888, "123456");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.EVENING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.EVENING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "Be'er Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.EVENING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.EVENING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "Beer Sheva");
         service.logout();
         service.login(299999999, "123456");
-        service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.EVENING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "Be'er Sheva");
-        service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "Be'er Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.EVENING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "Beer Sheva");
+        service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "Beer Sheva");
         service.logout();
     }
 }

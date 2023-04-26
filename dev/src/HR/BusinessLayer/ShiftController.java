@@ -37,6 +37,11 @@ public class ShiftController implements HRIntegrator {
         return instance;
     }
 
+    //Tests usage only
+    public static void reset_instance() {
+        instance = null;
+    }
+
     public boolean store_exists(String store) {
         return stores.contains(store);
     }

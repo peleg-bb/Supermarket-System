@@ -202,8 +202,8 @@ public class ShiftDAO {
             shift.confirm_shift();
         }
         List<Integer> available_employees = shift_available(store, shiftType, day, month, year);
-        Map<JobType, List<Integer>> employees = shift_employees(store, shift, day, month, year);
-        Map<Integer, Integer> events = shift_events(store, shift, day, month, year);
+        Map<JobType, List<Integer>> employees = shift_employees(store, shiftType, day, month, year);
+        Map<Integer, Integer> events = shift_events(store, shiftType, day, month, year);
         List<Integer> manager_constraints = shift_manager_constraints(store, shiftType, day, month, year);
         shift.set_available(available_employees);
         shift.set_constraints(manager_constraints);
@@ -232,7 +232,7 @@ public class ShiftDAO {
         }
     }
 
-    private Map<Integer, Integer> shift_events(String store, Shift shift_type, String day, String month, String year) {
+    private Map<Integer, Integer> shift_events(String store, String shift_type, String day, String month, String year) {
         try {
             Map<Integer, Integer> output = new HashMap<>();
             List<HashMap<String, Object>> shift_events = conn.executeQuery("SELECT * FROM ShiftEvents WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type + "'");
@@ -248,7 +248,7 @@ public class ShiftDAO {
         }
     }
 
-    private Map<JobType, List<Integer>> shift_employees(String store, Shift shift_type, String day, String month, String year) {
+    private Map<JobType, List<Integer>> shift_employees(String store, String shift_type, String day, String month, String year) {
         try {
             Map<JobType, List<Integer>> output = new HashMap<>();
             List<HashMap<String, Object>> shift_events = conn.executeQuery("SELECT * FROM EmployeesInShift WHERE store = '" + store + "' AND day = '" + day + "' AND month = '" + month + "' AND year = '" + year + "' AND shiftType = '" + shift_type + "'");

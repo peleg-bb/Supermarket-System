@@ -34,6 +34,11 @@ public class EmployeeController {
         return instance;
     }
 
+    //Tests usage only
+    public static void reset_instance() {
+        instance = null;
+    }
+
     public String login(int employee_id, String password) {
         if (!login_info.containsKey(employee_id)) {
             return "User doesn't exists";
