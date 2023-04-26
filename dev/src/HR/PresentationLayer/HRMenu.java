@@ -1075,7 +1075,7 @@ public class HRMenu {
         service.assign_to_store(333333333,"Tel Aviv");
         service.certify_role(333333333, JobType.SHIFTMANAGER);
         service.certify_role(333333333, JobType.CASHIER);
-        service.add_employee(444444444, "Peggy Sara", 4444444, 44, "Can work only morning shifts", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
+        service.add_employee(444444444, "Peggy Sara", 4444444, 44, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
         service.assign_to_store(444444444,"Tel Aviv");
         service.assign_to_store(444444444,"Beer Sheva");
         service.certify_role(444444444, JobType.SHIFTMANAGER);
@@ -1084,7 +1084,7 @@ public class HRMenu {
         service.add_employee(555555555, "Harel Jaffe", 5555555, 35, "None", LocalDate.of(2023, 1, 1), FamilyStatus.DIVORCED, false, "123456");
         service.assign_to_store(555555555,"Eilat");
         service.certify_role(555555555, JobType.CLEANING);
-        service.add_employee(666666666, "Tyrell Isla", 6666666, 36, "Can't work weekends", LocalDate.of(2023, 1, 1), FamilyStatus.MARRIED, true, "123456");
+        service.add_employee(666666666, "Tyrell Isla", 6666666, 36, "None", LocalDate.of(2023, 1, 1), FamilyStatus.MARRIED, true, "123456");
         service.assign_to_store(666666666,"Haifa");
         service.certify_role(666666666, JobType.CLEANING);
         service.add_employee(777777777, "Kailey Janeka", 7777777, 35, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
@@ -1097,7 +1097,7 @@ public class HRMenu {
         service.add_employee(999999999, "Elizabeth Tim", 9999999, 40, "Signed for a year", LocalDate.of(2023, 1, 1), FamilyStatus.MARRIED, true, "123456");
         service.assign_to_store(999999999,"drivers");
         service.certify_role(999999999, JobType.DRIVER);
-        service.add_employee(122222222, "Kfir Sara", 1222222, 30, "Only capable of 1 role certification", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, false, "123456");
+        service.add_employee(122222222, "Kfir Sara", 1222222, 30, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, false, "123456");
         service.assign_to_store(122222222,"Raanana");
         service.assign_to_store(122222222,"Tel Aviv");
         service.certify_role(122222222, JobType.GENERAL);
