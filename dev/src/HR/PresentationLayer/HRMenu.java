@@ -5,7 +5,6 @@ import HR.BusinessLayer.JobType;
 import HR.BusinessLayer.ShiftType;
 import HR.ServiceLayer.EmployeeService;
 import HR.ServiceLayer.Response;
-import HR_Deliveries_Interface.DeliveryIntegrator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -82,7 +81,7 @@ public class HRMenu {
     private void handle_employee_action(String input) {
         Scanner scanner = new Scanner(System.in);
         switch (input) {
-            case "1": {
+            case "1" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
@@ -109,9 +108,8 @@ public class HRMenu {
                     System.out.println(print_green("Added availability successfully!"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "2": {
+            case "2" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
@@ -138,21 +136,20 @@ public class HRMenu {
                     System.out.println(print_green("Removed availability successfully!"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "3":
+            case "3" -> {
                 System.out.println("=====================================================================================");
                 System.out.println("Your shifts:");
                 System.out.println(service.get_shifts().getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
-            case "4":
+            }
+            case "4" -> {
                 System.out.println("=====================================================================================");
                 System.out.println("Your availability:");
                 System.out.println(service.get_availability().getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
-            case "5":
+            }
+            case "5" -> {
                 System.out.println("=====================================================================================");
                 System.out.println(service.show_personal_info().getErrorMessage());
                 System.out.println("\nWhich of the following do you wish to change?");
@@ -163,7 +160,7 @@ public class HRMenu {
                 System.out.print("Option: ");
                 String choice = scanner.nextLine();
                 switch (choice) {
-                    case "1": {
+                    case "1" -> {
                         System.out.println("=====================================================================================");
                         System.out.print("Please enter your old name: ");
                         String old_name = scanner.nextLine();
@@ -178,9 +175,8 @@ public class HRMenu {
                             System.out.println(print_green("Changed your name successfully"));
                         }
                         System.out.println("=====================================================================================");
-                        break;
                     }
-                    case "2": {
+                    case "2" -> {
                         System.out.println("=====================================================================================");
                         System.out.print("Please enter your old bank account: ");
                         String old_bank_account = scanner.nextLine();
@@ -205,9 +201,8 @@ public class HRMenu {
                             System.out.println(print_green("Changed your bank account successfully"));
                         }
                         System.out.println("=====================================================================================");
-                        break;
                     }
-                    case "3": {
+                    case "3" -> {
                         System.out.println("=====================================================================================");
                         System.out.print("Please enter your old family status: ");
                         String old_family_status = scanner.nextLine();
@@ -232,9 +227,8 @@ public class HRMenu {
                             System.out.println(print_green("Changed your family status successfully"));
                         }
                         System.out.println("=====================================================================================");
-                        break;
                     }
-                    case "4": {
+                    case "4" -> {
                         System.out.println("=====================================================================================");
                         System.out.print("Were you a student before (yes / no)? ");
                         String old_student_status = scanner.nextLine();
@@ -259,36 +253,35 @@ public class HRMenu {
                             System.out.println(print_green("Changed your student status successfully"));
                         }
                         System.out.println("=====================================================================================");
-                        break;
                     }
                 }
                 System.out.println("=====================================================================================");
-                break;
-            case "6":
+            }
+            case "6" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Certified roles: ");
                 System.out.println(service.show_role_certifications().getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
-            case "7":
+            }
+            case "7" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Assigned stores: ");
                 System.out.println(service.show_assigned_stores().getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
-            case "8":
+            }
+            case "8" -> {
                 System.out.println("=====================================================================================");
                 System.out.println("Personal information:");
                 System.out.println(service.show_personal_info().getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
-            case "9":
+            }
+            case "9" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Current salary: ");
                 System.out.println(service.show_current_salary().getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
-            case "10": {
+            }
+            case "10" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
@@ -322,9 +315,8 @@ public class HRMenu {
                     System.out.println(print_green("Cancelled product successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "11": {
+            case "11" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
@@ -353,9 +345,8 @@ public class HRMenu {
                 System.out.println("Scheduled deliveries for that shift: ");
                 System.out.println(res.getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "12":
+            case "12" -> {
                 System.out.println("=====================================================================================");
                 Response res = service.logout();
                 if (res.errorOccurred()) {
@@ -363,17 +354,15 @@ public class HRMenu {
                     System.out.println(print_red(res.getErrorMessage()));
                 }
                 System.out.println("=====================================================================================");
-                break;
-            default:
-                System.out.println(print_red("You've chosen an invalid option. Please choose again."));
-                break;
+            }
+            default -> System.out.println(print_red("You've chosen an invalid option. Please choose again."));
         }
     }
 
     private void handle_manager_action(String input) {
         Scanner scanner = new Scanner(System.in);
         switch (input) {
-            case "1": {
+            case "1" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
@@ -413,15 +402,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Assigned employee successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "2": {
+            case "2" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
@@ -457,15 +444,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Removed employee from the shift successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "3": {
+            case "3" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -485,15 +470,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Added a role certification successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "4": {
+            case "4" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -513,15 +496,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Removed a role certification successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "5": {
+            case "5" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -536,15 +517,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Assigned the employee to a store successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "6": {
+            case "6" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -559,15 +538,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Removed the employee from a store successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "7": {
+            case "7" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -625,15 +602,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Added the employee successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "8": {
+            case "8" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -646,15 +621,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Removed the employee successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "9": {
+            case "9" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the store's name: ");
                 String store = scanner.nextLine();
@@ -662,15 +635,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Created the store successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "10": {
+            case "10" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the store's name: ");
                 String store = scanner.nextLine();
@@ -678,15 +649,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Removed the store successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "11": {
+            case "11" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
@@ -708,15 +677,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Confirmed the shift successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "12": {
+            case "12" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the week's first day date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
@@ -759,15 +726,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Created the schedule successfully"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "13": {
+            case "13" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -801,9 +766,8 @@ public class HRMenu {
                     System.out.println(print_green("Added employee's limitation successfully!"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "14": {
+            case "14" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -837,9 +801,8 @@ public class HRMenu {
                     System.out.println(print_green("Removed employee's limitation successfully!"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "15": {
+            case "15" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -859,15 +822,13 @@ public class HRMenu {
                 if (res.errorOccurred()) {
                     System.out.println("\n");
                     System.out.println(print_red(res.getErrorMessage()));
-                }
-                else {
+                } else {
                     System.out.println("\n");
                     System.out.println(print_green("Confirmed the employee's salary successfully!"));
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "16": {
+            case "16" -> {
                 System.out.println("=====================================================================================");
                 System.out.println("\nWhich of the following do you wish to change?");
                 System.out.println("1. Salary");
@@ -875,7 +836,7 @@ public class HRMenu {
                 System.out.print("Option: ");
                 String choice = scanner.nextLine();
                 switch (choice) {
-                    case "1": {
+                    case "1" -> {
                         System.out.println("=====================================================================================");
                         System.out.print("Please enter the employee's id: ");
                         String id = scanner.nextLine();
@@ -907,9 +868,8 @@ public class HRMenu {
                             System.out.println(print_green("Changed the employee's salary successfully"));
                         }
                         System.out.println("=====================================================================================");
-                        break;
                     }
-                    case "2": {
+                    case "2" -> {
                         System.out.println("=====================================================================================");
                         System.out.print("Please enter the employee's id: ");
                         String id = scanner.nextLine();
@@ -929,13 +889,11 @@ public class HRMenu {
                             System.out.println(print_green("Changed the employee's terms of employment successfully"));
                         }
                         System.out.println("=====================================================================================");
-                        break;
                     }
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "17": {
+            case "17" -> {
                 System.out.println("=====================================================================================");
                 Response res = service.show_employees();
                 if (!res.errorOccurred()) {
@@ -945,9 +903,8 @@ public class HRMenu {
                 }
                 System.out.println(res.getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "18": {
+            case "18" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the employee's id: ");
                 String id = scanner.nextLine();
@@ -960,9 +917,8 @@ public class HRMenu {
                 System.out.println(print_green("Employee's Information:"));
                 System.out.println(res.getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "19": {
+            case "19" -> {
                 System.out.println("=====================================================================================");
                 System.out.print("Please enter the shift's date (dd-mm-yyyy): ");
                 String date = scanner.nextLine();
@@ -984,18 +940,15 @@ public class HRMenu {
                 System.out.println(print_green("Shift's employees:"));
                 System.out.println(res.getErrorMessage());
                 System.out.println("=====================================================================================");
-                break;
             }
-            case "20": {
+            case "20" -> {
                 System.out.println("=====================================================================================");
                 Response res = service.logout();
                 if (res.errorOccurred()) {
                     System.out.println(res.getErrorMessage());
                 }
                 System.out.println("=====================================================================================");
-                break;
             }
-
         }
     }
 

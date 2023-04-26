@@ -412,14 +412,6 @@ public class EmployeeService {
     }
 
     /**
-     * A function that loads the data from the database
-     * @return Response object with an error message if occurred
-     */
-    public Response load_data() {
-        return new Response(facade.load_data());
-    }
-
-    /**
      * A shift manager's function to cancel a product
      * @param product_id Product's id
      * @param shift_date Shift's date (dd-mm-yyyy)

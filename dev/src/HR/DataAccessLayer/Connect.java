@@ -40,31 +40,32 @@ public class Connect {
 
     public void createTables() throws SQLException {
         try (Statement statement = createStatement()) {
-            String query = "CREATE TABLE IF NOT EXISTS Employees (\n" +
-                    "id INTEGER,\n" +
-                    "name VARCHAR(200),\n" +
-                    "password VARCHAR(200),\n" +
-                    "salary REAL,\n" +
-                    "termsOfEmployment VARCHAR(255),\n" +
-                    "familyStatus VARCHAR(15),\n" +
-                    "isStudent INTEGER,\n" +
-                    "bankAccount INTEGER,\n" +
-                    "employmentDate DATE,\n" +
-                    "currentSalary REAL,\n" +
-                    "PRIMARY KEY (id)\n" +
-                    ");";
+            String query = """
+                    CREATE TABLE IF NOT EXISTS Employees (
+                    id INTEGER,
+                    name VARCHAR(200),
+                    password VARCHAR(200),
+                    salary REAL,
+                    termsOfEmployment VARCHAR(255),
+                    familyStatus VARCHAR(15),
+                    isStudent INTEGER,
+                    bankAccount INTEGER,
+                    employmentDate DATE,
+                    currentSalary REAL,
+                    PRIMARY KEY (id)
+                    );""";
             statement.execute(query);
-            query = "CREATE TABLE IF NOT EXISTS Roles (\n" +
-                    "id INTEGER,\n" +
-                    "jobType VARCHAR(30),\n" +
-                    "FOREIGN KEY (id) REFERENCES Employees(id) ON DELETE CASCADE" +
-                    ");";
+            query = """
+                    CREATE TABLE IF NOT EXISTS Roles (
+                    id INTEGER,
+                    jobType VARCHAR(30),
+                    FOREIGN KEY (id) REFERENCES Employees(id) ON DELETE CASCADE);""";
             statement.execute(query);
-            query = "CREATE TABLE IF NOT EXISTS Stores (\n" +
-                    "id INTEGER,\n" +
-                    "store VARCHAR(30),\n" +
-                    "FOREIGN KEY (id) REFERENCES Employees(id) ON DELETE CASCADE" +
-                    ");";
+            query = """
+                    CREATE TABLE IF NOT EXISTS Stores (
+                    id INTEGER,
+                    store VARCHAR(30),
+                    FOREIGN KEY (id) REFERENCES Employees(id) ON DELETE CASCADE);""";
             statement.execute(query);
             query = "CREATE TABLE IF NOT EXISTS Shifts (" +
                     "store VARCHAR(20)," +

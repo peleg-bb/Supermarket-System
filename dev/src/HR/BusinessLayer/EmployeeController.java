@@ -1,7 +1,6 @@
 package HR.BusinessLayer;
 
 import HR.DataAccessLayer.EmployeeDAO;
-import HR.DataAccessLayer.ShiftDAO;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -359,15 +358,6 @@ public class EmployeeController {
         catch (Exception exception) {
             return "Restoring the employees went wrong!";
         }
-    }
-
-    public Integer get_hr_id() {
-        for (Integer id: employees.keySet()) {
-            if (employees.get(id).is_HR()) {
-                return id;
-            }
-        }
-        return null;
     }
 
     public boolean is_ShiftManager(int employee_id) {

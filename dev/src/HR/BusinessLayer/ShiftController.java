@@ -320,11 +320,11 @@ public class ShiftController implements HRIntegrator {
         return false;
     }
 
-    public String load_data() {
+    public void load_data() {
         this.stores = shiftDAO.get_stores();
         Map<ShiftPair, Shift> shifts = shiftDAO.get_shifts();
         if (shifts.isEmpty()) {
-            return "";
+            return;
         }
         Map<Integer, Map<String, Map<ShiftPair, Shift>>> organized_shifts = organizeDatesIntoWeeks(shifts);
         WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
@@ -354,7 +354,6 @@ public class ShiftController implements HRIntegrator {
                 }
             }
         }
-        return "";
     }
 
     public static Map<Integer, Map<String, Map<ShiftPair, Shift>>> organizeDatesIntoWeeks(Map<ShiftPair, Shift> shifts) {

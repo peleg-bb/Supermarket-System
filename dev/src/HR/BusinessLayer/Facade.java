@@ -1,7 +1,5 @@
 package HR.BusinessLayer;
 
-import HR.ServiceLayer.Response;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -298,18 +296,6 @@ public class Facade {
         return employeeController.show_employee_info(hr_id, employee_id);
     }
 
-    public String load_data() {
-        Response res1 = new Response(employeeController.load_data());
-        if (res1.errorOccurred()) {
-            return res1.getErrorMessage();
-        }
-        Response res2 = new Response(shiftController.load_data());
-        if (res2.errorOccurred()) {
-            return res2.getErrorMessage();
-        }
-        return "";
-    }
-
     public String cancel_product(int employee_id, int product_id, LocalDate shift_date, ShiftType shift_type, String store) {
         if (!employeeController.is_ShiftManager(employee_id)) {
             return "User is not a shift manager and can't cancel a product";
@@ -388,10 +374,6 @@ public class Facade {
 
     public boolean past_schedule_exists(LocalDate shift_date, String store) {
         return shiftController.past_schedule_exists(shift_date, store);
-    }
-
-    public double get_monthly_salary(int manager_id, int employee_id) {
-        return employeeController.get_monthly_salary(manager_id, employee_id);
     }
 
     public String show_scheduled_deliveries(int employee_id, LocalDate shift_date, ShiftType shift_type, String store) {

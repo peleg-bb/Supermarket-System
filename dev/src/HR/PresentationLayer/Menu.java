@@ -1,10 +1,7 @@
 package HR.PresentationLayer;
-
-import HR.BusinessLayer.FamilyStatus;
 import HR.DataAccessLayer.Connect;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class Menu {
     private final HRMenu employeeCLI = new HRMenu();
