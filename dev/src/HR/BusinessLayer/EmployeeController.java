@@ -1,6 +1,7 @@
 package HR.BusinessLayer;
 
 import HR.DataAccessLayer.EmployeeDAO;
+import HR.DataAccessLayer.ShiftDAO;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -14,11 +15,23 @@ public class EmployeeController {
     private final Map<Integer, Employee> employees;
     private final EmployeeDAO employeeDAO;
 
-    public EmployeeController() {
+    private static EmployeeController instance;
+
+    // private constructor to prevent instantiation from outside
+    private EmployeeController() {
         login_info = new HashMap<>();
         logged_in = new LinkedList<>();
         employees = new HashMap<>();
         employeeDAO = new EmployeeDAO();
+        load_data();
+    }
+
+    // public static method to get the instance of the singleton class
+    public static EmployeeController getInstance() {
+        if (instance == null) {
+            instance = new EmployeeController();
+        }
+        return instance;
     }
 
     public String login(int employee_id, String password) {

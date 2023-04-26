@@ -298,4 +298,19 @@ public class ShiftDAO {
             return "Couldn't update the database";
         }
     }
+
+    public List<String> get_stores() {
+        try {
+            List<String> output = new LinkedList<>();
+            List<HashMap<String, Object>> stores = conn.executeQuery("SELECT DISTINCT store FROM Stores");
+            for (HashMap<String, Object> record: stores) {
+                String store = (String) record.get("store");
+                output.add(store);
+            }
+            return output;
+        }
+        catch (SQLException e) {
+            return null;
+        }
+    }
 }

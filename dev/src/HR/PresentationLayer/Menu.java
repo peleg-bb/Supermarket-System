@@ -13,14 +13,14 @@ public class Menu {
         employeeCLI.run();
     }
 
-    private void load_hr() {
-        employeeCLI.add_hr(111111111, "Tomer Naydnov", 12345678, 70, "None", LocalDate.now(), FamilyStatus.SINGLE, true, "123456");
+    private void load_data_example() {
+        employeeCLI.load_data_example();
     }
 
     public static void main(String[] args) throws SQLException {
-        Connect.getInstance().deleteRecordsOfTables();
+        //Connect.getInstance().deleteRecordsOfTables();
         Menu m = new Menu();
-        m.load_hr();
+        m.load_data_example();
         m.run();
     }
 }

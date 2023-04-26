@@ -17,14 +17,24 @@ public class ShiftController implements HRIntegrator {
     private List<String> stores;
     private final Map<String, List<Schedule>> schedules_history;
     private final ShiftDAO shiftDAO;
+    private static ShiftController instance;
 
-
-    public ShiftController() {
+    // private constructor to prevent instantiation from outside
+    private ShiftController() {
         stores_schedules = new HashMap<>();
         stores = new LinkedList<>();
         stores.add("drivers");
         schedules_history = new HashMap<>();
         shiftDAO = new ShiftDAO();
+        load_data();
+    }
+
+    // public static method to get the instance of the singleton class
+    public static ShiftController getInstance() {
+        if (instance == null) {
+            instance = new ShiftController();
+        }
+        return instance;
     }
 
     public boolean store_exists(String store) {
@@ -305,8 +315,8 @@ public class ShiftController implements HRIntegrator {
         return false;
     }
 
-    public String load_data(List<String> stores) {
-        this.stores = stores;
+    public String load_data() {
+        this.stores = shiftDAO.get_stores();
         Map<ShiftPair, Shift> shifts = shiftDAO.get_shifts();
         if (shifts.isEmpty()) {
             return "";

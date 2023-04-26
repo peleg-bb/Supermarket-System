@@ -12,8 +12,8 @@ public class Facade {
     private final ShiftController shiftController;
 
     public Facade() {
-        employeeController = new EmployeeController();
-        shiftController = new ShiftController();
+        employeeController = EmployeeController.getInstance();
+        shiftController = ShiftController.getInstance();
     }
     
     public String add_availability(Integer employee_id, LocalDate shift_date, ShiftType shift_type, String store) {
@@ -303,8 +303,7 @@ public class Facade {
         if (res1.errorOccurred()) {
             return res1.getErrorMessage();
         }
-        List<String> stores = employeeController.get_certified_stores(employeeController.get_hr_id());
-        Response res2 = new Response(shiftController.load_data(stores));
+        Response res2 = new Response(shiftController.load_data());
         if (res2.errorOccurred()) {
             return res2.getErrorMessage();
         }
