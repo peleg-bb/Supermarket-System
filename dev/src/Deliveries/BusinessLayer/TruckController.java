@@ -3,18 +3,21 @@ package Deliveries.BusinessLayer;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import Deliveries.DataAccessLayer.TruckDAO;
 
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class TruckController {
     private final HashSet<Truck> trucks;
+    private final TruckDAO truckDAO;
     private static TruckController instance = null;
     // Singleton Constructor
     private TruckController() {
         trucks = new HashSet<>();
         generateTruckFleet(20);
-
+        truckDAO = new TruckDAO();
+        trucks.addAll(truckDAO.loadData());
     }
 
     public static TruckController getInstance() {

@@ -2,6 +2,7 @@ package Deliveries.BusinessLayer;
 
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import Deliveries.DataAccessLayer.DeliveryFormDAO;
 import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.DeliveryIntegrator;
 import HR_Deliveries_Interface.HRIntegrator;
@@ -20,6 +21,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     private int deliveryFormCount;
     private final TruckController truckController;
     private final DriverController driverController;
+    private final DeliveryFormDAO deliveryFormDAO;
 
 
     private DeliveryFormsController() {
@@ -28,6 +30,9 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         deliveryFormCount = 0;
         truckController = TruckController.getInstance();
         driverController = DriverController.getInstance();
+        deliveryFormDAO = new DeliveryFormDAO();
+        pendingDeliveryForms.addAll(deliveryFormDAO.loadData());
+        // TODO: Implement properly
         // As of now doesn't have to be a singleton
     }
 
