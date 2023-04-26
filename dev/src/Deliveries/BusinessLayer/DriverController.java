@@ -22,7 +22,7 @@ public class DriverController {
         driverDAO = new DriverDAO();
         drivers = new HashSet<>();
         drivers.addAll(driverDAO.loadData());
-        generateFleet(20);
+        generateFleet(40);
         HRIntegrator hrManager = new ShiftController();
     }
 
@@ -43,7 +43,9 @@ public class DriverController {
             usedIds.add(id);
 
             // Create a new driver object and set availability
-            Driver driver = new Driver(name, id, phone);
+            Driver driver = new Driver(name, id, phone,
+                    new License(random.nextInt(30),
+                    random.nextInt(1), random.nextInt(1)));
             driver.setAvailability(Availability.Available);
 
             // Add the driver to the DriverController instance
