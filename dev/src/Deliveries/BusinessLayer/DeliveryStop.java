@@ -99,6 +99,7 @@ public class DeliveryStop {
 
     public void updateArrivalTime(Timestamp dispatchlTime) {
         int distance = origin.computeDistance(destination);
+        distance += 10;
         int speed = 80;
         int time = distance / speed;
         estimatedArrivalTime = new Timestamp(dispatchlTime.getTime() + time);
