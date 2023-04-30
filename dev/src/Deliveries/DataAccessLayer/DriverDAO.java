@@ -16,7 +16,8 @@ public class DriverDAO {
     public Set<Driver> loadData(){
         Set<Driver> drivers = new HashSet<>();
         try {
-            List<HashMap<String, Object>> driverDetails = conn.executeQuery("SELECT * FROM Drivers JOIN DriverLicenses ON Drivers.driver_id = DriverLicenses.driver_id");
+            List<HashMap<String, Object>> driverDetails = conn.executeQuery("SELECT * FROM Drivers JOIN " +
+                    "DriverLicenses ON Drivers.driver_id = DriverLicenses.driver_id");
             for (HashMap<String, Object> driverRecord: driverDetails) {
                 Driver driver = getDriver(driverRecord);
                 drivers.add(driver);

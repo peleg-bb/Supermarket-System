@@ -42,15 +42,24 @@ public class Shift {
     }
 
     public String add_availability(Integer employee_id) {
-        if (available_employees.contains(employee_id)) {
+        if (checkAvailability(employee_id)) {
             return "Already available on this shift";
         }
-        if (manager_constraints.contains(employee_id)) {
+        if (checkManagerConstraint(employee_id)) {
             return "Can't work in this shift";
         }
         available_employees.add(employee_id);
         return "";
     }
+
+    private boolean checkManagerConstraint(Integer employee_id) {
+        return manager_constraints.contains(employee_id);
+    }
+
+    private boolean checkAvailability(Integer employee_id) {
+        return available_employees.contains(employee_id);
+    }
+
 
     public String remove_availability(Integer employee_id) {
         if (!available_employees.contains(employee_id)) {
