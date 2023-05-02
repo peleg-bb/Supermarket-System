@@ -334,13 +334,6 @@ public class HRMenu {
                 }
                 System.out.print("Please enter the store: ");
                 String store = scanner.nextLine();
-                System.out.print("Please enter the product id: ");
-                String product_id = scanner.nextLine();
-                Integer product_parsed = HRCommandParser.int_parser(product_id);
-                if (product_parsed == null) {
-                    System.out.println(print_red("Invalid product id."));
-                    break;
-                }
                 Response res = service.show_scheduled_deliveries(date_parsed, shift_parsed, store);
                 System.out.println("Scheduled deliveries for that shift: ");
                 System.out.println(res.getErrorMessage());
