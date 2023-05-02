@@ -12,7 +12,7 @@ import java.util.*;
 
 public class DriverController {
     private final HashSet<Driver> drivers;
-    private HRIntegrator hrManager;
+    private HRIntegrator hrManager; //
     private static DriverController instance = null;
     private final DriverDAO driverDAO;
 
