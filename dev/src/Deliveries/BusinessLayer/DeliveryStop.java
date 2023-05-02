@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 public class DeliveryStop {
+    public static final int SPEED = 80;
+    public static final int BASE_DISTANCE = 10;
     private final int shipmentInstanceID;
     private Map<String, Integer> items;
     private final Site origin;
@@ -98,10 +100,8 @@ public class DeliveryStop {
     }
 
     public void updateArrivalTime(Timestamp dispatchlTime) {
-        int distance = origin.computeDistance(destination);
-        distance += 10;
-        int speed = 80;
-        int time = distance / speed;
+        int distance = origin.computeDistance(destination) + BASE_DISTANCE;
+        int time = distance / SPEED;
         estimatedArrivalTime = new Timestamp(dispatchlTime.getTime() + time);
     }
 

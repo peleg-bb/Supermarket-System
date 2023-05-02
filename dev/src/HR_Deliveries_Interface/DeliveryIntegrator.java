@@ -6,4 +6,5 @@ import java.util.Set;
 
 public interface DeliveryIntegrator {
     Set<DeliveryStop> getDeliverygetDeliveryByArrivalTime(Timestamp startTime, Timestamp finishTime, String store);
+    String AddDriverToSystem();
 }

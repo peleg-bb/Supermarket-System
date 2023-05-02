@@ -286,7 +286,7 @@ public class ShiftController implements HRIntegrator {
     }
 
     @Override
-    public boolean checkAvailability(String store, Timestamp arrivalTime) {
+    public boolean checkStoreAvailability(String store, Timestamp arrivalTime) {
         LocalDateTime localDateTime = arrivalTime.toLocalDateTime();
         LocalDate localDate = localDateTime.toLocalDate();
         Schedule schedule = get_schedule(store, localDate);

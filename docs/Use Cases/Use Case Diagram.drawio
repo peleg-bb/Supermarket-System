@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-04-30T10:44:51.870Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="g8JO3FRbipXGzDmtd-Wv" version="21.2.2" type="device">
+<mxfile host="app.diagrams.net" modified="2023-05-02T16:14:11.470Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="DTZ_HhMIO1Z4c-VzKWj5" version="21.2.3" type="device">
   <diagram name="‫עמוד-1‬" id="9fCrIvGuDCoZxuhEc6fo">
     <mxGraphModel dx="1290" dy="1750" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -16,16 +16,17 @@
         <mxCell id="LQusZBxUrNY0tpM4PHE5-3" value="login למערכת" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="240" y="510" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="LQusZBxUrNY0tpM4PHE5-5" value="include" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="LQusZBxUrNY0tpM4PHE5-3" target="LQusZBxUrNY0tpM4PHE5-8" edge="1">
+        <mxCell id="LQusZBxUrNY0tpM4PHE5-5" value="extends" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="LQusZBxUrNY0tpM4PHE5-3" target="LQusZBxUrNY0tpM4PHE5-8" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="460" y="590" as="sourcePoint" />
             <mxPoint x="470" y="550" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="LQusZBxUrNY0tpM4PHE5-6" value="include" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" parent="1" source="LQusZBxUrNY0tpM4PHE5-3" target="LQusZBxUrNY0tpM4PHE5-7" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxCell id="LQusZBxUrNY0tpM4PHE5-6" value="extends" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" parent="1" source="LQusZBxUrNY0tpM4PHE5-3" target="LQusZBxUrNY0tpM4PHE5-7" edge="1">
+          <mxGeometry x="-0.2339" y="7" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="342" y="578" as="sourcePoint" />
             <mxPoint x="430" y="630" as="targetPoint" />
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="LQusZBxUrNY0tpM4PHE5-7" value="בחירת משמרת וסניף" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -47,11 +48,11 @@
         <mxCell id="LQusZBxUrNY0tpM4PHE5-16" value="בחירת תפקיד" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="530" y="530" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="LQusZBxUrNY0tpM4PHE5-17" value="include" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;" parent="1" source="LQusZBxUrNY0tpM4PHE5-16" target="LQusZBxUrNY0tpM4PHE5-18" edge="1">
-          <mxGeometry y="10" width="50" height="50" relative="1" as="geometry">
+        <mxCell id="LQusZBxUrNY0tpM4PHE5-17" value="includes" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;" parent="1" source="LQusZBxUrNY0tpM4PHE5-16" target="LQusZBxUrNY0tpM4PHE5-18" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="860" y="590" as="sourcePoint" />
             <mxPoint x="930" y="570" as="targetPoint" />
-            <mxPoint y="-1" as="offset" />
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="LQusZBxUrNY0tpM4PHE5-18" value="בדיקת הסמכה" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -64,6 +65,7 @@
             <Array as="points">
               <mxPoint x="1070" y="450" />
             </Array>
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="LQusZBxUrNY0tpM4PHE5-20" value="שיבוץ עבודת למשמרת" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -105,14 +107,15 @@
         <mxCell id="LQusZBxUrNY0tpM4PHE5-28" value="בדיקה שהעובד אינו משובץ למשמרת נוספת באותו יום" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="1120" y="600" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="LQusZBxUrNY0tpM4PHE5-29" value="include" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fontSize=13;verticalAlign=bottom;" parent="1" source="LQusZBxUrNY0tpM4PHE5-8" target="LQusZBxUrNY0tpM4PHE5-16" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxCell id="LQusZBxUrNY0tpM4PHE5-29" value="includes" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fontSize=13;verticalAlign=bottom;" parent="1" source="LQusZBxUrNY0tpM4PHE5-8" target="LQusZBxUrNY0tpM4PHE5-16" edge="1">
+          <mxGeometry x="-0.2884" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="510" y="660" as="sourcePoint" />
             <mxPoint x="560" y="610" as="targetPoint" />
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="LQusZBxUrNY0tpM4PHE5-30" value="include" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;verticalAlign=bottom;fontSize=14;" parent="1" source="LQusZBxUrNY0tpM4PHE5-16" target="LQusZBxUrNY0tpM4PHE5-13" edge="1">
-          <mxGeometry x="0.0015" width="50" height="50" relative="1" as="geometry">
+        <mxCell id="LQusZBxUrNY0tpM4PHE5-30" value="includes" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;verticalAlign=bottom;fontSize=14;" parent="1" source="LQusZBxUrNY0tpM4PHE5-16" target="LQusZBxUrNY0tpM4PHE5-13" edge="1">
+          <mxGeometry x="-0.0473" y="6" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="510" y="660" as="sourcePoint" />
             <mxPoint x="560" y="610" as="targetPoint" />
             <mxPoint as="offset" />
@@ -148,7 +151,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LQusZBxUrNY0tpM4PHE5-38" value="extend" style="endArrow=classic;html=1;rounded=0;entryX=0.414;entryY=0.012;entryDx=0;entryDy=0;fontSize=15;verticalAlign=bottom;exitX=1;exitY=1;exitDx=0;exitDy=0;entryPerimeter=0;" parent="1" source="LQusZBxUrNY0tpM4PHE5-32" target="LQusZBxUrNY0tpM4PHE5-35" edge="1">
+        <mxCell id="LQusZBxUrNY0tpM4PHE5-38" value="includes" style="endArrow=classic;html=1;rounded=0;entryX=0.414;entryY=0.012;entryDx=0;entryDy=0;fontSize=15;verticalAlign=bottom;exitX=1;exitY=1;exitDx=0;exitDy=0;entryPerimeter=0;" parent="1" source="LQusZBxUrNY0tpM4PHE5-32" target="LQusZBxUrNY0tpM4PHE5-35" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="230" y="800" as="sourcePoint" />
             <mxPoint x="340" y="770" as="targetPoint" />
@@ -177,9 +180,6 @@
             <mxPoint x="380" y="-500" as="sourcePoint" />
             <mxPoint x="430" y="-530" as="targetPoint" />
           </mxGeometry>
-        </mxCell>
-        <mxCell id="LQusZBxUrNY0tpM4PHE5-49" value="יצרת עובד חדש&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="470" y="-570" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="LQusZBxUrNY0tpM4PHE5-50" value="include" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;fontSize=13;" parent="1" source="LQusZBxUrNY0tpM4PHE5-74" target="LQusZBxUrNY0tpM4PHE5-51" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -221,14 +221,8 @@
         <mxCell id="LQusZBxUrNY0tpM4PHE5-73" value="בדיקת אילוץ מנהל" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="780" y="-80" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="LQusZBxUrNY0tpM4PHE5-74" value="קבלת פרטי עובד" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="LQusZBxUrNY0tpM4PHE5-74" value="יצרת עובד חדש&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="290" y="-570" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="LQusZBxUrNY0tpM4PHE5-76" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="LQusZBxUrNY0tpM4PHE5-74" target="LQusZBxUrNY0tpM4PHE5-49" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="530" y="-480" as="sourcePoint" />
-            <mxPoint x="580" y="-530" as="targetPoint" />
-          </mxGeometry>
         </mxCell>
         <mxCell id="LQusZBxUrNY0tpM4PHE5-82" value="בחירת הסמכה לעובד" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="1760" y="-500" width="120" height="80" as="geometry" />
@@ -504,6 +498,24 @@
             <mxPoint x="620" y="-20" as="sourcePoint" />
             <mxPoint x="810" y="-20" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="Lzh6uA7T-YmngDlfBiLK-1" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;extends&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="-550" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Lzh6uA7T-YmngDlfBiLK-4" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;includes&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="747" y="570" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Lzh6uA7T-YmngDlfBiLK-5" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;includes&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="850" y="550" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Lzh6uA7T-YmngDlfBiLK-6" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;includes&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="540" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Lzh6uA7T-YmngDlfBiLK-7" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;includes&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="520" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Lzh6uA7T-YmngDlfBiLK-8" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;extends&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="630" width="80" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

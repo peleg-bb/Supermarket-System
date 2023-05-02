@@ -194,7 +194,7 @@ public class DeliveryForm {
     private void updateArrivalTimes() throws DeliveryException{
         for (DeliveryStop stop : destinationSitesToVisit) {
             stop.updateArrivalTime(dispatchTime);
-            if (!hrManager.checkAvailability(stop.getDestination().getName(), stop.getEstimatedArrivalTime())) {
+            if (!hrManager.checkStoreAvailability(stop.getDestination().getName(), stop.getEstimatedArrivalTime())) {
                 // TODO: decide what to do if the site is not available
                 throw new DeliveryException("destination site is not available at the estimated arrival time");
             }

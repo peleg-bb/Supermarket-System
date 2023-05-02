@@ -96,6 +96,12 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         return deliveryStops;
     }
 
+    @Override
+    public String AddDriverToSystem() {
+        throw new UnsupportedOperationException();
+        // TODO: Implement
+    }
+
     public void createForm(List<DeliveryStop> stops, Site origin) throws DeliveryException {
         DeliveryForm deliveryForm = new DeliveryForm(deliveryFormCount++, stops, origin,
                 new Timestamp(System.currentTimeMillis()));

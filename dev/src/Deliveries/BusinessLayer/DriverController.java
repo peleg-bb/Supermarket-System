@@ -80,6 +80,8 @@ public class DriverController {
     }
 
     private void notifyHR(Timestamp startTime, Timestamp finishTime, Driver driver) {
+        // TODO: Use boolean which returns to check if the driver was assigned successfully.
+        //  If not, throw exception?
         hrManager.assignDrivers(driver.getId(), startTime, finishTime);
     }
 

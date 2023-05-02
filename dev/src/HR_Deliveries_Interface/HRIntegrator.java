@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface HRIntegrator {
-    boolean checkAvailability(String store, Timestamp arrivalTime);
+    boolean checkStoreAvailability(String store, Timestamp arrivalTime);
     List<String> getAvailableDrivers(Timestamp startTime, Timestamp endTime);
     boolean assignDrivers(String driverId, Timestamp startTime, Timestamp endTime);
 
