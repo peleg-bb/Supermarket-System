@@ -96,11 +96,10 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         return deliveryStops;
     }
 
-    @Override
-    public String AddDriverToSystem() {
-        throw new UnsupportedOperationException();
-        // TODO: Implement
-    }
+    /**
+     * @return
+     */
+
 
     public void createForm(List<DeliveryStop> stops, Site origin) throws DeliveryException {
         DeliveryForm deliveryForm = new DeliveryForm(deliveryFormCount++, stops, origin,

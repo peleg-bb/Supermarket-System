@@ -74,4 +74,8 @@ public class Driver {
     public boolean isLicensed(Truck truck) {
         return license.isLicensed(truck);
     }
+
+    public String getPhone() {
+        return phone;
+    }
 }

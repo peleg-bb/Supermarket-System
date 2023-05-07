@@ -44,4 +44,26 @@ public class DriverDAO {
 
     }
 
+    public boolean addDriver(Driver driver) {
+        String id = driver.getId();
+        String name = driver.getName();
+        String phone = driver.getPhone();
+        License license = driver.getLicense();
+        int weightAllowed = license.getWeightAllowedTons();
+        int regularAllowed = license.getTruckTypesAllowed().contains("Regular") ? 1 : 0;
+        int refrigeratedAllowed = license.getTruckTypesAllowed().contains("Refrigerated") ? 1 : 0;
+        String query = "INSERT INTO Drivers (driver_id, driver_name, phone)" +
+                " VALUES ('" + id + "', '" + name + "', '" + phone + "');";
+        String query2 = "INSERT INTO DriverLicenses " +
+                "(driver_id, weight_allowed_tons, regular_allowed, refrigerated_allowed)" +
+                " VALUES ('" + id + "', " + weightAllowed + ", " + regularAllowed + ", " + refrigeratedAllowed + ");";
+        try {
+            conn.executeUpdate(query);
+            conn.executeUpdate(query2);
+            return true;
+        }
+        catch (SQLException exception) {
+            return false;
+        }
+    }
 }

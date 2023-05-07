@@ -4,12 +4,13 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.DataAccessLayer.DriverDAO;
 import HR.BusinessLayer.ShiftController;
+import HR_Deliveries_Interface.DriverFactory;
 import HR_Deliveries_Interface.HRIntegrator;
 
 import java.sql.Timestamp;
 import java.util.*;
 
-public class DriverController {
+public class DriverController implements DriverFactory {
     private final HashSet<Driver> drivers;
     private HRIntegrator hrManager; //
     private static DriverController instance = null;
@@ -117,6 +118,28 @@ public class DriverController {
      */
     public void setTestEnvironment() {
         TEST_ENVIRONMENT = true;
+    }
+
+
+    /**
+     * @param name - driver's name
+     * @param id - driver's id
+     * @param phone - driver's phone number
+     * @param maxWeight - weight allowed in the driver's license
+     * @param regularAllowed - whether the driver is allowed to drive regular trucks
+     * @param refrigeratedAllowed - whether the driver is allowed to drive refrigerated trucks
+     * @return true if the driver was added successfully to the DB, false otherwise
+     */
+    @Override
+    public boolean AddDriverToSystem(String name, String id, String phone, int maxWeight,
+                                     boolean regularAllowed, boolean refrigeratedAllowed) {
+        Driver driver = new Driver(name, id, phone,
+                new License(maxWeight, regularAllowed?1:0, refrigeratedAllowed?1:0));
+        if (driverDAO.addDriver(driver)) {
+            drivers.add(driver);
+            return true;
+        }
+        return false;
     }
 }
 
