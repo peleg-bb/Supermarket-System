@@ -4,13 +4,13 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.DataAccessLayer.DriverDAO;
 import HR.BusinessLayer.ShiftController;
-import HR_Deliveries_Interface.DriverFactory;
+import HR_Deliveries_Interface.DriverSaver;
 import HR_Deliveries_Interface.HRIntegrator;
 
 import java.sql.Timestamp;
 import java.util.*;
 
-public class DriverController implements DriverFactory {
+public class DriverController implements DriverSaver {
     private final HashSet<Driver> drivers;
     private HRIntegrator hrManager; //
     private static DriverController instance = null;
