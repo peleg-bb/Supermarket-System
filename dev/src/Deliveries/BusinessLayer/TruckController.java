@@ -15,9 +15,9 @@ public class TruckController {
     // Singleton Constructor
     private TruckController() {
         trucks = new HashSet<>();
-        generateTruckFleet(20);
+        generateTruckFleet(20); // TODO: Remove this line when the DB is ready
         truckDAO = new TruckDAO();
-        trucks.addAll(truckDAO.loadData());
+        // trucks.addAll(truckDAO.loadData()); // TODO: Uncomment this line when the DB is ready
     }
 
     public static TruckController getInstance() {
@@ -29,11 +29,11 @@ public class TruckController {
 
 
     public Truck pickTruck(TruckType requiredType) throws DeliveryException {
-        for (Truck curr : trucks) {
-            if (curr.getType().equals(requiredType)) {
-                if (curr.getAvailability().equals(Availability.Available)) {
-                    return curr;
-                }
+        for (Truck truck : trucks) {
+            if (truck.getType().equals(requiredType) &&
+                    truck.getAvailability().equals(Availability.Available)) {
+                        truck.setAvailability(Availability.Busy);
+                        return truck;
             }
         }
         // No available trucks of the required type
@@ -43,12 +43,12 @@ public class TruckController {
 
 
     public Truck pickTruck(TruckType requiredType, int requiredWeight) throws DeliveryException{
-        for (Truck curr : trucks) {
-            if (curr.getType().equals(requiredType) && curr.getMaxWeightTons() >= requiredWeight) {
-                if (curr.getAvailability().equals(Availability.Available)) {
-                    curr.setAvailability(Availability.Busy);
-                    return curr;
-                }
+        for (Truck truck : trucks) {
+            if (truck.getType().equals(requiredType) &&
+                    truck.getMaxWeightTons() >= requiredWeight &&
+                        truck.getAvailability().equals(Availability.Available)) {
+                            truck.setAvailability(Availability.Busy);
+                            return truck;
             }
         }
         // No available trucks of the required type and weight
@@ -77,6 +77,10 @@ public class TruckController {
 
     private void addTruck(Truck truck) {
         trucks.add(truck);
+    }
+
+    public int getTruckFleetSize() { // To be used for testing
+        return trucks.size();
     }
 
 }

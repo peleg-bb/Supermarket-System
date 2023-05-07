@@ -21,7 +21,7 @@ public class DriverController {
     private DriverController() {
         driverDAO = new DriverDAO();
         drivers = new HashSet<>();
-        //drivers.addAll(driverDAO.loadData());
+        //drivers.addAll(driverDAO.loadData()); // TODO: Uncomment this line when the DB is ready
         generateFleet(40);
         hrManager = ShiftController.getInstance();
     }

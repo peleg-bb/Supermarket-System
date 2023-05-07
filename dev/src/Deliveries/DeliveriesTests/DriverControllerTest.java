@@ -23,10 +23,6 @@ class DriverControllerTest {
     @Mock
     Truck truck1;
     @Mock
-    Truck truck2;
-    @Mock
-    Truck truck3;
-    @Mock
     HRIntegrator hrManager;
     Timestamp startTime;
     Timestamp endTime;
@@ -35,12 +31,12 @@ class DriverControllerTest {
     @BeforeEach
     void setUp() {
         driverController = DriverController.getInstance();
-        //driverController.generateFleet(20);
+        // driverController.generateFleet(20);
         truck1 = mock(Truck.class);
         hrManager = mock(HRIntegrator.class);
+        driverController.setHrManager(hrManager);
         startTime = new Timestamp(2020, 1, 1, 8, 0, 0, 0);
         endTime = new Timestamp(2020, 1, 1, 16, 0, 0, 0);
-        driverController.setHrManager(hrManager);
     }
 
     @Test @Order(1)
@@ -95,15 +91,11 @@ class DriverControllerTest {
         when(truck1.getMaxWeightTons()).thenReturn(10);
         List<String> driverIds = driverController.getDriverIds();
         when(hrManager.getAvailableDrivers(startTime, endTime)).thenReturn(driverIds);
-        assertThrows(DeliveryException.class, () -> pickDriverLoop(driverIds));
-
-
+        assertThrows(DeliveryException.class, () -> pickAllDriversLoop(driverIds));
         // Check if all drivers are unavailable after we picked them all
-
-
     }
 
-    private void pickDriverLoop(List<String> driverIds) throws DeliveryException {
+    private void pickAllDriversLoop(List<String> driverIds) throws DeliveryException {
         for (int i = 0; i < driverIds.size() + 1; i++) {
             driverController.pickDriver(truck1, startTime, endTime);
         }
