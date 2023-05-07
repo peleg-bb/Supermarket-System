@@ -2,16 +2,23 @@ package Deliveries.DeliveriesTests;
 
 import Deliveries.BusinessLayer.Driver;
 import Deliveries.BusinessLayer.DriverController;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Truck;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import HR_Deliveries_Interface.HRIntegrator;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class DriverControllerTest {
+    public static final int LAST_TEST_INDEX = 4; // TODO: change this as more tests are added
     private DriverController driverController;
     @Mock
     Truck truck1;
@@ -19,19 +26,88 @@ class DriverControllerTest {
     Truck truck2;
     @Mock
     Truck truck3;
+    @Mock
+    HRIntegrator hrManager;
+    Timestamp startTime;
+    Timestamp endTime;
 
 
     @BeforeEach
     void setUp() {
         driverController = DriverController.getInstance();
-        driverController.generateFleet(20);
-
+        //driverController.generateFleet(20);
+        truck1 = mock(Truck.class);
+        hrManager = mock(HRIntegrator.class);
+        startTime = new Timestamp(2020, 1, 1, 8, 0, 0, 0);
+        endTime = new Timestamp(2020, 1, 1, 16, 0, 0, 0);
+        driverController.setHrManager(hrManager);
     }
 
-    @Test
-    void pickDriver() {
+    @Test @Order(1)
+    void pickDriverSuccess() {
         when(truck1.getType()).thenReturn(TruckType.Regular);
-        when(truck2.getType()).thenReturn(TruckType.Refrigerated);
-        
+//        when(truck2.getType()).thenReturn(TruckType.Refrigerated);
+        when(truck1.getMaxWeightTons()).thenReturn(10);
+//        when(truck2.getMaxWeightTons()).thenReturn(20);
+//        when(truck3.getMaxWeightTons()).thenReturn(30);
+        driverController.generateFleet(1);
+        List<String> driverIds = driverController.getDriverIds();
+        when(hrManager.getAvailableDrivers(startTime, endTime)).thenReturn(driverIds);
+        try {
+            Driver driver = driverController.pickDriver(truck1, startTime, endTime);
+            assertTrue(driver.isLicensed(truck1));
+        } catch (DeliveryException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    @Test @Order(2)
+    void pickDriverFailWeight() {
+        when(truck1.getType()).thenReturn(TruckType.Regular);
+//        when(truck2.getType()).thenReturn(TruckType.Refrigerated);
+        when(truck1.getMaxWeightTons()).thenReturn(40);
+//        when(truck2.getMaxWeightTons()).thenReturn(20);
+//        when(truck3.getMaxWeightTons()).thenReturn(30);
+        List<String> driverIds = driverController.getDriverIds();
+        when(hrManager.getAvailableDrivers(startTime, endTime)).thenReturn(driverIds);
+
+        assertThrows(DeliveryException.class, () -> driverController.pickDriver(truck1, startTime, endTime));
+
+    }
+
+    @Test @Order(3)
+    void pickDriverFailHRAvailability() {
+        when(truck1.getType()).thenReturn(TruckType.Regular);
+//        when(truck2.getType()).thenReturn(TruckType.Refrigerated);
+        when(truck1.getMaxWeightTons()).thenReturn(10);
+//        when(truck2.getMaxWeightTons()).thenReturn(20);
+//        when(truck3.getMaxWeightTons()).thenReturn(30);
+        List<String> driverIds = new ArrayList<>();
+        when(hrManager.getAvailableDrivers(startTime, endTime)).thenReturn(driverIds);
+
+        assertThrows(DeliveryException.class, () -> driverController.pickDriver(truck1, startTime, endTime));
+
+    }
+
+    @Test @Order(LAST_TEST_INDEX)
+    void pickDriverFailDriverAvailability() {
+        when(truck1.getType()).thenReturn(TruckType.Regular);
+        when(truck1.getMaxWeightTons()).thenReturn(10);
+        List<String> driverIds = driverController.getDriverIds();
+        when(hrManager.getAvailableDrivers(startTime, endTime)).thenReturn(driverIds);
+        assertThrows(DeliveryException.class, () -> pickDriverLoop(driverIds));
+
+
+        // Check if all drivers are unavailable after we picked them all
+
+
+    }
+
+    private void pickDriverLoop(List<String> driverIds) throws DeliveryException {
+        for (int i = 0; i < driverIds.size() + 1; i++) {
+            driverController.pickDriver(truck1, startTime, endTime);
+        }
+    }
+
+
 }

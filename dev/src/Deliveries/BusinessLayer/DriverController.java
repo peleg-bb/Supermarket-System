@@ -21,7 +21,7 @@ public class DriverController {
     private DriverController() {
         driverDAO = new DriverDAO();
         drivers = new HashSet<>();
-        drivers.addAll(driverDAO.loadData());
+        //drivers.addAll(driverDAO.loadData());
         generateFleet(40);
         hrManager = ShiftController.getInstance();
     }
@@ -45,7 +45,7 @@ public class DriverController {
             // Create a new driver object and set availability
             Driver driver = new Driver(name, id, phone,
                     new License(random.nextInt(30),
-                    random.nextInt(1), random.nextInt(1)));
+                    random.nextInt(2), random.nextInt(2)));
             driver.setAvailability(Availability.Available);
 
             // Add the driver to the DriverController instance
@@ -68,6 +68,8 @@ public class DriverController {
         List<String> availableDrivers = hrManager.getAvailableDrivers(startTime, finishTime);
         for (Driver driver : drivers) {
             if (driver.isAvailable() &&
+                    // This 'double check' is not redundant -
+                    // it checks whether the driver is available both in terms of HR and deliveries.
                     availableDrivers.contains(driver.getId())) {
                 if (driver.isLicensed(truck)) {
                     driver.setAvailability(Availability.Busy);
@@ -85,5 +87,19 @@ public class DriverController {
         hrManager.assignDrivers(driver.getId(), startTime, finishTime);
     }
 
+    public List<String> getDriverIds() {
+        List<String> driverIds = new ArrayList<>();
+        for (Driver driver : drivers) {
+            driverIds.add(driver.getId());
+        }
+        return driverIds;
+    }
+
+    /**
+     * should only be used for testing
+     */
+    public void setHrManager(HRIntegrator hrManager) {
+        this.hrManager = hrManager;
+    }
 }
 

@@ -58,6 +58,19 @@ public class Driver {
         availability = Availability.Available;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Driver driver)) return false;
+
+        return getId().equals(driver.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
+
     public boolean isLicensed(Truck truck) {
         return license.isLicensed(truck);
     }
