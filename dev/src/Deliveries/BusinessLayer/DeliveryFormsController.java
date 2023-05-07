@@ -22,6 +22,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     private final TruckController truckController;
     private final DriverController driverController;
     private final DeliveryFormDAO deliveryFormDAO;
+    private boolean TESTING_MODE;
 
 
     private DeliveryFormsController() {
@@ -32,15 +33,16 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         driverController = DriverController.getInstance();
         deliveryFormDAO = new DeliveryFormDAO();
         pendingDeliveryForms.addAll(deliveryFormDAO.loadData());
+        TESTING_MODE = false;
         // TODO: Implement properly
-        // As of now doesn't have to be a singleton
+
     }
 
     public static DeliveryFormsController getInstance() {
         if (instance == null) {
             instance = new DeliveryFormsController();
         }
-        return instance;
+        return instance; // Does it have to be a singleton?
     }
 
 
@@ -99,8 +101,6 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     /**
      * @return
      */
-
-
     public void createForm(List<DeliveryStop> stops, Site origin) throws DeliveryException {
         DeliveryForm deliveryForm = new DeliveryForm(deliveryFormCount++, stops, origin,
                 new Timestamp(System.currentTimeMillis()));
@@ -124,5 +124,22 @@ public class DeliveryFormsController implements DeliveryIntegrator {
             }
         }
         return truckType;
+    }
+
+    /**
+     * should only be called if testing the class
+     */
+    public TruckType getTruckTypeTest(List<DeliveryStop> destinationSitesToVisit) throws Exception{
+        if (!TESTING_MODE){
+            throw new Exception("Not in testing mode");
+        }
+        return getTruckType(destinationSitesToVisit);
+    }
+
+    /**
+     * should only be called if testing the class
+     */
+    public void setTestingMode(){
+        TESTING_MODE = true;
     }
 }
