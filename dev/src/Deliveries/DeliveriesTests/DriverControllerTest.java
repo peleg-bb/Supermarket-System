@@ -31,10 +31,11 @@ class DriverControllerTest {
     @BeforeEach
     void setUp() {
         driverController = DriverController.getInstance();
+        driverController.setTestEnvironment();
         // driverController.generateFleet(20);
         truck1 = mock(Truck.class);
         hrManager = mock(HRIntegrator.class);
-        driverController.setHrManager(hrManager);
+        try {driverController.setHrManager(hrManager);} catch (Exception ignored) {}
         startTime = new Timestamp(2020, 1, 1, 8, 0, 0, 0);
         endTime = new Timestamp(2020, 1, 1, 16, 0, 0, 0);
     }

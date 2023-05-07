@@ -191,7 +191,7 @@ public class DeliveryForm {
         this.driver = newDriver;
     }
 
-    private void updateArrivalTimes() throws DeliveryException{
+    private void updateArrivalTimes() throws DeliveryException {
         for (DeliveryStop stop : destinationSitesToVisit) {
             stop.updateArrivalTime(dispatchTime);
             if (!hrManager.checkStoreAvailability(stop.getDestination().getName(), stop.getEstimatedArrivalTime())) {

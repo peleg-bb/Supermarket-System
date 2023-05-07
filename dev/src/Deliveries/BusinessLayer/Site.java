@@ -1,6 +1,7 @@
 package Deliveries.BusinessLayer;
 
 public class Site {
+    public static final int KM_BETWEEN_ZONES = 10;
     private final String name;
     private final String address;
     private final String contactName;
@@ -43,6 +44,6 @@ public class Site {
     }
 
     public int computeDistance(Site otherSite) {
-        return Math.abs(otherSite.getDeliveryZone() - this.getDeliveryZone());
+        return KM_BETWEEN_ZONES*Math.abs(otherSite.getDeliveryZone() - this.getDeliveryZone());
     }
 }

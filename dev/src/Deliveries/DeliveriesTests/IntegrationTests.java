@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DeliveryFormTest {
+class IntegrationTests {
 
     private DeliveryForm deliveryForm;
     private DeliveryFormsController deliveryFormsController;

@@ -79,7 +79,8 @@ public class TruckController {
         trucks.add(truck);
     }
 
-    public int getTruckFleetSize() { // To be used for testing
+    public int getTruckFleetSize() {
+        // To be used for testing. Does not throw an exception since it's only a getter.
         return trucks.size();
     }
 

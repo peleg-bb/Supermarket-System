@@ -2,7 +2,6 @@ package Deliveries.BusinessLayer;
 
 import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.DataAccessLayer.DriverDAO;
 import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.HRIntegrator;
@@ -15,6 +14,7 @@ public class DriverController {
     private HRIntegrator hrManager; //
     private static DriverController instance = null;
     private final DriverDAO driverDAO;
+    private boolean TEST_ENVIRONMENT = false;
 
 
     // Singleton Constructor
@@ -81,10 +81,16 @@ public class DriverController {
         throw new DeliveryException("No available drivers with license for truck " + truck);
     }
 
-    private void notifyHR(Timestamp startTime, Timestamp finishTime, Driver driver) {
-        // TODO: Use boolean which returns to check if the driver was assigned successfully.
-        //  If not, throw exception?
-        hrManager.assignDrivers(driver.getId(), startTime, finishTime);
+    /*
+    * Notifies HR module.
+    * Uses a boolean to check if the driver was assigned successfully,
+    * and throws an exception if not.
+    *  */
+    private void notifyHR(Timestamp startTime, Timestamp finishTime, Driver driver) throws DeliveryException {
+        if (!hrManager.assignDrivers(driver.getId(), startTime, finishTime)){
+            throw new DeliveryException("Driver " + driver.getId() + " was not assigned successfully");
+        }
+
     }
 
     public List<String> getDriverIds() {
@@ -96,10 +102,21 @@ public class DriverController {
     }
 
     /**
-     * should only be used for testing
+     * should only be used for testing, to set a mock HRManager.
      */
-    public void setHrManager(HRIntegrator hrManager) {
+    public void setHrManager(HRIntegrator hrManager) throws Exception {
+        if (TEST_ENVIRONMENT) {
+            throw new Exception("This method should only be used for testing");
+        }
         this.hrManager = hrManager;
+    }
+
+    /**
+     * Should only be used for testing.
+     * This method is used to ensure certain methods are called only for the purpose of testing.
+     */
+    public void setTestEnvironment() {
+        TEST_ENVIRONMENT = true;
     }
 }
 
