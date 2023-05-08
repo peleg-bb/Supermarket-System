@@ -51,11 +51,13 @@ public class DriverController implements DriverSaver {
 
             // Add the driver to the DriverController instance
             addDriver(driver);
+
         }
     }
 
     private void addDriver(Driver driver) {
         drivers.add(driver);
+        driverDAO.addDriver(driver);
     }
 
     public static DriverController getInstance() {

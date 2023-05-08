@@ -1,6 +1,5 @@
 package Deliveries.DataAccessLayer;
 
-import Deliveries.BusinessLayer.Driver;
 import Deliveries.BusinessLayer.Truck;
 import HR.DataAccessLayer.Connect;
 
@@ -12,6 +11,8 @@ import java.util.Set;
 
 public class TruckDAO {
     private final Connect conn;
+
+    //TODO: insert trucks to db
     public TruckDAO() {
         conn = Connect.getInstance();
     }

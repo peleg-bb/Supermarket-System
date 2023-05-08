@@ -13,6 +13,7 @@ public class DriverDAO {
         conn = Connect.getInstance();
     }
 
+    //TODO: insert drivers to db
     public Set<Driver> loadData(){
         Set<Driver> drivers = new HashSet<>();
         try {
