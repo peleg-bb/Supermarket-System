@@ -4,15 +4,23 @@ import Deliveries.BusinessLayer.*;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import HR.BusinessLayer.ShiftController;
+import HR_Deliveries_Interface.HRIntegrator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class IntegrationTests {
 
@@ -23,33 +31,57 @@ class IntegrationTests {
     private Site destination;
     private TruckController truckController;
     private DriverController driverController;
+    @Spy
+    HRIntegrator hrIntegrator;
     private DeliveryStop stop1;
+    @Spy
+    private DeliveryStop stop1Spy;
     private DeliveryStop stop2;
+    @Spy
+    private DeliveryStop stop2Spy;
     private Truck truck;
     private Driver driver;
 
     @BeforeEach
     void setUp() {
+
+
         SiteGenerator siteGenerator = new SiteGenerator();
         List<Site> siteList = siteGenerator.getSitesList();
         origin = siteList.get(0);
         destination2 = siteList.get(1);
         destination = siteList.get(2);
+        Timestamp mockTimestamp = new Timestamp(System.currentTimeMillis());
+
+
+        hrIntegrator = ShiftController.getInstance();
+        // mocks the hrIntegrator
+
 
         Map<String, Integer> items1 = new HashMap<>();
         items1.put("Box", 5);
         items1.put("Envelope", 10);
         stop1 = new DeliveryStop(1, items1, origin, destination, TruckType.Regular);
+        stop1Spy = spy(stop1);
+        when(stop1Spy.getEstimatedArrivalTime()).thenReturn(mockTimestamp);
+
         Map<String, Integer> items2 = new HashMap<>();
         items2.put("Pallet", 2);
         items2.put("Crate", 1);
         stop2 = new DeliveryStop(2, items2, origin, destination2, TruckType.Refrigerated);
+        stop2Spy = spy(stop2);
+        when(stop2Spy.getEstimatedArrivalTime()).thenReturn(mockTimestamp);
+        //when(hrIntegrator.checkStoreAvailability(destination2.getName(), mockTimestamp)).thenReturn(true);
         List<DeliveryStop> destinations = new ArrayList<>();
-        destinations.add(stop1);
-        destinations.add(stop2);
+        destinations.add(stop1Spy);
+        destinations.add(stop2Spy);
+
+//        when(hrIntegrator.checkStoreAvailability(destination.getName(), eq(mockTimestamp))).thenReturn(true);
+//        when(hrIntegrator.checkStoreAvailability(destination2.getName(), eq(mockTimestamp))).thenReturn(true);
         driverController = DriverController.getInstance();
         truckController = TruckController.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
+
 
         try {
             deliveryFormsController.createForm(destinations, origin);
