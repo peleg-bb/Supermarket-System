@@ -32,6 +32,12 @@ public class TruckDAO {
         }
     }
 
+    public void addTruck(Truck truck) {
+        // insert to DB
+        String licensePlate = truck.getLicensePlate();
+        // TODO: implement
+    }
+
     private Truck getTruck(HashMap<String, Object> driverRecord) {
         throw new UnsupportedOperationException();
     }

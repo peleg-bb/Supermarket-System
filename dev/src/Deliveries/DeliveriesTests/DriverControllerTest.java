@@ -47,7 +47,7 @@ class DriverControllerTest {
         when(truck1.getMaxWeightTons()).thenReturn(10);
 //        when(truck2.getMaxWeightTons()).thenReturn(20);
 //        when(truck3.getMaxWeightTons()).thenReturn(30);
-        driverController.generateFleet(1);
+// driverController.generateFleet(1);
         List<String> driverIds = driverController.getDriverIds();
         when(hrManager.getAvailableDrivers(startTime, endTime)).thenReturn(driverIds);
         try {

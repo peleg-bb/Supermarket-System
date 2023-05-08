@@ -22,8 +22,8 @@ public class DriverController implements DriverSaver {
     private DriverController() {
         driverDAO = new DriverDAO();
         drivers = new HashSet<>();
-        //drivers.addAll(driverDAO.loadData()); // TODO: Uncomment this line when the DB is ready
-        generateFleet(40);
+        drivers.addAll(driverDAO.loadData());
+        // generateFleet(40);
         hrManager = ShiftController.getInstance();
     }
 
