@@ -1,5 +1,6 @@
 package Deliveries.DataAccessLayer;
 
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Truck;
 import HR.DataAccessLayer.Connect;
 
@@ -32,10 +33,20 @@ public class TruckDAO {
         }
     }
 
-    public void addTruck(Truck truck) {
-        // insert to DB
+    public boolean addTruck(Truck truck) {
         String licensePlate = truck.getLicensePlate();
-        // TODO: implement
+        int maxWeightTons = truck.getMaxWeightTons();
+        TruckType truckType = truck.getType();
+        String model = truck.getModel();
+        String query = "INSERT INTO Trucks (license_plate, max_weight_tons, truck_type, model)" +
+                " VALUES ('" + licensePlate + "', '" + maxWeightTons + "', '" + truckType+ "', '" + model + "');";
+        try {
+            conn.executeUpdate(query);
+            return true;
+        }
+        catch (SQLException exception) {
+            return false;
+        }
     }
 
     private Truck getTruck(HashMap<String, Object> driverRecord) {

@@ -5,7 +5,6 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.DataAccessLayer.TruckDAO;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class TruckController {
@@ -77,11 +76,13 @@ public class TruckController {
 
     private void addTruck(Truck truck) {
         trucks.add(truck);
+        truckDAO.addTruck(truck);
     }
 
     public int getTruckFleetSize() {
         // To be used for testing. Does not throw an exception since it's only a getter.
         return trucks.size();
     }
+
 
 }
