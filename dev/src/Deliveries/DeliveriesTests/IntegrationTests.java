@@ -4,6 +4,7 @@ import Deliveries.BusinessLayer.*;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
 import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.HRIntegrator;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,10 +42,11 @@ class IntegrationTests {
     private DeliveryStop stop2Spy;
     private Truck truck;
     private Driver driver;
+    @Mock
+    WeightMeasurer weightMeasurer;
 
     @BeforeEach
     void setUp() {
-
 
         SiteGenerator siteGenerator = new SiteGenerator();
         List<Site> siteList = siteGenerator.getSitesList();
@@ -53,8 +55,12 @@ class IntegrationTests {
         destination = siteList.get(2);
         Timestamp mockTimestamp = new Timestamp(System.currentTimeMillis());
 
+        weightMeasurer = mock(MockWeightMeasurer.class);
+        when(weightMeasurer.measureWeight(any(DeliveryForm.class))).thenReturn(5);
 
-        hrIntegrator = ShiftController.getInstance();
+
+
+        hrIntegrator = mock(ShiftController.class);
         // mocks the hrIntegrator
 
 
@@ -75,23 +81,36 @@ class IntegrationTests {
         List<DeliveryStop> destinations = new ArrayList<>();
         destinations.add(stop1Spy);
         destinations.add(stop2Spy);
-
-//        when(hrIntegrator.checkStoreAvailability(destination.getName(), eq(mockTimestamp))).thenReturn(true);
-//        when(hrIntegrator.checkStoreAvailability(destination2.getName(), eq(mockTimestamp))).thenReturn(true);
-        driverController = DriverController.getInstance();
+        when(hrIntegrator.checkStoreAvailability(destination.getName(), mockTimestamp)).thenReturn(true);
+        when(hrIntegrator.checkStoreAvailability(destination2.getName(), mockTimestamp)).thenReturn(true);
+        prepareDriverController();
         truckController = TruckController.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
+        deliveryFormsController.setTestingMode();
+
+
+        // Simulates that all drivers are available
 
 
         try {
-            deliveryFormsController.createForm(destinations, origin);
-        } catch (DeliveryException e) {
+            deliveryFormsController.createForm(destinations, origin, mockTimestamp, hrIntegrator);
+            // TODO - change this testing-only constructor to setters
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        deliveryForm = deliveryFormsController.getDeliveryForm(1);
-        deliveryForm.setWeightMeasurer(new MockWeightMeasurer());
+        deliveryForm = deliveryFormsController.getDeliveryForm(0);
+        deliveryForm.setWeightMeasurer(weightMeasurer);
 
+    }
+
+    private void prepareDriverController() {
+        driverController = DriverController.getInstance();
+        driverController.setTestEnvironment();
+        List<String> driverIds = driverController.getDriverIds();
+        when(hrIntegrator.assignDrivers(any(), any(), any())).thenReturn(true);
+        when(hrIntegrator.getAvailableDrivers(any(), any())).thenReturn(driverIds);
+        try {driverController.setHrManager(hrIntegrator);} catch (Exception ignored) {}
     }
 
     @Test

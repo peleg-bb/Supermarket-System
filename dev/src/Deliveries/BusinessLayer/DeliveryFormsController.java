@@ -114,6 +114,8 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         addDeliveryForm(deliveryForm);
     }
 
+
+
     private TruckType getTruckType(List<DeliveryStop> destinationSitesToVisit) {
         TruckType truckType = TruckType.Regular;
         // for each delivery stop, check if the truck type is the same
@@ -141,5 +143,24 @@ public class DeliveryFormsController implements DeliveryIntegrator {
      */
     public void setTestingMode(){
         TESTING_MODE = true;
+    }
+
+
+
+    /*
+    To be used only for testing
+     */
+    public void createForm(List<DeliveryStop> stops, Site origin, Timestamp dispatchTime ,HRIntegrator hr) throws Exception {
+        if (!TESTING_MODE) throw new Exception();
+        DeliveryForm deliveryForm = new DeliveryForm(deliveryFormCount++, stops, origin,
+                dispatchTime, hr);
+        TruckType truckType = getTruckType(stops);
+        Truck truck = truckController.pickTruck(truckType);
+        deliveryForm.setTruck(truck);
+        Driver driver = driverController.pickDriver(truck, deliveryForm.getDispatchTime(),
+                deliveryForm.getEstimatedTerminationTime());
+
+        deliveryForm.setDriver(driver);
+        addDeliveryForm(deliveryForm);
     }
 }

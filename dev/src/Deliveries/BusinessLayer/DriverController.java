@@ -106,7 +106,7 @@ public class DriverController implements DriverSaver {
      * should only be used for testing, to set a mock HRManager.
      */
     public void setHrManager(HRIntegrator hrManager) throws Exception {
-        if (TEST_ENVIRONMENT) {
+        if (!TEST_ENVIRONMENT) {
             throw new Exception("This method should only be used for testing");
         }
         this.hrManager = hrManager;
@@ -141,5 +141,6 @@ public class DriverController implements DriverSaver {
         }
         return false;
     }
+
 }
 

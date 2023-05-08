@@ -40,6 +40,23 @@ public class DeliveryForm {
         updateArrivalTimes();
     }
 
+    /*
+    To be used for testing purposes only
+     */
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime, HRIntegrator hr) throws DeliveryException {
+        this.formId = formId;
+        this.destinationSitesToVisit = stops;
+        this.destinationSitesVisited = new ArrayList<>();
+        this.dispatchTime = dispatchTime;
+        this.originSite = originSite;
+        this.weightMeasurer = new UserInteractionUtil();
+        deliveryManager = DeliveryManagerImpl.getInstance();
+        deliveryFormsController = DeliveryFormsController.getInstance();
+        hrManager = hr;
+        updateArrivalTimes();
+    }
+
+
     public void addDeliveryStop(DeliveryStop deliveryStop) {
         destinationSitesToVisit.add(deliveryStop);
     }
