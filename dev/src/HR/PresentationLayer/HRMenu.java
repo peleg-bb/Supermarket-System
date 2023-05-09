@@ -466,13 +466,48 @@ public class HRMenu {
                     System.out.println(print_red("Invalid job."));
                     break;
                 }
-                Response res = service.certify_role(id_parsed, role_parsed);
-                if (res.errorOccurred()) {
-                    System.out.println("\n");
-                    System.out.println(print_red(res.getErrorMessage()));
-                } else {
-                    System.out.println("\n");
-                    System.out.println(print_green("Added a role certification successfully"));
+                if (role_parsed.equals(JobType.DRIVER)) {
+                    System.out.print("Please enter the employee's phone number: ");
+                    String phone = scanner.nextLine();
+                    System.out.print("Please enter the employee's max weight in TONS: ");
+                    String max_weight = scanner.nextLine();
+                    Integer max_weight_parsed = HRCommandParser.int_parser(max_weight);
+                    if (max_weight_parsed == null) {
+                        System.out.println(print_red("Invalid weight."));
+                        break;
+                    }
+                    System.out.print("Is the employee certified to a regular truck? ");
+                    String regular = scanner.nextLine();
+                    Object regular_parsed = HRCommandParser.student_parser(regular);
+                    if (regular_parsed == null) {
+                        System.out.println(print_red("Invalid answer."));
+                        break;
+                    }
+                    System.out.print("Is the employee certified to a refrigerated truck? ");
+                    String refrigerated = scanner.nextLine();
+                    Object refrigerated_parsed = HRCommandParser.student_parser(refrigerated);
+                    if (refrigerated_parsed == null) {
+                        System.out.println(print_red("Invalid answer."));
+                        break;
+                    }
+                    Response res = service.certify_driver(id_parsed, phone, max_weight_parsed, (boolean) regular_parsed, (boolean) refrigerated_parsed);
+                    if (res.errorOccurred()) {
+                        System.out.println("\n");
+                        System.out.println(print_red(res.getErrorMessage()));
+                    } else {
+                        System.out.println("\n");
+                        System.out.println(print_green("Added a role certification successfully"));
+                    }
+                }
+                else {
+                    Response res = service.certify_role(id_parsed, role_parsed);
+                    if (res.errorOccurred()) {
+                        System.out.println("\n");
+                        System.out.println(print_red(res.getErrorMessage()));
+                    } else {
+                        System.out.println("\n");
+                        System.out.println(print_green("Added a role certification successfully"));
+                    }
                 }
                 System.out.println("=====================================================================================");
             }
@@ -593,7 +628,7 @@ public class HRMenu {
                 String is_student = scanner.nextLine();
                 Object student_parsed = HRCommandParser.student_parser(is_student);
                 if (student_parsed == null) {
-                    System.out.println(print_red("Invalid family status."));
+                    System.out.println(print_red("Invalid student status."));
                     break;
                 }
                 System.out.print("Please enter the employee's password: ");

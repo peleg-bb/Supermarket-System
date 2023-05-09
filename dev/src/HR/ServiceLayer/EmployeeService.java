@@ -124,6 +124,19 @@ public class EmployeeService {
     }
 
     /**
+     * An HR Manager's function to certify an employee as a driver
+     * @param employee_id Employee's id
+     * @param phone Employee's phone number
+     * @param maxWeight Employee's truck max weight possible
+     * @param regularAllowed Employee's regular truck permission
+     * @param refrigeratedAllowed Employee's refrigerated truck permission
+     * @return Response object with an error message if occurred
+     */
+    public Response certify_driver(int employee_id, String phone, int maxWeight, boolean regularAllowed, boolean refrigeratedAllowed) {
+        return new Response(facade.certify_driver(this.id, employee_id, phone, maxWeight, regularAllowed, refrigeratedAllowed));
+    }
+
+    /**
      * An HR Manager's function to remove a role certification from an employee
      * @param employee_id Employee's id
      * @param role Removed role
