@@ -18,17 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class DriverDAOTest {
+class HR_Del_IntegrationTests {
     DriverDAO driverDAO;
-
-    @Test
-    void loadData() {
-        Set<Driver> drivers = new HashSet<>();
-        drivers = driverDAO.loadData();
-        for (Driver driver : drivers) {
-            System.out.println(driver);
-        }
-    }
 
     @Test
     void pickDriverIntegratedSuccess() {
