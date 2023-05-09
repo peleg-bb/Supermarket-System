@@ -2,6 +2,7 @@ package Deliveries.DeliveriesTests;
 
 import Deliveries.BusinessLayer.*;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.DataAccessLayer.DriverDAO;
 import Deliveries.DataAccessLayer.SiteDAO;
 import HR.BusinessLayer.ShiftController;
@@ -55,10 +56,20 @@ class DriverDAOTest {
 
     @Test
     void assignDriver() {
+        DriverController driverController = DriverController.getInstance();
+        Timestamp timestamp = new Timestamp(2023-1900, 6, 7, 16, 0, 0, 0);
+        Timestamp timestamp2 = new Timestamp(2023-1900, 6, 7, 18, 0, 0, 0);
+        Truck truck = mock(Truck.class);
+        when(truck.getType()).thenReturn(TruckType.Regular);
+        when(truck.getMaxWeightTons()).thenReturn( 1);
+        String driverId;
+        try {
+            driverId = (driverController.pickDriver(truck, timestamp, timestamp2)).getId();
+        } catch (DeliveryException e) {
+            throw new RuntimeException(e);
+        }
         HRIntegrator shiftController = ShiftController.getInstance();
-        Timestamp timestamp = new Timestamp(2023-1900, 6, 4, 16, 0, 0, 0);
-        Timestamp timestamp2 = new Timestamp(2023-1900, 6, 4, 12, 0, 0, 0);
-        assertTrue(shiftController.assignDrivers("123456789", timestamp, timestamp2));
+        assertTrue(shiftController.assignDrivers(driverId, timestamp, timestamp2));
 
     }
 
