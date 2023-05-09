@@ -4,6 +4,8 @@ import Deliveries.BusinessLayer.*;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.DataAccessLayer.DriverDAO;
 import Deliveries.DataAccessLayer.SiteDAO;
+import HR.BusinessLayer.ShiftController;
+import HR_Deliveries_Interface.HRIntegrator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,23 @@ class DriverDAOTest {
         } catch (DeliveryException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    @Test
+    void checkAvailability() {
+        HRIntegrator shiftController = ShiftController.getInstance();
+        Timestamp timestamp = new Timestamp(2023-1900, 6, 4, 16, 0, 0, 0);
+        assertTrue(shiftController.checkStoreAvailability("Tel Aviv", timestamp));
+    }
+
+    @Test
+    void assignDriver() {
+        HRIntegrator shiftController = ShiftController.getInstance();
+        Timestamp timestamp = new Timestamp(2023-1900, 6, 4, 16, 0, 0, 0);
+        Timestamp timestamp2 = new Timestamp(2023-1900, 6, 4, 12, 0, 0, 0);
+        shiftController.assignDrivers("123456789", timestamp, timestamp2);
+
 
     }
 
