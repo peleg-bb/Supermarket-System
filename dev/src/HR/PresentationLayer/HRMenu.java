@@ -1278,7 +1278,7 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "Beer Sheva");
         service.logout();
 
-        generateDrivers(40);
+        //generateDrivers(40);
 
     }
     public void generateDrivers(int numberOfDrivers) {
@@ -1302,7 +1302,13 @@ public class HRMenu {
             usedIds.add(id);
             service.add_employee(Integer.parseInt(id), name, bank_account, salary, "None", employment, FamilyStatus.SINGLE, true, "123456");
             service.assign_to_store(Integer.parseInt(id), "drivers");
-            service.certify_driver(Integer.parseInt(id), phone, 200, true, true);
+            Random random1 = new Random();
+            int x = random1.nextInt(2);
+            int y = random1.nextInt(2);
+            boolean x1 = x != 0;
+            boolean x2 = y != 0;
+            int weightAllowed = random1.nextInt(4,40);
+            service.certify_driver(Integer.parseInt(id), phone, weightAllowed, x1, x2);
             service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "drivers");
             service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.EVENING, "drivers");
             service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "drivers");
