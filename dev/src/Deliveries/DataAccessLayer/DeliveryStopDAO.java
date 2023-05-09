@@ -1,6 +1,8 @@
 package Deliveries.DataAccessLayer;
 
 import Deliveries.BusinessLayer.DeliveryStop;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import Deliveries.BusinessLayer.Site;
 import HR.DataAccessLayer.Connect;
 
 import java.sql.SQLException;
@@ -29,17 +31,26 @@ public class DeliveryStopDAO {
         }
     }
 
+    public Site getSiteByName(String name){
+        try {
+            List<HashMap<String, Object>> siteDetails = conn.executeQuery("SELECT * FROM Sites Where name = " + name);
+            Site site = SiteDAO.getSite(siteDetails.get(0));
+            return site;
+        }
+        catch (SQLException exception) {
+            return null;
+        }
+    }
+
         private DeliveryStop getStop(HashMap<String, Object> deliveryStopRecord) {
             int stopID = (Integer) deliveryStopRecord.get("stop_id");
             String origin = (String) deliveryStopRecord.get("origin_name");
             String destination = (String) deliveryStopRecord.get("destination_name");
-            String truckType = (String) deliveryStopRecord.get("truck_type");
-//            String status = (String) deliveryStopRecord.get("status");
-//            String formID= (String) deliveryStopRecord.get("form_id");
+            TruckType truckType = (TruckType) deliveryStopRecord.get("truck_type");
             HashMap<String, Integer> items = new HashMap<>();
-            throw new UnsupportedOperationException();
-
-//            return new DeliveryStop(stopID, items,origin,destination,truckType);
+            Site originSite = getSiteByName(origin);
+            Site destinationSite = getSiteByName(destination);
+            return new DeliveryStop(stopID, items,originSite,destinationSite,truckType);
         }
     }
 

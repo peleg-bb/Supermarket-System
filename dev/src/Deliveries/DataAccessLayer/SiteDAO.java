@@ -1,11 +1,12 @@
 package Deliveries.DataAccessLayer;
 
-import Deliveries.BusinessLayer.Driver;
 import Deliveries.BusinessLayer.Site;
 import HR.DataAccessLayer.Connect;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -17,37 +18,33 @@ public class SiteDAO {
     }
 
     //TODO: insert drivers to db
-    public Set<Driver> loadData() {
-//        Set<Driver> drivers = new HashSet<>();
-//        try {
-//            List<HashMap<String, Object>> driverDetails = conn.executeQuery("SELECT * FROM Drivers JOIN " +
-//                    "DriverLicenses ON Drivers.driver_id = DriverLicenses.driver_id");
-//            for (HashMap<String, Object> driverRecord: driverDetails) {
-//                Driver driver = getDriver(driverRecord);
-//                drivers.add(driver);
-//            }
-//            return drivers;
-//        }
-//        catch (SQLException exception) {
-//            return null;
-//        }
-        throw new UnsupportedOperationException();
+    public Set<Site> loadData() {
+        Set<Site> sites = new HashSet<>();
+        try {
+            List<HashMap<String, Object>> sitesDetails = conn.executeQuery("SELECT * FROM Sites");
+            for (HashMap<String, Object> siteRecord: sitesDetails) {
+                Site site = getSite(siteRecord);
+                sites.add(site);
+            }
+            return sites;
+        }
+        catch (SQLException exception) {
+            return null;
+        }
     }
 
 
-    private Driver getDriver(HashMap<String, Object> driverDetails) {
-//        String id = ((Integer) driverDetails.get("driver_id")).toString();
-//        String name = (String) driverDetails.get("driver_name");
-//        String phone = (String) driverDetails.get("phone");
-//
-//        int weightAllowed = Integer.parseInt(driverDetails.get("weight_allowed_tons").toString());
-//        Integer regularAllowed = (Integer) driverDetails.get("regular_allowed");
-//        Integer refrigeratedAllowed = (Integer) driverDetails.get("refrigerated_allowed");
-//        License license = new License(weightAllowed, regularAllowed, refrigeratedAllowed);
-//        return new Driver(id, name, phone, license);
+    public static Site getSite(HashMap<String, Object> siteDetails) {
+        String name = (String) siteDetails.get("name");
+        String address = (String) siteDetails.get("address");
+        String contactName = (String) siteDetails.get("contact_name");
+        String contactPhone = (String) siteDetails.get("contact_phone");
+        int deliveryZone = (Integer) siteDetails.get("delivery_zone");
 
-        throw new UnsupportedOperationException();
+        return new Site(name, address, contactName, contactPhone,deliveryZone);
     }
+
+
 
     public boolean saveSite(Site site) {
         String name = site.getName();

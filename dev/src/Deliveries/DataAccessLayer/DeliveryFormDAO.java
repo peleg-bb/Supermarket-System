@@ -42,6 +42,7 @@ public class DeliveryFormDAO {
         Timestamp dispatchTime = (Timestamp) deliveryFormRecord.get("dispatch_time");
         Timestamp terminationTime = (Timestamp) deliveryFormRecord.get("termination_time");
         String status = (String) deliveryFormRecord.get("status");
+        //TODO: return new DeliveryForm()
         throw new UnsupportedOperationException();
     }
 
@@ -51,8 +52,8 @@ public class DeliveryFormDAO {
         String truckLicensePlate = deliveryForm.getTruck().getLicensePlate();
         String dispatchTime = deliveryForm.getDispatchTime().toString();
         String terminationTime = deliveryForm.getEstimatedTerminationTime().toString();
-        //String status = deliveryForm.get
-        String query = "INSERT INTO Trucks (form_id, driver_id, truck_license_plate, dispatch_time, termination_time)" +
+        //TODO: String status = deliveryForm.פ
+        String query = "INSERT INTO DeliveryForms (form_id, driver_id, truck_license_plate, dispatch_time, termination_time)" +
                 " VALUES ('" + formID + "', '" + driverID + "', '" + truckLicensePlate+ "', '" + dispatchTime + "', '" + terminationTime + "');";
         try {
             conn.executeUpdate(query);
