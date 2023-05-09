@@ -17,7 +17,7 @@ public class SiteDAO {
         conn = Connect.getInstance();
     }
 
-    //TODO: insert drivers to db
+
     public Set<Site> loadData() {
         Set<Site> sites = new HashSet<>();
         try {
@@ -30,6 +30,23 @@ public class SiteDAO {
         }
         catch (SQLException exception) {
             return null;
+        }
+    }
+
+    public boolean addSite(Site site) {
+        String name = site.getName();
+        String address = site.getAddress();
+        String contactName = site.getContactName();
+        String contactPhone = site.getContactPhone();
+        int deliveryZone = site.getDeliveryZone();
+        String query = "INSERT INTO Trucks (name, address, contact_name, contact_phone, delivery_zone)" +
+                " VALUES ('" + name + "', '" + address + "', '" + contactName+ "', '" + contactPhone + "', '" + deliveryZone + "');";
+        try {
+            conn.executeUpdate(query);
+            return true;
+        }
+        catch (SQLException exception) {
+            return false;
         }
     }
 
@@ -62,4 +79,6 @@ public class SiteDAO {
             return false;
         }
     }
+
+
 }

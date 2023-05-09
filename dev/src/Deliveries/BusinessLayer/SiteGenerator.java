@@ -1,5 +1,7 @@
 package Deliveries.BusinessLayer;
 
+import Deliveries.DataAccessLayer.SiteDAO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,8 @@ public class SiteGenerator {
             "Beer Sheva",  "Ashkelon", "Ashdod", "Eilat"};
     private static final String[] CONTACT_NAMES = {"Peleg", "Tomer", "Tamar", "Gili", "Itay", "Reut", "Lior", "Noa"};
     public List<Site> sitesList;
+
+    public SiteDAO siteDAO;
     public SiteGenerator(){
         sitesList = generateSites();
     }
@@ -32,6 +36,8 @@ public class SiteGenerator {
             }
             Site site = new Site(name, address, contactName, contactPhone, deliveryZone);
             sites.add(site);
+            siteDAO.addSite(site);
+
         }
         return sites;
     }

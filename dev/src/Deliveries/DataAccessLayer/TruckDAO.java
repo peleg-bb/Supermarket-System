@@ -13,7 +13,6 @@ import java.util.Set;
 public class TruckDAO {
     private final Connect conn;
 
-    //TODO: delete truck from db
     public TruckDAO() {
         conn = Connect.getInstance();
     }
@@ -33,13 +32,15 @@ public class TruckDAO {
         }
     }
 
+
     public boolean addTruck(Truck truck) {
         String licensePlate = truck.getLicensePlate();
         int maxWeightTons = truck.getMaxWeightTons();
-        TruckType truckType = truck.getType();
+        String truckType = truck.getType().toString();
         String model = truck.getModel();
-        String query = "INSERT INTO Trucks (license_plate, max_weight_tons, truck_type, model)" +
-                " VALUES ('" + licensePlate + "', '" + maxWeightTons + "', '" + truckType+ "', '" + model + "');";
+        int netWeightTons = truck.getNetWeightTons();
+        String query = "INSERT INTO Trucks (license_plate, max_weight_tons, truck_type, model, net_weight_tons)" +
+                " VALUES ('" + licensePlate + "', '" + maxWeightTons + "', '" + truckType+ "', '" + model + "', '" + netWeightTons + "');";
         try {
             conn.executeUpdate(query);
             return true;
@@ -49,8 +50,13 @@ public class TruckDAO {
         }
     }
 
-    private Truck getTruck(HashMap<String, Object> driverRecord) {
-        throw new UnsupportedOperationException();
+    private Truck getTruck(HashMap<String, Object> truckRecord) {
+        String licensePlate = (String) truckRecord.get("license_plate");
+        int maxWeightTons = (Integer) truckRecord.get("max_weight_tons");
+        String model = (String) truckRecord.get("model");
+        TruckType truckType = (TruckType) truckRecord.get("truck_type");
+        int netWeightTons = (Integer) truckRecord.get("net_weight_tons");
+        return new Truck(model,licensePlate,truckType,maxWeightTons,netWeightTons);
     }
 
 }
