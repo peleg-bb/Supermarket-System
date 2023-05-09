@@ -36,6 +36,8 @@ class DriverDAOTest {
         Timestamp timestamp = new Timestamp(2023-1900, 6, 4, 10, 0, 0, 0);
         Timestamp timestamp2 = new Timestamp(2023-1900, 6, 4, 12, 0, 0, 0);
         Truck truck = mock(Truck.class);
+        when(truck.getType()).thenReturn(TruckType.Regular);
+        when(truck.getMaxWeightTons()).thenReturn( 1);
 
         try {
            driverController.pickDriver(truck, timestamp, timestamp2);
@@ -48,7 +50,7 @@ class DriverDAOTest {
     @Test
     void checkAvailability() {
         HRIntegrator shiftController = ShiftController.getInstance();
-        Timestamp timestamp = new Timestamp(2023-1900, 6, 4, 16, 0, 0, 0);
+        Timestamp timestamp = new Timestamp(2023-1900, 6, 3, 16, 0, 0, 0);
         assertTrue(shiftController.checkStoreAvailability("Tel Aviv", timestamp));
     }
 
