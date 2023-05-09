@@ -1140,6 +1140,9 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "Beer Sheva");
         service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "Beer Sheva");
         service.logout();
+        service.login(111111111, "123456");
+        service.assign_to_shift(222222222, LocalDate.of(2023, 7, 3), ShiftType.EVENING, "Tel Aviv", JobType.STOREKEEPER);
+        service.logout();
         service.login(333333333, "123456");
         service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "Tel Aviv");
         service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "Tel Aviv");
