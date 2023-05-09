@@ -234,6 +234,18 @@ public class DeliveryForm {
         return dispatchTime;
     }
 
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public Truck getTruck() {
+        return truck;
+    }
+
+    public Site getOriginSite() {
+        return originSite;
+    }
+
     public Timestamp getEstimatedTerminationTime() {
         // Returns the estimated arrival time of the last stop
         Timestamp lastStop = destinationSitesToVisit.get(0).getEstimatedArrivalTime();

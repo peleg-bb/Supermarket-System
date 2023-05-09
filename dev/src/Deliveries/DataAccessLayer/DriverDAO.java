@@ -14,7 +14,7 @@ public class DriverDAO {
         conn = Connect.getInstance();
     }
 
-    //TODO: insert drivers to db
+    //TODO: delete driver from db
     public Set<Driver> loadData(){
         Set<Driver> drivers = new HashSet<>();
         try {
