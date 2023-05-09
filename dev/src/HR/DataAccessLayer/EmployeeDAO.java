@@ -104,7 +104,7 @@ public class EmployeeDAO {
 
     public String certify_role(Integer employee_id, String role) {
         try{
-            conn.executeUpdate("INSERT INTO Roles (id, jobType) VALUES(?,?)", employee_id, role);
+            conn.executeUpdate("INSERT INTO EmployeeRoles (id, jobType) VALUES(?,?)", employee_id, role);
             return "";
         } catch (SQLException e) {
             return "Employee with id " + employee_id + " is already certified to this role";
@@ -114,7 +114,7 @@ public class EmployeeDAO {
 
     public String remove_role(Integer employee_id, String role) {
         try{
-            conn.executeUpdate("DELETE FROM Roles WHERE id = " + employee_id + " AND jobType = '" + role + "'");
+            conn.executeUpdate("DELETE FROM EmployeeRoles WHERE id = " + employee_id + " AND jobType = '" + role + "'");
             return "";
         } catch (SQLException e) {
             return "Employee with id " + employee_id + " isn't certified to this role";
@@ -123,7 +123,7 @@ public class EmployeeDAO {
 
     public String assign_to_store(Integer employee_id, String store) {
         try{
-            conn.executeUpdate("INSERT INTO Stores (id, store) VALUES(?,?)", employee_id, store);
+            conn.executeUpdate("INSERT INTO EmployeeStores (id, store) VALUES(?,?)", employee_id, store);
             return "";
         } catch (SQLException e) {
             return "Employee with id " + employee_id + " is already certified to this store";
@@ -133,7 +133,7 @@ public class EmployeeDAO {
 
     public String remove_from_store(Integer employee_id, String store) {
         try{
-            conn.executeUpdate("DELETE FROM Stores WHERE id = " + employee_id + " AND store = '" + store + "'");
+            conn.executeUpdate("DELETE FROM EmployeeStores WHERE id = " + employee_id + " AND store = '" + store + "'");
             return "";
         } catch (SQLException e) {
             return "Employee with id " + employee_id + " isn't certified to this store";

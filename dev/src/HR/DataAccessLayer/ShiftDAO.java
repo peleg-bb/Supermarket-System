@@ -302,7 +302,7 @@ public class ShiftDAO {
     public List<String> get_stores() {
         try {
             List<String> output = new LinkedList<>();
-            List<HashMap<String, Object>> stores = conn.executeQuery("SELECT DISTINCT store FROM Stores");
+            List<HashMap<String, Object>> stores = conn.executeQuery("SELECT DISTINCT store FROM EmployeeStores");
             for (HashMap<String, Object> record: stores) {
                 String store = (String) record.get("store");
                 output.add(store);
