@@ -69,4 +69,14 @@ public class DriverDAO {
             return false;
         }
     }
+
+    public void deleteAllDrivers() {
+        try {
+            conn.executeUpdate("DELETE FROM Drivers WHERE (1=1)");
+            conn.executeUpdate("DELETE FROM DriverLicenses WHERE (1=1)");
+        }
+        catch (SQLException exception) {
+            System.out.println("Failed to delete drivers");
+        }
+    }
 }

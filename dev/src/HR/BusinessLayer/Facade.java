@@ -149,6 +149,9 @@ public class Facade {
         if (!employeeController.is_loggedIn(hr_id)) {
             return "User not logged in currently";
         }
+        if (!employeeController.employee_exists(employee_id)) {
+            return "Employee doesn't exist";
+        }
         if (!employeeController.is_certified_to_role(employee_id, role)) {
             return "User is not certified to this role";
         }

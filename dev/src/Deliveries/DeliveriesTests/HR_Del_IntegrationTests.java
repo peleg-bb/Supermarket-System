@@ -4,7 +4,6 @@ import Deliveries.BusinessLayer.*;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.DataAccessLayer.DriverDAO;
-import Deliveries.DataAccessLayer.SiteDAO;
 import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.HRIntegrator;
 import org.junit.jupiter.api.AfterEach;
@@ -13,31 +12,23 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class DriverDAOTest {
+class HR_Del_IntegrationTests {
     DriverDAO driverDAO;
 
     @Test
-    void loadData() {
-        Set<Driver> drivers = new HashSet<>();
-        drivers = driverDAO.loadData();
-        for (Driver driver : drivers) {
-            System.out.println(driver);
-        }
-    }
-
-    @Test
-    void generateDriversToDB() {
+    void pickDriverIntegratedSuccess() {
         DriverController driverController = DriverController.getInstance();
         Timestamp timestamp = new Timestamp(2023-1900, 6, 4, 10, 0, 0, 0);
         Timestamp timestamp2 = new Timestamp(2023-1900, 6, 4, 12, 0, 0, 0);
         Truck truck = mock(Truck.class);
+        when(truck.getType()).thenReturn(TruckType.Regular);
+        when(truck.getMaxWeightTons()).thenReturn( 1);
 
         try {
            driverController.pickDriver(truck, timestamp, timestamp2);
@@ -50,7 +41,7 @@ class DriverDAOTest {
     @Test
     void checkAvailability() {
         HRIntegrator shiftController = ShiftController.getInstance();
-        Timestamp timestamp = new Timestamp(2023-1900, 6, 4, 16, 0, 0, 0);
+        Timestamp timestamp = new Timestamp(2023-1900, 6, 3, 16, 0, 0, 0);
         assertTrue(shiftController.checkStoreAvailability("Tel Aviv", timestamp));
     }
 
@@ -71,15 +62,6 @@ class DriverDAOTest {
         HRIntegrator shiftController = ShiftController.getInstance();
         assertTrue(shiftController.assignDrivers(driverId, timestamp, timestamp2));
 
-    }
-
-    @Test
-    void testLoadData2() {
-        Set<Driver> drivers;
-        drivers = driverDAO.loadData();
-        for (Driver driver : drivers) {
-            System.out.println(driver);
-        }
     }
 
     @BeforeEach

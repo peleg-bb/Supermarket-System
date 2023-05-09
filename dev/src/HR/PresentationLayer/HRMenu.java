@@ -3,6 +3,7 @@ package HR.PresentationLayer;
 import Deliveries.BusinessLayer.Driver;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
 import Deliveries.BusinessLayer.License;
+import Deliveries.DataAccessLayer.DriverDAO;
 import HR.BusinessLayer.FamilyStatus;
 import HR.BusinessLayer.JobType;
 import HR.BusinessLayer.ShiftType;
@@ -1140,6 +1141,9 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "Beer Sheva");
         service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "Beer Sheva");
         service.logout();
+        service.login(111111111, "123456");
+        service.assign_to_shift(222222222, LocalDate.of(2023, 7, 3), ShiftType.EVENING, "Tel Aviv", JobType.STOREKEEPER);
+        service.logout();
         service.login(333333333, "123456");
         service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "Tel Aviv");
         service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "Tel Aviv");
@@ -1184,14 +1188,6 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "Rishon Le Zion");
         service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "Rishon Le Zion");
         service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "Rishon Le Zion");
-        service.logout();
-        service.login(999999999, "123456");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "drivers");
         service.logout();
         service.login(122222222, "123456");
         service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "Raanana");
@@ -1286,17 +1282,19 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "Beer Sheva");
         service.logout();
 
-        generateDrivers(40);
+        //generateDrivers(40);
 
     }
     public void generateDrivers(int numberOfDrivers) {
         Set<String> usedIds = new HashSet<>();
         Random random = new Random();
+        DriverDAO driverDAO = new DriverDAO();
+        driverDAO.deleteAllDrivers();
 
         for (int i = 0; i < numberOfDrivers; i++) {
+            service.login(111111111, "123456");
             // Generate random driver data
             String name = "Driver " + i;
-            service.add_employee(299999999, "Luanna Mansel", 2999999, 30, "None", LocalDate.of(2023, 1, 1), FamilyStatus.DIVORCED, true, "123456");
             int bank_account = 1111111;
             int salary = 30;
             LocalDate employment = LocalDate.of(2023, 1, 1);
@@ -1306,11 +1304,19 @@ public class HRMenu {
             String id;
             do {
                 id = String.format("%09d", random.nextInt(1000000000));
+                // add 0 to the left if needed
             } while (usedIds.contains(id));
             usedIds.add(id);
             service.add_employee(Integer.parseInt(id), name, bank_account, salary, "None", employment, FamilyStatus.SINGLE, true, "123456");
             service.assign_to_store(Integer.parseInt(id), "drivers");
-            service.certify_driver(Integer.parseInt(id), phone, 200, true, true);
+            Random random1 = new Random();
+            int x = random1.nextInt(2);
+            int y = random1.nextInt(2);
+            boolean x1 = x != 0;
+            boolean x2 = y != 0;
+            int weightAllowed = random1.nextInt(4,40);
+            service.certify_driver(Integer.parseInt(id), phone, weightAllowed, x1, x2);
+            service.logout();
             service.login(Integer.parseInt(id), "123456");
             service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "drivers");
             service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.EVENING, "drivers");
@@ -1327,6 +1333,7 @@ public class HRMenu {
             service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "drivers");
             service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.EVENING, "drivers");
             service.logout();
+
         }
     }
 }

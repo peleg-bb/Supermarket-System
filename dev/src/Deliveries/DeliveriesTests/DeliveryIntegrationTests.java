@@ -1,7 +1,6 @@
 package Deliveries.DeliveriesTests;
 
 import Deliveries.BusinessLayer.*;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
@@ -10,8 +9,6 @@ import HR_Deliveries_Interface.HRIntegrator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 
 import java.sql.Timestamp;
@@ -23,7 +20,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class IntegrationTests {
+class DeliveryIntegrationTests {
 
     private DeliveryForm deliveryForm;
     private DeliveryFormsController deliveryFormsController;
