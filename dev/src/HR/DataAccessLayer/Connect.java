@@ -62,10 +62,22 @@ public class Connect {
                     FOREIGN KEY (id) REFERENCES Employees(id) ON DELETE CASCADE);""";
             statement.execute(query);
             query = """
-                    CREATE TABLE IF NOT EXISTS Stores (
+                    CREATE TABLE IF NOT EXISTS EmployeeStores (
                     id INTEGER,
                     store VARCHAR(30),
                     FOREIGN KEY (id) REFERENCES Employees(id) ON DELETE CASCADE);""";
+            statement.execute(query);
+            query = "CREATE TABLE IF NOT EXISTS Shifts (" +
+                    "store VARCHAR(20)," +
+                    "shiftType VARCHAR(8)," + //MORNING/EVENING
+                    "day VARCHAR(2)," +
+                    "month VARCHAR(2)," +
+                    "year VARCHAR(4)," +
+                    "start VARCHAR(6)," +
+                    "end VARCHAR(6)," +
+                    "confirmed INTEGER," +
+                    "PRIMARY KEY (store, shiftType, day, month, year)" +
+                    ");";
             statement.execute(query);
             query = "CREATE TABLE IF NOT EXISTS EmployeeShifts (" +
                     "store VARCHAR(20)," +
@@ -117,7 +129,6 @@ public class Connect {
                     "productId INTEGER," +
                     "FOREIGN KEY (store, shiftType, day, month, year) REFERENCES Shifts(store, shiftType, day, month, year)" +
                     " ON DELETE CASCADE" +
-                    "FOREIGN KEY (employeeID) REFERENCES Employees(id) ON DELETE CASCADE" +
                     ")";
             statement.execute(query);
 
