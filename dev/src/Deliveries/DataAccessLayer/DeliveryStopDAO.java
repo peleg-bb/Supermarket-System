@@ -37,7 +37,9 @@ public class DeliveryStopDAO {
 //            String status = (String) deliveryStopRecord.get("status");
 //            String formID= (String) deliveryStopRecord.get("form_id");
             HashMap<String, Integer> items = new HashMap<>();
-            return new DeliveryStop(stopID, items,origin,destination,truckType);
+            throw new UnsupportedOperationException();
+
+//            return new DeliveryStop(stopID, items,origin,destination,truckType);
         }
     }
 
