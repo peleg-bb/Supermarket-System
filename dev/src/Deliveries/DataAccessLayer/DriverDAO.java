@@ -24,10 +24,14 @@ public class DriverDAO {
                 Driver driver = getDriver(driverRecord);
                 drivers.add(driver);
             }
+            conn.closeConnect();
             return drivers;
         }
         catch (SQLException exception) {
             return null;
+        }
+        finally {
+
         }
     }
 

@@ -1009,6 +1009,7 @@ public class HRMenu {
         service.create_store("Ashkelon");
         service.create_store("Ashdod");
         service.create_store("Eilat");
+        service.create_store("drivers");
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Beer Sheva", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Rishon Le Zion", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));

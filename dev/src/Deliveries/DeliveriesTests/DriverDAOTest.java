@@ -63,6 +63,15 @@ class DriverDAOTest {
 
     }
 
+    @Test
+    void testLoadData2() {
+        Set<Driver> drivers = new HashSet<>();
+        drivers = driverDAO.loadData();
+        for (Driver driver : drivers) {
+            System.out.println(driver);
+        }
+    }
+
     @BeforeEach
     void setUp() {
         driverDAO = new DriverDAO();
