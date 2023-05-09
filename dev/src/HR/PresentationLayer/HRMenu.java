@@ -1284,9 +1284,9 @@ public class HRMenu {
     public void generateDrivers(int numberOfDrivers) {
         Set<String> usedIds = new HashSet<>();
         Random random = new Random();
-        service.login(111111111, "123456");
 
         for (int i = 0; i < numberOfDrivers; i++) {
+            service.login(111111111, "123456");
             // Generate random driver data
             String name = "Driver " + i;
             int bank_account = 1111111;
@@ -1309,6 +1309,8 @@ public class HRMenu {
             boolean x2 = y != 0;
             int weightAllowed = random1.nextInt(4,40);
             service.certify_driver(Integer.parseInt(id), phone, weightAllowed, x1, x2);
+            service.logout();
+            service.login(Integer.parseInt(id), "123456");
             service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "drivers");
             service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.EVENING, "drivers");
             service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "drivers");
@@ -1323,8 +1325,8 @@ public class HRMenu {
             service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.EVENING, "drivers");
             service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "drivers");
             service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.EVENING, "drivers");
+            service.logout();
 
         }
-        service.logout();
     }
 }
