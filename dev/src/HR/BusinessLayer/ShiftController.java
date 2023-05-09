@@ -142,10 +142,22 @@ public class ShiftController implements HRIntegrator {
         WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1); // week starts on Sunday
         int weekOfYear = date.get(weekFields.weekOfWeekBasedYear());
         if (!schedule.current_or_future_week(weekOfYear)) {
-            schedules_history.get(store).add(schedule);
+            if (schedules_history.containsKey(store)) {
+                schedules_history.get(store).add(schedule);
+            }
+            else {
+                schedules_history.put(store, new LinkedList<>());
+                schedules_history.get(store).add(schedule);
+            }
         }
         else {
-            stores_schedules.get(store).add(schedule);
+            if (stores_schedules.containsKey(store)) {
+                stores_schedules.get(store).add(schedule);
+            }
+            else {
+                stores_schedules.put(store, new LinkedList<>());
+                stores_schedules.get(store).add(schedule);
+            }
         }
         for (Schedule a: stores_schedules.get(store)) {
             if (!a.current_or_future_week(weekOfYear)) {

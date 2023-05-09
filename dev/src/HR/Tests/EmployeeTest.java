@@ -298,8 +298,8 @@ class EmployeeTest {
         Assertions.assertFalse(facade.employee_logged_in(222222222));
     }
 
-    @org.junit.jupiter.api.AfterAll
-    public static void tearDown() throws Exception {
+    @org.junit.jupiter.api.AfterEach
+    public void tearDown() throws Exception {
         Connect.getInstance().deleteRecordsOfTables();
     }
 
