@@ -2,11 +2,11 @@ package Deliveries.BusinessLayer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SiteGenerator {
-    private static final String[] NAMES = {"Site A", "Site B", "Site C", "Site D", "Site E", "Site F", "Site G", "Site H", "Site I", "Site J"};
-    private static final int[] ZONES = {1, 2, 3, 4, 5};
+    private static final String[] SITE_NAMES = {"Tel Aviv", "Rishon Le Zion", "Raanana",  "Haifa",
+            "Beer Sheva",  "Ashkelon", "Ashdod", "Eilat"};
+    private static final String[] CONTACT_NAMES = {"Peleg", "Tomer", "Tamar", "Gili", "Itay", "Reut", "Lior", "Noa"};
     public List<Site> sitesList;
     public SiteGenerator(){
         sitesList = generateSites();
@@ -14,13 +14,22 @@ public class SiteGenerator {
 
     private List<Site> generateSites() {
         List<Site> sites = new ArrayList<>();
-        Random rand = new Random();
-        for (int i = 0; i < 10; i++) {
-            String name = NAMES[i];
-            String address = "Address " + (i+1);
-            String contactName = "Contact " + (i+1);
-            String contactPhone = "555-1234";
-            int deliveryZone = ZONES[rand.nextInt(ZONES.length)];
+        for (int i = 0; i < SITE_NAMES.length; i++) {
+            String name = SITE_NAMES[i];
+            String address = "Ben Gurion St " + (2*i + 1);
+            String contactName = CONTACT_NAMES[i];
+            String contactPhone = "054-123456" + i;
+            int deliveryZone;
+            if (name.equals("Haifa")) {
+                deliveryZone = 1;
+            } else if (name.equals("Rishon Le Zion") || name.equals("Raanana") || name.equals("Tel Aviv")) {
+                deliveryZone = 2;
+            } else if (name.equals("Ashkelon") || name.equals("Ashdod") ||
+                    name.equals("Eilat") || name.equals("Beer Sheva")) {
+                deliveryZone = 3;
+            } else {
+                deliveryZone = 4;
+            }
             Site site = new Site(name, address, contactName, contactPhone, deliveryZone);
             sites.add(site);
         }

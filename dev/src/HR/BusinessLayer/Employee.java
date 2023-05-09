@@ -1,6 +1,8 @@
 package HR.BusinessLayer;
 
+import Deliveries.BusinessLayer.DriverController;
 import HR.DataAccessLayer.EmployeeDAO;
+import HR_Deliveries_Interface.DriverSaver;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -276,5 +278,19 @@ public class Employee {
 
     public double get_monthly_salary() {
         return monthly_salary;
+    }
+
+    public String certify_driver(String phone, int maxWeight, boolean regularAllowed, boolean refrigeratedAllowed) {
+        if (roles.contains(JobType.DRIVER)) {
+            return "Employee already certified to this role";
+        }
+        String res = employeeDAO.certify_role(this.id, JobType.DRIVER.toString());
+        if (res.equals("")) {
+            roles.add(JobType.DRIVER);
+            DriverSaver object = DriverController.getInstance();
+            object.AddDriverToSystem(name, id.toString(), phone, maxWeight, regularAllowed, refrigeratedAllowed);
+            return res;
+        }
+        return res;
     }
 }

@@ -1,5 +1,8 @@
 package HR.PresentationLayer;
 
+import Deliveries.BusinessLayer.Driver;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
+import Deliveries.BusinessLayer.License;
 import HR.BusinessLayer.FamilyStatus;
 import HR.BusinessLayer.JobType;
 import HR.BusinessLayer.ShiftType;
@@ -8,7 +11,10 @@ import HR.ServiceLayer.Response;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 public class HRMenu {
 
@@ -466,13 +472,48 @@ public class HRMenu {
                     System.out.println(print_red("Invalid job."));
                     break;
                 }
-                Response res = service.certify_role(id_parsed, role_parsed);
-                if (res.errorOccurred()) {
-                    System.out.println("\n");
-                    System.out.println(print_red(res.getErrorMessage()));
-                } else {
-                    System.out.println("\n");
-                    System.out.println(print_green("Added a role certification successfully"));
+                if (role_parsed.equals(JobType.DRIVER)) {
+                    System.out.print("Please enter the employee's phone number: ");
+                    String phone = scanner.nextLine();
+                    System.out.print("Please enter the employee's max weight in TONS: ");
+                    String max_weight = scanner.nextLine();
+                    Integer max_weight_parsed = HRCommandParser.int_parser(max_weight);
+                    if (max_weight_parsed == null) {
+                        System.out.println(print_red("Invalid weight."));
+                        break;
+                    }
+                    System.out.print("Is the employee certified to a regular truck? ");
+                    String regular = scanner.nextLine();
+                    Object regular_parsed = HRCommandParser.student_parser(regular);
+                    if (regular_parsed == null) {
+                        System.out.println(print_red("Invalid answer."));
+                        break;
+                    }
+                    System.out.print("Is the employee certified to a refrigerated truck? ");
+                    String refrigerated = scanner.nextLine();
+                    Object refrigerated_parsed = HRCommandParser.student_parser(refrigerated);
+                    if (refrigerated_parsed == null) {
+                        System.out.println(print_red("Invalid answer."));
+                        break;
+                    }
+                    Response res = service.certify_driver(id_parsed, phone, max_weight_parsed, (boolean) regular_parsed, (boolean) refrigerated_parsed);
+                    if (res.errorOccurred()) {
+                        System.out.println("\n");
+                        System.out.println(print_red(res.getErrorMessage()));
+                    } else {
+                        System.out.println("\n");
+                        System.out.println(print_green("Added a role certification successfully"));
+                    }
+                }
+                else {
+                    Response res = service.certify_role(id_parsed, role_parsed);
+                    if (res.errorOccurred()) {
+                        System.out.println("\n");
+                        System.out.println(print_red(res.getErrorMessage()));
+                    } else {
+                        System.out.println("\n");
+                        System.out.println(print_green("Added a role certification successfully"));
+                    }
                 }
                 System.out.println("=====================================================================================");
             }
@@ -593,7 +634,7 @@ public class HRMenu {
                 String is_student = scanner.nextLine();
                 Object student_parsed = HRCommandParser.student_parser(is_student);
                 if (student_parsed == null) {
-                    System.out.println(print_red("Invalid family status."));
+                    System.out.println(print_red("Invalid student status."));
                     break;
                 }
                 System.out.print("Please enter the employee's password: ");
@@ -1009,6 +1050,7 @@ public class HRMenu {
         service.create_store("Ashkelon");
         service.create_store("Ashdod");
         service.create_store("Eilat");
+        service.create_store("drivers");
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Beer Sheva", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Rishon Le Zion", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
@@ -1047,23 +1089,11 @@ public class HRMenu {
         service.add_employee(888888888, "Suz Kerena", 8888888, 43, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
         service.assign_to_store(888888888,"Rishon Le Zion");
         service.certify_role(888888888, JobType.SECURITY);
-        service.add_employee(999999999, "Elizabeth Tim", 9999999, 40, "Signed for a year", LocalDate.of(2023, 1, 1), FamilyStatus.MARRIED, true, "123456");
-        service.assign_to_store(999999999,"drivers");
-        service.certify_role(999999999, JobType.DRIVER);
         service.add_employee(122222222, "Kfir Sara", 1222222, 30, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, false, "123456");
         service.assign_to_store(122222222,"Raanana");
         service.assign_to_store(122222222,"Tel Aviv");
         service.certify_role(122222222, JobType.GENERAL);
         service.certify_role(122222222, JobType.SHIFTMANAGER);
-        service.add_employee(133333333, "Kendrick Tonatiuh", 1333333, 42, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
-        service.assign_to_store(133333333,"drivers");
-        service.certify_role(133333333, JobType.DRIVER);
-        service.add_employee(144444444, "Sutton Allana", 1444444, 33, "None", LocalDate.of(2023, 1, 1), FamilyStatus.DIVORCED, false, "123456");
-        service.assign_to_store(144444444,"drivers");
-        service.certify_role(144444444, JobType.DRIVER);
-        service.add_employee(155555555, "Elijah Rosalee", 1555555, 33, "None", LocalDate.of(2023, 1, 1), FamilyStatus.MARRIED, true, "123456");
-        service.assign_to_store(155555555,"drivers");
-        service.certify_role(155555555, JobType.DRIVER);
         service.add_employee(166666666, "Roy Marcy", 1666666, 35, "None", LocalDate.of(2023, 1, 1), FamilyStatus.WIDOWED, false, "123456");
         service.assign_to_store(166666666,"Ashkelon");
         service.assign_to_store(166666666,"Ashdod");
@@ -1091,15 +1121,9 @@ public class HRMenu {
         service.certify_role(244444444, JobType.STOREKEEPER);
         service.certify_role(244444444, JobType.SHIFTMANAGER);
         service.certify_role(244444444, JobType.CASHIER);
-        service.add_employee(255555555, "Kaitlin Temperance", 2555555, 50, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
-        service.assign_to_store(255555555,"drivers");
-        service.certify_role(255555555, JobType.DRIVER);
         service.add_employee(266666666, "Alison Clarissa", 2666666, 47, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, false, "123456");
         service.assign_to_store(266666666,"Ashkelon");
         service.certify_role(266666666, JobType.SHIFTMANAGER);
-        service.add_employee(277777777, "Billy Eitan", 2777777, 44, "None", LocalDate.of(2023, 1, 1), FamilyStatus.MARRIED, false, "123456");
-        service.assign_to_store(277777777,"drivers");
-        service.certify_role(277777777, JobType.DRIVER);
         service.add_employee(288888888, "Terra Minta", 2888888, 46, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, false, "123456");
         service.assign_to_store(288888888,"Beer Sheva");
         service.certify_role(288888888, JobType.SHIFTMANAGER);
@@ -1177,30 +1201,6 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.EVENING, "Tel Aviv");
         service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "Tel Aviv");
         service.logout();
-        service.login(133333333, "123456");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "drivers");
-        service.logout();
-        service.login(144444444, "123456");
-        service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "drivers");
-        service.logout();
-        service.login(155555555, "123456");
-        service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "drivers");
-        service.logout();
         service.login(166666666, "123456");
         service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "Ashkelon");
         service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.EVENING, "Ashkelon");
@@ -1261,14 +1261,6 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.EVENING, "Rishon Le Zion");
         service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "Rishon Le Zion");
         service.logout();
-        service.login(255555555, "123456");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.MORNING, "drivers");
-        service.logout();
         service.login(266666666, "123456");
         service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "Ashkelon");
         service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "Ashkelon");
@@ -1276,14 +1268,6 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.EVENING, "Ashkelon");
         service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "Ashkelon");
         service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "Ashkelon");
-        service.logout();
-        service.login(277777777, "123456");
-        service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.EVENING, "drivers");
-        service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "drivers");
         service.logout();
         service.login(288888888, "123456");
         service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "Beer Sheva");
@@ -1301,5 +1285,48 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "Beer Sheva");
         service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "Beer Sheva");
         service.logout();
+
+        generateDrivers(40);
+
+    }
+    public void generateDrivers(int numberOfDrivers) {
+        Set<String> usedIds = new HashSet<>();
+        Random random = new Random();
+
+        for (int i = 0; i < numberOfDrivers; i++) {
+            // Generate random driver data
+            String name = "Driver " + i;
+            service.add_employee(299999999, "Luanna Mansel", 2999999, 30, "None", LocalDate.of(2023, 1, 1), FamilyStatus.DIVORCED, true, "123456");
+            int bank_account = 1111111;
+            int salary = 30;
+            LocalDate employment = LocalDate.of(2023, 1, 1);
+            String phone = "555-555-" + String.format("%04d", i);
+
+            // Generate unique driver ID
+            String id;
+            do {
+                id = String.format("%09d", random.nextInt(1000000000));
+            } while (usedIds.contains(id));
+            usedIds.add(id);
+            service.add_employee(Integer.parseInt(id), name, bank_account, salary, "None", employment, FamilyStatus.SINGLE, true, "123456");
+            service.assign_to_store(Integer.parseInt(id), "drivers");
+            service.certify_driver(Integer.parseInt(id), phone, 200, true, true);
+            service.login(Integer.parseInt(id), "123456");
+            service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.MORNING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 2), ShiftType.EVENING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.MORNING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 3), ShiftType.EVENING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.MORNING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 4), ShiftType.EVENING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.MORNING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 5), ShiftType.EVENING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.MORNING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 6), ShiftType.EVENING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.MORNING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 7), ShiftType.EVENING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "drivers");
+            service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.EVENING, "drivers");
+            service.logout();
+        }
     }
 }

@@ -421,4 +421,17 @@ public class EmployeeController {
         }
         return false;
     }
+
+    public String certify_driver(int hr_id, int employee_id, String phone, int maxWeight, boolean regularAllowed, boolean refrigeratedAllowed) {
+        if (!is_HRManager(hr_id)) {
+            return "User is not an HR manager";
+        }
+        if (!employees.containsKey(employee_id)) {
+            return "Employee doesn't exists";
+        }
+        if (!is_loggedIn(hr_id)) {
+            return "User not logged in currently";
+        }
+        return employees.get(employee_id).certify_driver(phone, maxWeight, regularAllowed, refrigeratedAllowed);
+    }
 }

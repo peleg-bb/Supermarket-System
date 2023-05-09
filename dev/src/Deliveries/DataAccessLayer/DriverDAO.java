@@ -1,5 +1,6 @@
 package Deliveries.DataAccessLayer;
 
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.License;
 import HR.DataAccessLayer.Connect;
 import Deliveries.BusinessLayer.Driver;
@@ -23,16 +24,20 @@ public class DriverDAO {
                 Driver driver = getDriver(driverRecord);
                 drivers.add(driver);
             }
+            conn.closeConnect();
             return drivers;
         }
         catch (SQLException exception) {
             return null;
         }
+        finally {
+
+        }
     }
 
 
     private Driver getDriver(HashMap<String, Object> driverDetails) {
-        String id = (String) driverDetails.get("driver_id");
+        String id = ((Integer) driverDetails.get("driver_id")).toString();
         String name = (String) driverDetails.get("driver_name");
         String phone = (String) driverDetails.get("phone");
 
@@ -40,7 +45,7 @@ public class DriverDAO {
         Integer regularAllowed = (Integer) driverDetails.get("regular_allowed");
         Integer refrigeratedAllowed = (Integer) driverDetails.get("refrigerated_allowed");
         License license = new License(weightAllowed, regularAllowed, refrigeratedAllowed);
-        return new Driver(id, name, phone, license);
+        return new Driver(name, id, phone, license);
 
 
     }
@@ -51,8 +56,8 @@ public class DriverDAO {
         String phone = driver.getPhone();
         License license = driver.getLicense();
         int weightAllowed = license.getWeightAllowedTons();
-        int regularAllowed = license.getTruckTypesAllowed().contains("Regular") ? 1 : 0;
-        int refrigeratedAllowed = license.getTruckTypesAllowed().contains("Refrigerated") ? 1 : 0;
+        int regularAllowed = license.getTruckTypesAllowed().contains(TruckType.Regular) ? 1 : 0;
+        int refrigeratedAllowed = license.getTruckTypesAllowed().contains(TruckType.Refrigerated) ? 1 : 0;
         String query = "INSERT INTO Drivers (driver_id, driver_name, phone)" +
                 " VALUES ('" + id + "', '" + name + "', '" + phone + "');";
         String query2 = "INSERT INTO DriverLicenses " +

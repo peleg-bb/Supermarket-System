@@ -1,5 +1,8 @@
 package HR.BusinessLayer;
 
+import Deliveries.BusinessLayer.DriverController;
+import HR_Deliveries_Interface.DriverSaver;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -381,5 +384,9 @@ public class Facade {
             return "Employee is not a shift manager or a storekeeper";
         }
         return shiftController.show_scheduled_deliveries(shift_date, shift_type, store);
+    }
+
+    public String certify_driver(int hr_id, int employee_id, String phone, int maxWeight, boolean regularAllowed, boolean refrigeratedAllowed) {
+        return employeeController.certify_driver(hr_id, employee_id, phone, maxWeight, regularAllowed, refrigeratedAllowed);
     }
 }

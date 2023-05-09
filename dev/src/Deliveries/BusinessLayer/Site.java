@@ -1,7 +1,7 @@
 package Deliveries.BusinessLayer;
 
 public class Site {
-    public static final int KM_BETWEEN_ZONES = 10;
+    public static final int KM_BETWEEN_ZONES = 100;
     private final String name;
     private final String address;
     private final String contactName;
