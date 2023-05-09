@@ -197,13 +197,13 @@ public class Connect {
             stmt.execute(query);
             query = "DROP TABLE IF EXISTS EmployeesInShift";
             stmt.execute(query);
-            query = "DROP TABLE IF EXISTS Roles";
+            query = "DROP TABLE IF EXISTS EmployeeRoles";
             stmt.execute(query);
             query = "DROP TABLE IF EXISTS Availability";
             stmt.execute(query);
             query = "DROP TABLE IF EXISTS Shifts";
             stmt.execute(query);
-            query = "DROP TABLE IF EXISTS Stores";
+            query = "DROP TABLE IF EXISTS EmployeeStores";
             stmt.execute(query);
             query = "DROP TABLE IF EXISTS ShiftEvents";
             stmt.execute(query);

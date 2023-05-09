@@ -1281,7 +1281,7 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "Beer Sheva");
         service.logout();
 
-        // generateDrivers(40);
+        generateDrivers(40);
 
     }
     public void generateDrivers(int numberOfDrivers) {
