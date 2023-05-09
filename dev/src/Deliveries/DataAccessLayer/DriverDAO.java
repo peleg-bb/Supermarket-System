@@ -45,7 +45,7 @@ public class DriverDAO {
         Integer regularAllowed = (Integer) driverDetails.get("regular_allowed");
         Integer refrigeratedAllowed = (Integer) driverDetails.get("refrigerated_allowed");
         License license = new License(weightAllowed, regularAllowed, refrigeratedAllowed);
-        return new Driver(id, name, phone, license);
+        return new Driver(name, id, phone, license);
 
 
     }

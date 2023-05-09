@@ -58,14 +58,13 @@ class DriverDAOTest {
         HRIntegrator shiftController = ShiftController.getInstance();
         Timestamp timestamp = new Timestamp(2023-1900, 6, 4, 16, 0, 0, 0);
         Timestamp timestamp2 = new Timestamp(2023-1900, 6, 4, 12, 0, 0, 0);
-        shiftController.assignDrivers("123456789", timestamp, timestamp2);
-
+        assertTrue(shiftController.assignDrivers("123456789", timestamp, timestamp2));
 
     }
 
     @Test
     void testLoadData2() {
-        Set<Driver> drivers = new HashSet<>();
+        Set<Driver> drivers;
         drivers = driverDAO.loadData();
         for (Driver driver : drivers) {
             System.out.println(driver);
