@@ -1281,7 +1281,7 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "Beer Sheva");
         service.logout();
 
-        //generateDrivers(40);
+        // generateDrivers(40);
 
     }
     public void generateDrivers(int numberOfDrivers) {
@@ -1301,6 +1301,7 @@ public class HRMenu {
             String id;
             do {
                 id = String.format("%09d", random.nextInt(1000000000));
+                // add 0 to the left if needed
             } while (usedIds.contains(id));
             usedIds.add(id);
             service.add_employee(Integer.parseInt(id), name, bank_account, salary, "None", employment, FamilyStatus.SINGLE, true, "123456");
