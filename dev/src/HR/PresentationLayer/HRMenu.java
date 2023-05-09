@@ -3,6 +3,7 @@ package HR.PresentationLayer;
 import Deliveries.BusinessLayer.Driver;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
 import Deliveries.BusinessLayer.License;
+import Deliveries.DataAccessLayer.DriverDAO;
 import HR.BusinessLayer.FamilyStatus;
 import HR.BusinessLayer.JobType;
 import HR.BusinessLayer.ShiftType;
@@ -1281,12 +1282,14 @@ public class HRMenu {
         service.add_availability(LocalDate.of(2023, 7, 8), ShiftType.MORNING, "Beer Sheva");
         service.logout();
 
-        // generateDrivers(40);
+        generateDrivers(40);
 
     }
     public void generateDrivers(int numberOfDrivers) {
         Set<String> usedIds = new HashSet<>();
         Random random = new Random();
+        DriverDAO driverDAO = new DriverDAO();
+        driverDAO.deleteAllDrivers();
 
         for (int i = 0; i < numberOfDrivers; i++) {
             service.login(111111111, "123456");
