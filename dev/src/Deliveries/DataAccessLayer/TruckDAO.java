@@ -13,7 +13,7 @@ import java.util.Set;
 public class TruckDAO {
     private final Connect conn;
 
-    //TODO: insert trucks to db
+    //TODO: delete truck from db
     public TruckDAO() {
         conn = Connect.getInstance();
     }

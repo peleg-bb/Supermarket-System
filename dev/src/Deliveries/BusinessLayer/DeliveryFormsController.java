@@ -3,12 +3,10 @@ package Deliveries.BusinessLayer;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.DataAccessLayer.DeliveryFormDAO;
-import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.DeliveryIntegrator;
 import HR_Deliveries_Interface.HRIntegrator;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +46,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
 
     private void addDeliveryForm(DeliveryForm deliveryForm) {
         pendingDeliveryForms.add(deliveryForm);
+        deliveryFormDAO.addDeliveryForm(deliveryForm);
     }
 
     public void removeDeliveryForm(DeliveryForm deliveryForm) {
