@@ -72,8 +72,8 @@ public class DeliveryForm {
             return; // Already visited or cancelled
         }
 
-        destinationSitesVisited.add(deliveryStop);
         deliveryStop.setStatus(DeliveryStatus.DELIVERED);
+        destinationSitesVisited.add(deliveryStop);
         performWeightCheck();
     }
 
