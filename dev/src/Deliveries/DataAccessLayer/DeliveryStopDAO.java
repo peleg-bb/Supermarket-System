@@ -61,11 +61,10 @@ public class DeliveryStopDAO {
             return new DeliveryStop(stopID, items,originSite,destinationSite,truckType);
         }
 
-    public Site getSiteByName(String name){
+    public Site getSiteByName(String siteName){
         try {
-            List<HashMap<String, Object>> siteDetails = conn.executeQuery("SELECT * FROM Sites Where name = " + name);
-            Site site = SiteDAO.getSite(siteDetails.get(0));
-            return site;
+            List<HashMap<String, Object>> siteDetails = conn.executeQuery("SELECT * FROM Sites Where name = " + siteName);
+            return SiteDAO.getSite(siteDetails.get(0));
         }
         catch (SQLException exception) {
             return null;

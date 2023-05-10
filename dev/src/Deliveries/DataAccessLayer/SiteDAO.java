@@ -4,10 +4,7 @@ import Deliveries.BusinessLayer.Site;
 import HR.DataAccessLayer.Connect;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class SiteDAO {
@@ -18,8 +15,8 @@ public class SiteDAO {
     }
 
 
-    public Set<Site> loadData() {
-        Set<Site> sites = new HashSet<>();
+    public List<Site> loadData() {
+        List<Site> sites = new ArrayList<>();
         try {
             List<HashMap<String, Object>> sitesDetails = conn.executeQuery("SELECT * FROM Sites");
             for (HashMap<String, Object> siteRecord: sitesDetails) {

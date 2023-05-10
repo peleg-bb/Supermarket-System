@@ -13,7 +13,11 @@ public class SiteGenerator {
 
     public SiteDAO siteDAO;
     public SiteGenerator(){
-        sitesList = generateSites();
+        siteDAO = new SiteDAO();
+        sitesList = siteDAO.loadData();
+        if (sitesList.isEmpty()){
+            sitesList = generateSites();
+        }
     }
 
     private List<Site> generateSites() {
