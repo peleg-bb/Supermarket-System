@@ -11,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -27,7 +25,7 @@ class HR_Del_IntegrationTests {
         Timestamp timestamp = new Timestamp(2023-1900, 6, 4, 10, 0, 0, 0);
         Timestamp timestamp2 = new Timestamp(2023-1900, 6, 4, 12, 0, 0, 0);
         Truck truck = mock(Truck.class);
-        when(truck.getType()).thenReturn(TruckType.Regular);
+        when(truck.getType()).thenReturn(TruckType.REGULAR);
         when(truck.getMaxWeightTons()).thenReturn( 1);
 
         try {
@@ -51,7 +49,7 @@ class HR_Del_IntegrationTests {
         Timestamp timestamp = new Timestamp(2023-1900, 6, 7, 16, 0, 0, 0);
         Timestamp timestamp2 = new Timestamp(2023-1900, 6, 7, 18, 0, 0, 0);
         Truck truck = mock(Truck.class);
-        when(truck.getType()).thenReturn(TruckType.Regular);
+        when(truck.getType()).thenReturn(TruckType.REGULAR);
         when(truck.getMaxWeightTons()).thenReturn( 1);
         String driverId;
         try {

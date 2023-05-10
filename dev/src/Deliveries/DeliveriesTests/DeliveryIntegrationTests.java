@@ -64,14 +64,14 @@ class DeliveryIntegrationTests {
         Map<String, Integer> items1 = new HashMap<>();
         items1.put("Box", 5);
         items1.put("Envelope", 10);
-        stop1 = new DeliveryStop(1, items1, origin, destination, TruckType.Regular);
+        stop1 = new DeliveryStop(1, items1, origin, destination, TruckType.REGULAR);
         stop1Spy = spy(stop1);
         when(stop1Spy.getEstimatedArrivalTime()).thenReturn(mockTimestamp);
 
         Map<String, Integer> items2 = new HashMap<>();
         items2.put("Pallet", 2);
         items2.put("Crate", 1);
-        stop2 = new DeliveryStop(2, items2, origin, destination2, TruckType.Refrigerated);
+        stop2 = new DeliveryStop(2, items2, origin, destination2, TruckType.REFRIGERATED);
         stop2Spy = spy(stop2);
         when(stop2Spy.getEstimatedArrivalTime()).thenReturn(mockTimestamp);
         //when(hrIntegrator.checkStoreAvailability(destination2.getName(), mockTimestamp)).thenReturn(true);
@@ -184,7 +184,7 @@ class DeliveryIntegrationTests {
 
     @Test
     void getTruckType() {
-        TruckType truckType = TruckType.Regular;
+        TruckType truckType = TruckType.REGULAR;
         assertEquals(truckType, deliveryForm.getTruckType());
     }
 

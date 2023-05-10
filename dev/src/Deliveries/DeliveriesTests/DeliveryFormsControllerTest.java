@@ -66,41 +66,41 @@ class DeliveryFormsControllerTest {
 
     @Test
     void getTruckTypeRegularSuccess() throws Exception {
-        when(deliveryStop1.getTruckTypeRequired()).thenReturn(TruckType.Regular);
-        when(deliveryStop2.getTruckTypeRequired()).thenReturn(TruckType.Regular);
+        when(deliveryStop1.getTruckTypeRequired()).thenReturn(TruckType.REGULAR);
+        when(deliveryStop2.getTruckTypeRequired()).thenReturn(TruckType.REGULAR);
         List<DeliveryStop> deliveryStops = List.of(deliveryStop1, deliveryStop2);
 
-        assertEquals(TruckType.Regular, deliveryFormsController.getTruckTypeTest(deliveryStops));
+        assertEquals(TruckType.REGULAR, deliveryFormsController.getTruckTypeTest(deliveryStops));
     }
 
     @Test
     void getTruckTypeRegularFail() {
-        when(deliveryStop1.getTruckTypeRequired()).thenReturn(TruckType.Regular);
-        when(deliveryStop2.getTruckTypeRequired()).thenReturn(TruckType.Refrigerated);
+        when(deliveryStop1.getTruckTypeRequired()).thenReturn(TruckType.REGULAR);
+        when(deliveryStop2.getTruckTypeRequired()).thenReturn(TruckType.REFRIGERATED);
         List<DeliveryStop> deliveryStops = List.of(deliveryStop1, deliveryStop2);
 
-        try{assertNotEquals(TruckType.Regular, deliveryFormsController.getTruckTypeTest(deliveryStops));}
+        try{assertNotEquals(TruckType.REGULAR, deliveryFormsController.getTruckTypeTest(deliveryStops));}
         catch (Exception ignored) {}
 
     }
 
     @Test
     void getTruckTypeRefrigeratedSuccess() {
-        when(deliveryStop1.getTruckTypeRequired()).thenReturn(TruckType.Regular);
-        when(deliveryStop2.getTruckTypeRequired()).thenReturn(TruckType.Refrigerated);
+        when(deliveryStop1.getTruckTypeRequired()).thenReturn(TruckType.REGULAR);
+        when(deliveryStop2.getTruckTypeRequired()).thenReturn(TruckType.REFRIGERATED);
         List<DeliveryStop> deliveryStops = List.of(deliveryStop1, deliveryStop2);
 
-        try{assertEquals(TruckType.Refrigerated, deliveryFormsController.getTruckTypeTest(deliveryStops));}
+        try{assertEquals(TruckType.REFRIGERATED, deliveryFormsController.getTruckTypeTest(deliveryStops));}
         catch (Exception ignored) {}
     }
 
     @Test
     void getTruckTypeRefrigeratedFail() {
-        when(deliveryStop1.getTruckTypeRequired()).thenReturn(TruckType.Regular);
-        when(deliveryStop2.getTruckTypeRequired()).thenReturn(TruckType.Regular);
+        when(deliveryStop1.getTruckTypeRequired()).thenReturn(TruckType.REGULAR);
+        when(deliveryStop2.getTruckTypeRequired()).thenReturn(TruckType.REGULAR);
         List<DeliveryStop> deliveryStops = List.of(deliveryStop1, deliveryStop2);
 
-        try{assertNotEquals(TruckType.Refrigerated, deliveryFormsController.getTruckTypeTest(deliveryStops));}
+        try{assertNotEquals(TruckType.REFRIGERATED, deliveryFormsController.getTruckTypeTest(deliveryStops));}
         catch (Exception ignored) {}
 
     }

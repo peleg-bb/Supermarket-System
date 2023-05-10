@@ -14,9 +14,9 @@ public class TruckController {
     // Singleton Constructor
     private TruckController() {
         trucks = new HashSet<>();
-        generateTruckFleet(20); // TODO: Remove this line when the DB is ready
         truckDAO = new TruckDAO();
-        // trucks.addAll(truckDAO.loadData()); // TODO: Uncomment this line when the DB is ready
+        //generateTruckFleet(20); // Will not work if DB is full due to primary key constraint
+        trucks.addAll(truckDAO.loadData());
     }
 
     public static TruckController getInstance() {
@@ -55,10 +55,12 @@ public class TruckController {
     }
 
     private void generateTruckFleet(int numTrucks) {
-        String[] truckModels = {"Volvo", "Mercedes-Benz", "Scania", "MAN", "Daf", "Iveco"};
-        String[] licensePlates = {"ABC123", "DEF456", "GHI789", "JKL012", "MNO345", "PQR678"};
+        String[] truckModels = {"Toyota", "Sussita", "Ford", "Chevrolet", "Dodge"};
+        String[] licensePlates = {"LOL456", "WTF789", "OMG123", "BBQ456",
+                "KFC789", "MCD123", "FUK456", "YEA789", "NOO123", "USA456",
+                "UAE789", "RUS123", "CHN456", "JPN789", "KOR123", };
         TruckType[] truckTypes = TruckType.values();
-        int[] maxWeights = {4, 6, 8, 10, 12};
+        int[] maxWeights = {4, 5, 6};
         int[] netWeights = {2, 3};
 
         for (int i = 0; i < numTrucks; i++) {
@@ -75,8 +77,7 @@ public class TruckController {
     }
 
     private void addTruck(Truck truck) {
-        trucks.add(truck);
-        truckDAO.addTruck(truck);
+        if (truckDAO.addTruck(truck)) trucks.add(truck);
     }
 
     public int getTruckFleetSize() {

@@ -130,11 +130,11 @@ public class DeliveryForm {
     }
 
     public TruckType getTruckType() {
-        TruckType truckType = TruckType.Regular;
+        TruckType truckType = TruckType.REGULAR;
         // for each delivery stop, check if the truck type is the same
         for (DeliveryStop stop : destinationSitesToVisit) {
-            if (stop.getTruckTypeRequired() == TruckType.Refrigerated) {
-                truckType = TruckType.Refrigerated;
+            if (stop.getTruckTypeRequired() == TruckType.REFRIGERATED) {
+                truckType = TruckType.REFRIGERATED;
             }
         }
         return truckType;

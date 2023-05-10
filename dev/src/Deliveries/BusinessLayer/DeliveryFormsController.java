@@ -116,11 +116,11 @@ public class DeliveryFormsController implements DeliveryIntegrator {
 
 
     private TruckType getTruckType(List<DeliveryStop> destinationSitesToVisit) {
-        TruckType truckType = TruckType.Regular;
+        TruckType truckType = TruckType.REGULAR;
         // for each delivery stop, check if the truck type is the same
         for (DeliveryStop stop : destinationSitesToVisit) {
-            if (stop.getTruckTypeRequired() == TruckType.Refrigerated) {
-                truckType = TruckType.Refrigerated;
+            if (stop.getTruckTypeRequired() == TruckType.REFRIGERATED) {
+                truckType = TruckType.REFRIGERATED;
                 return truckType;
             }
         }

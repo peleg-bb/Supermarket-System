@@ -36,7 +36,7 @@ public class TruckDAO {
     public boolean addTruck(Truck truck) {
         String licensePlate = truck.getLicensePlate();
         int maxWeightTons = truck.getMaxWeightTons();
-        String truckType = truck.getType().toString();
+        String truckType = truck.getType().toString().toLowerCase();
         String model = truck.getModel();
         int netWeightTons = truck.getNetWeightTons();
         String query = "INSERT INTO Trucks (license_plate, max_weight_tons, truck_type, model, net_weight_tons)" +
@@ -54,7 +54,8 @@ public class TruckDAO {
         String licensePlate = (String) truckRecord.get("license_plate");
         int maxWeightTons = (Integer) truckRecord.get("max_weight_tons");
         String model = (String) truckRecord.get("model");
-        TruckType truckType = (TruckType) truckRecord.get("truck_type");
+        String truckTypeString = (String) truckRecord.get("truck_type");
+        TruckType truckType = TruckType.valueOf(truckTypeString.toUpperCase());
         int netWeightTons = (Integer) truckRecord.get("net_weight_tons");
         return new Truck(model,licensePlate,truckType,maxWeightTons,netWeightTons);
     }

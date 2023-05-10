@@ -53,8 +53,8 @@ public class DriverDAO {
         String phone = driver.getPhone();
         License license = driver.getLicense();
         int weightAllowed = license.getWeightAllowedTons();
-        int regularAllowed = license.getTruckTypesAllowed().contains(TruckType.Regular) ? 1 : 0;
-        int refrigeratedAllowed = license.getTruckTypesAllowed().contains(TruckType.Refrigerated) ? 1 : 0;
+        int regularAllowed = license.getTruckTypesAllowed().contains(TruckType.REGULAR) ? 1 : 0;
+        int refrigeratedAllowed = license.getTruckTypesAllowed().contains(TruckType.REFRIGERATED) ? 1 : 0;
         String query = "INSERT INTO Drivers (driver_id, driver_name, phone)" +
                 " VALUES ('" + id + "', '" + name + "', '" + phone + "');";
         String query2 = "INSERT INTO DriverLicenses " +

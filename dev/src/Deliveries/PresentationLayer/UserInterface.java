@@ -114,14 +114,14 @@ public class UserInterface {
                 System.out.println("do you need a regular(1) or a refrigerated(2) truck? (1/2)");
                 //
                 int truckTypeAns = 0;
-                TruckType truckType = TruckType.Regular;
+                TruckType truckType = TruckType.REGULAR;
 
                 while(true) {
                     try {
                             truckTypeAns = scanner.nextInt();
 
                             if ((truckTypeAns == 1) || (truckTypeAns == 2)) {
-                                truckType = (truckTypeAns == 1) ? TruckType.Regular : TruckType.Refrigerated;
+                                truckType = (truckTypeAns == 1) ? TruckType.REGULAR : TruckType.REFRIGERATED;
                                 break;
                             } else {
                                 throw new Exception("invalid input");

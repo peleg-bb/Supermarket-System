@@ -42,7 +42,7 @@ class DriverControllerTest {
 
     @Test @Order(1)
     void pickDriverSuccess() {
-        when(truck1.getType()).thenReturn(TruckType.Regular);
+        when(truck1.getType()).thenReturn(TruckType.REGULAR);
 //        when(truck2.getType()).thenReturn(TruckType.Refrigerated);
         when(truck1.getMaxWeightTons()).thenReturn(10);
 //        when(truck2.getMaxWeightTons()).thenReturn(20);
@@ -60,7 +60,7 @@ class DriverControllerTest {
 
     @Test @Order(2)
     void pickDriverFailWeight() {
-        when(truck1.getType()).thenReturn(TruckType.Regular);
+        when(truck1.getType()).thenReturn(TruckType.REGULAR);
 //        when(truck2.getType()).thenReturn(TruckType.Refrigerated);
         when(truck1.getMaxWeightTons()).thenReturn(40);
 //        when(truck2.getMaxWeightTons()).thenReturn(20);
@@ -74,7 +74,7 @@ class DriverControllerTest {
 
     @Test @Order(3)
     void pickDriverFailHRAvailability() {
-        when(truck1.getType()).thenReturn(TruckType.Regular);
+        when(truck1.getType()).thenReturn(TruckType.REGULAR);
 //        when(truck2.getType()).thenReturn(TruckType.Refrigerated);
         when(truck1.getMaxWeightTons()).thenReturn(10);
 //        when(truck2.getMaxWeightTons()).thenReturn(20);
@@ -88,7 +88,7 @@ class DriverControllerTest {
 
     @Test @Order(LAST_TEST_INDEX)
     void pickDriverFailDriverAvailability() {
-        when(truck1.getType()).thenReturn(TruckType.Regular);
+        when(truck1.getType()).thenReturn(TruckType.REGULAR);
         when(truck1.getMaxWeightTons()).thenReturn(10);
         List<String> driverIds = driverController.getDriverIds();
         when(hrManager.getAvailableDrivers(startTime, endTime)).thenReturn(driverIds);
