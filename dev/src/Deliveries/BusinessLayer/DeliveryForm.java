@@ -27,7 +27,7 @@ public class DeliveryForm {
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
     private HRIntegrator hrManager;
 
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime) throws DeliveryException {
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime)  {
         this.formId = formId;
         this.destinationSitesToVisit = stops;
         this.destinationSitesVisited = new ArrayList<>();
@@ -37,13 +37,15 @@ public class DeliveryForm {
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
-        updateArrivalTimes();
+        try {
+            updateArrivalTimes();
+        }catch (DeliveryException e){}
     }
 
     /*
     To be used for testing purposes only
      */
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime, HRIntegrator hr) throws DeliveryException {
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime, HRIntegrator hr) throws DeliveryException{
         this.formId = formId;
         this.destinationSitesToVisit = stops;
         this.destinationSitesVisited = new ArrayList<>();
