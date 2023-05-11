@@ -36,8 +36,8 @@ class DriverControllerTest {
         truck1 = mock(Truck.class);
         hrManager = mock(HRIntegrator.class);
         try {driverController.setHrManager(hrManager);} catch (Exception ignored) {}
-        startTime = new Timestamp(2020, 1, 1, 8, 0, 0, 0);
-        endTime = new Timestamp(2020, 1, 1, 16, 0, 0, 0);
+        startTime = new Timestamp(120, 1, 1, 8, 0, 0, 0);
+        endTime = new Timestamp(120, 1, 1, 16, 0, 0, 0);
     }
 
     @Test @Order(1)
