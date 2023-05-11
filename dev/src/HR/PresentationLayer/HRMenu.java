@@ -1480,6 +1480,9 @@ public class HRMenu {
                 int employee_index = random.nextInt(availableEmployees.size());
                 int employee_id = availableEmployees.get(employee_index);
                 List<JobType> jobs = EmployeeController.getInstance().get_certified_roles(employee_id);
+                if (jobs.size() == 0) {
+                    continue;
+                }
                 int jobs_index = random.nextInt(jobs.size()); // TODO: throws exception if no jobs
                 service.assign_to_shift(employee_id, shift.getDate(), shift.getType(), store, jobs.get(jobs_index));
                 availableEmployees.remove(employee_index);
