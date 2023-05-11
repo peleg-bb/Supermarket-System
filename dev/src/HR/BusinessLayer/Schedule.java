@@ -9,10 +9,7 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -311,5 +308,24 @@ public class Schedule {
 
     public String show_scheduled_deliveries(LocalDate shift_date, ShiftType shift_type) {
         return shifts.get(get_shift(shift_date, shift_type)).show_scheduled_deliveries(shift_date);
+    }
+
+    public List<ShiftPair> get_shifts_pairs() {
+        return new LinkedList<>(shifts.keySet());
+    }
+
+    public List<Integer> get_availables(ShiftPair shift) {
+        return shifts.get(shift).get_availables();
+    }
+
+    public List<ShiftPair> getAssignedShiftsDates(Integer employee_id) {
+        List<ShiftPair> output = new LinkedList<>();
+        for (ShiftPair pair: shifts.keySet()) {
+            String job = shifts.get(pair).is_assigned(employee_id);
+            if (!job.equals("")) {
+                output.add(pair);
+            }
+        }
+        return output;
     }
 }

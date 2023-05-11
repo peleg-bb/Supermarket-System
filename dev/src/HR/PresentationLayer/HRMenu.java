@@ -4,18 +4,13 @@ import Deliveries.BusinessLayer.Driver;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.Availability;
 import Deliveries.BusinessLayer.License;
 import Deliveries.DataAccessLayer.DriverDAO;
-import HR.BusinessLayer.FamilyStatus;
-import HR.BusinessLayer.JobType;
-import HR.BusinessLayer.ShiftType;
+import HR.BusinessLayer.*;
 import HR.ServiceLayer.EmployeeService;
 import HR.ServiceLayer.Response;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class HRMenu {
 
@@ -1040,7 +1035,7 @@ public class HRMenu {
         System.out.print(print_blue("Option:"));
     }
 
-    public void load_data_example() {
+    /*public void load_data_example() {
         service.add_hr(111111111, "Tomer Naydnov", 12345678, 70, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
         service.login(111111111, "123456");
         service.create_store("Tel Aviv");
@@ -1285,6 +1280,7 @@ public class HRMenu {
         //generateDrivers(40);
 
     }
+    */
     public void generateDrivers(int numberOfDrivers) {
         Set<String> usedIds = new HashSet<>();
         Random random = new Random();
@@ -1336,4 +1332,163 @@ public class HRMenu {
 
         }
     }
+
+    public void load_example_data() {
+        service.add_hr(111111111, "Tomer Naydnov", 12345678, 70, "None", LocalDate.of(2023, 1, 1), FamilyStatus.SINGLE, true, "123456");
+        service.login(111111111, "123456");
+        service.create_store("Tel Aviv");
+        service.create_store("Beer Sheva");
+        service.create_store("Rishon Le Zion");
+        service.create_store("Raanana");
+        service.create_store("Haifa");
+        service.create_store("Ashkelon");
+        service.create_store("Ashdod");
+        service.create_store("Eilat");
+        service.create_store("drivers");
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Tel Aviv", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Beer Sheva", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Rishon Le Zion", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Raanana", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Haifa", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Ashkelon", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Ashdod", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "Eilat", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+        service.create_weekly_schedule(LocalDate.of(2023,7,2), "drivers", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
+
+        generateEmployees(100);
+        generateDrivers(60);
+        assign_employees();
+    }
+
+    private void assign_employees() {
+        service.login(111111111, "123456");
+        String[] Stores = {"Tel Aviv", "Beer Sheva", "Rishon Le Zion", "Raanana", "Haifa", "Ashkelon", "Ashdod", "Eilat"};
+        for (String store: Stores) {
+            assignShiftsToEmployees(store, LocalDate.of(2023, 7, 2));
+        }
+        service.logout();
+    }
+
+    private void generateEmployees(int numberOfEmployees) {
+        Set<String> usedIds = new HashSet<>();
+        Random random = new Random();
+
+        for (int i = 0; i < numberOfEmployees; i++) {
+            service.login(111111111, "123456");
+            // Generate random driver data
+            String name = "Employee " + i;
+            int bank_account = 1111111;
+            int salary = 30;
+            LocalDate employment = LocalDate.of(2023, 1, 1);
+
+            // Generate unique driver ID
+            String id;
+            do {
+                id = String.format("%09d", random.nextInt(1000000000));
+                // add 0 to the left if needed
+            } while (usedIds.contains(id));
+            usedIds.add(id);
+            service.add_employee(Integer.parseInt(id), name, bank_account, salary, "None", employment, FamilyStatus.SINGLE, true, "123456");
+            service.assign_to_store(Integer.parseInt(id), "drivers");
+            String[] Stores = {"Tel Aviv", "Beer Sheva", "Rishon Le Zion", "Raanana", "Haifa", "Ashkelon", "Ashdod", "Eilat"};
+            List<JobType> jobs = getRandomJobs(4);
+            for (JobType job: jobs) {
+                service.certify_role(Integer.parseInt(id), job);
+            }
+            List<String> stores = getRandomStores(5, Stores);
+            for (String store: stores) {
+                service.assign_to_store(Integer.parseInt(id), store);
+            }
+            service.logout();
+            service.login(Integer.parseInt(id), "123456");
+            for (String store: stores) {
+                add_availability(store, LocalDate.of(2023, 7, 2), LocalDate.of(2023, 7, 8));
+            }
+            service.logout();
+        }
+    }
+
+    public static List<JobType> getRandomJobs(int num) {
+        Random random = new Random();
+        List<JobType> jobs = new LinkedList<>();
+        JobType[] all_jobs = JobType.values();
+        Set<Integer> usedIndexes = new HashSet<>();
+        for (int i = 0; i < num; i++) {
+            int index;
+            do {
+                index = random.nextInt(all_jobs.length);
+            } while (usedIndexes.contains(index) && all_jobs[index] == JobType.DRIVER && all_jobs[index] == JobType.HRMANAGER);
+            jobs.add(all_jobs[index]);
+            usedIndexes.add(index);
+        }
+        return jobs;
+    }
+
+    public static List<String> getRandomStores(int num, String[] stores) {
+        Random random = new Random();
+        List<String> selected_stores = new LinkedList<>();
+        Set<Integer> usedIndexes = new HashSet<>();
+        for (int i = 0; i < num; i++) {
+            int index;
+            do {
+                index = random.nextInt(stores.length);
+                selected_stores.add(stores[index]);
+            } while (usedIndexes.contains(index));
+            usedIndexes.add(index);
+        }
+        return selected_stores;
+    }
+    
+    public void add_availability(String store, LocalDate week_start, LocalDate week_end) {
+        Random random = new Random();
+        ShiftType[] all_shifts = ShiftType.values();
+        for (int i = week_start.getDayOfMonth(); i < week_end.getDayOfMonth(); i++) {
+            int index = random.nextInt(all_shifts.length);
+            service.add_availability(week_start.plusDays(i), all_shifts[index], store);
+        }
+    }
+
+    public void assignShiftsToEmployees(String store, LocalDate week_start) {
+        Random random = new Random();
+        List<ShiftPair> availableShifts = ShiftController.getInstance().get_shifts_pairs(store, week_start);
+        for (ShiftPair shift : availableShifts) {
+            List<Integer> availableEmployees = ShiftController.getInstance().get_availables(store, shift);
+
+            // Remove employees who have already reached the maximum shift count
+            availableEmployees.removeIf(employee -> service.getAssignedShiftsDates(employee, week_start).size() >= 6);
+
+            if (availableEmployees.isEmpty()) {
+                // No available employees for this shift
+                continue;
+            }
+
+            LocalDate shiftDate = shift.getDate();
+
+            // Remove employees who already have a shift on the same day
+            availableEmployees.removeIf(employee ->
+                    service.getAssignedShiftsDates(employee, week_start).stream()
+                            .anyMatch(assignedShift -> assignedShift.getDate().equals(shiftDate))
+            );
+
+            if (availableEmployees.isEmpty()) {
+                // No available employees for this shift date
+                continue;
+            }
+
+            int num_of_assigns = random.nextInt(10);
+            for (int i = 0; i < num_of_assigns; i++) {
+                int employee_index = random.nextInt(availableEmployees.size());
+                int employee_id = availableEmployees.get(employee_index);
+                List<JobType> jobs = EmployeeController.getInstance().get_certified_roles(employee_id);
+                int jobs_index = random.nextInt(jobs.size());
+                service.assign_to_shift(employee_id, shift.getDate(), shift.getType(), store, jobs.get(jobs_index));
+                availableEmployees.remove(employee_index);
+                if (availableEmployees.isEmpty()) {
+                    break;
+                }
+            }
+        }
+    }
+
+
 }

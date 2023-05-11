@@ -99,6 +99,18 @@ public class ShiftController implements HRIntegrator {
 
     }
 
+    public List<ShiftPair> getAssignedShiftsDates(LocalDate week_start, Integer employee_id, List<String> certified_stores) {
+        List<ShiftPair> shifts = new LinkedList<>();
+        for (String store: certified_stores) {
+            if (stores_schedules.containsKey(store)) {
+                List<ShiftPair> store_shifts = get_schedule(store, week_start).getAssignedShiftsDates(employee_id);
+                shifts.addAll(store_shifts);
+            }
+        }
+        return shifts;
+
+    }
+
     public String create_store(String store) {
         stores.add(store);
         schedules_history.put(store, new LinkedList<>());
@@ -459,5 +471,17 @@ public class ShiftController implements HRIntegrator {
             return schedule.show_scheduled_deliveries(shift_date, shift_type);
         }
         return "No schedule available for that date";
+    }
+
+    public List<ShiftPair> get_shifts_pairs(String store, LocalDate week_start) {
+        Schedule schedule = get_schedule(store, week_start);
+        assert schedule != null;
+        return schedule.get_shifts_pairs();
+    }
+
+    public List<Integer> get_availables(String store, ShiftPair shift) {
+        Schedule schedule = get_schedule(store, shift.getDate());
+        assert schedule != null;
+        return schedule.get_availables(shift);
     }
 }

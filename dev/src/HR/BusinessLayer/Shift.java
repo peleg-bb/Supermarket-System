@@ -198,4 +198,8 @@ public class Shift {
         Timestamp end_timestamp = Timestamp.valueOf(end_localDateTime);
         return object.getDeliveryByArrivalTime(start_timestamp, end_timestamp, store).toString();
     }
+
+    public List<Integer> get_availables() {
+        return available_employees;
+    }
 }

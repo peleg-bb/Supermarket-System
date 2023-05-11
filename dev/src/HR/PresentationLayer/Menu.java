@@ -11,11 +11,11 @@ public class Menu {
     }
 
     private void load_data_example() {
-        employeeCLI.load_data_example();
+        employeeCLI.load_example_data();
     }
 
     public static void main(String[] args) throws SQLException {
-        //Connect.getInstance().deleteRecordsOfTables();
+        Connect.getInstance().deleteRecordsOfTables();
         Menu m = new Menu();
         m.load_data_example();
         m.run();

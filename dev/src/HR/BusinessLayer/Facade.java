@@ -46,6 +46,12 @@ public class Facade {
         List<String> certified_stores = employeeController.get_certified_stores(employee_id);
         return shiftController.get_shifts(employee_id, certified_stores);
     }
+
+
+    public List<ShiftPair> getAssignedShiftsDates(Integer employee_id, LocalDate week_start) {
+        List<String> certified_stores = employeeController.get_certified_stores(employee_id);
+        return shiftController.getAssignedShiftsDates(week_start, employee_id, certified_stores);
+    }
     
     public String login(int employee_id, String password) {
         return employeeController.login(employee_id, password);

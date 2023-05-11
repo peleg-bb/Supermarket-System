@@ -1,12 +1,11 @@
 package HR.ServiceLayer;
 
-import HR.BusinessLayer.Facade;
-import HR.BusinessLayer.FamilyStatus;
-import HR.BusinessLayer.JobType;
-import HR.BusinessLayer.ShiftType;
+import HR.BusinessLayer.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collection;
+import java.util.List;
 
 public class EmployeeService {
 
@@ -448,4 +447,7 @@ public class EmployeeService {
     }
 
 
+    public List<ShiftPair> getAssignedShiftsDates(int id, LocalDate week_start) {
+        return facade.getAssignedShiftsDates(id, week_start);
+    }
 }
