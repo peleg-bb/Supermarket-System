@@ -1356,7 +1356,7 @@ public class HRMenu {
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "drivers", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
 
         generateEmployees(100);
-        generateDrivers(60);
+        //generateDrivers(60);
         assign_employees();
     }
 
