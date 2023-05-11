@@ -31,7 +31,7 @@ public class DeliveryStopGenerator {
      */
     public List<DeliveryStop> getDeliveryStops(int startingIndex, int size) {
         DeliveryStopDAO deliveryStopDAO = new DeliveryStopDAO();
-        List<DeliveryStop> deliveryStops = deliveryStopDAO.loadData().stream().toList();
+        List<DeliveryStop> deliveryStops = new java.util.ArrayList<>(deliveryStopDAO.loadData().stream().toList());
         if (deliveryStops.size() < size) {
             for (int i = startingIndex; i < startingIndex + size; i++) {
                 DeliveryStop deliveryStop = generateDeliveryStop(i);
