@@ -6,11 +6,11 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanner;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.PresentationLayer.UserInteractionUtil;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 
 public class DeliveryManagerImpl implements DeliveryManager {
+    public static final int PENDING_SIZE = 30;
     private final TruckController truckController;
     private final DriverController driverController;
     private Set<DeliveryStop> pendingDeliveryStops;
@@ -26,6 +26,8 @@ public class DeliveryManagerImpl implements DeliveryManager {
             driverController = DriverController.getInstance();
             deliveryFormsController = DeliveryFormsController.getInstance();
             tripReplanner = new UserInteractionUtil();
+            DeliveryStopGenerator deliveryStopGenerator = new DeliveryStopGenerator();
+            pendingDeliveryStops.addAll(deliveryStopGenerator.getDeliveryStops(deliveryCount, PENDING_SIZE));
     }
 
     public static DeliveryManagerImpl getInstance() {
