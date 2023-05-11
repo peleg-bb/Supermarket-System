@@ -9,7 +9,7 @@ public class SiteGenerator {
     private static final String[] SITE_NAMES = {"Tel Aviv", "Rishon Le Zion", "Raanana",  "Haifa",
             "Beer Sheva",  "Ashkelon", "Ashdod", "Eilat"};
     private static final String[] CONTACT_NAMES = {"Peleg", "Tomer", "Tamar", "Gili", "Itay", "Reut", "Lior", "Noa"};
-    public List<Site> sitesList;
+    private List<Site> sitesList;
 
     public SiteDAO siteDAO;
     public SiteGenerator(){
