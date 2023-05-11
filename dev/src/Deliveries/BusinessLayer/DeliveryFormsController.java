@@ -21,6 +21,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     private final DriverController driverController;
     private final DeliveryFormDAO deliveryFormDAO;
     private boolean TESTING_MODE;
+    StoreAvailabilityChecker storeAvailabilityChecker;
 
 
     private DeliveryFormsController() {
@@ -32,6 +33,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         deliveryFormDAO = new DeliveryFormDAO();
         pendingDeliveryForms.addAll(deliveryFormDAO.loadData());
         TESTING_MODE = false;
+        storeAvailabilityChecker = new StoreAvailabilityChecker();
         // TODO: Implement properly
 
     }
@@ -89,7 +91,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     }
 
     @Override
-    public Set<DeliveryStop> getDeliverygetDeliveryByArrivalTime(Timestamp startTime, Timestamp finishTime, String store) {
+    public Set<DeliveryStop> getDeliveryByArrivalTime(Timestamp startTime, Timestamp finishTime, String store) {
         Set<DeliveryStop> deliveryStops = new HashSet<>();
         for (DeliveryForm deliveryForm : pendingDeliveryForms) {
             deliveryStops.addAll(deliveryForm.getStopsByTime(startTime, finishTime, store));
@@ -98,11 +100,16 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     }
 
     /**
-     * @return
+     * Creates a delivery form with the given stops and origin
      */
     public void createForm(List<DeliveryStop> stops, Site origin) throws DeliveryException {
+
+        Timestamp dispatchTime = storeAvailabilityChecker.checkStoreAvailability(stops);
+        if (dispatchTime == null) {
+            throw new DeliveryException("Couldn't find a time where all stores are available to accept the delivery");
+        }
         DeliveryForm deliveryForm = new DeliveryForm(deliveryFormCount++, stops, origin,
-                new Timestamp(System.currentTimeMillis()));
+                dispatchTime);
         TruckType truckType = getTruckType(stops);
         Truck truck = truckController.pickTruck(truckType);
         deliveryForm.setTruck(truck);

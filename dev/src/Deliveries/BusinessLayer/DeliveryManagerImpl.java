@@ -64,6 +64,7 @@ public class DeliveryManagerImpl implements DeliveryManager {
             } catch (DeliveryException e) {
                 // Notify UI
                 System.out.println(e.getMessage());
+                System.out.println("Delivery group creation failed for origin " + entries.getValue().get(0).getOrigin());
             }
         }
         pendingDeliveryStops.clear();

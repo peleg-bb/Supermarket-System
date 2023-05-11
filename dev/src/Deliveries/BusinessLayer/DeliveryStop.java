@@ -75,6 +75,7 @@ public class DeliveryStop {
         this.shipmentInstanceID = -1;
     }
 
+    /* Do NOT use, this constructor is only for testing purposes */
     public DeliveryStop(boolean TestEnvironment, int shipmentInstanceID) throws Exception {
         if (!TestEnvironment) {
             throw new Exception("This constructor is only for testing purposes");
@@ -123,9 +124,13 @@ public class DeliveryStop {
         int distanceKM = origin.computeDistance(destination) + BASE_DISTANCE;
         long travelDurationHours = distanceKM / AVERAGE_TRUCK_SPEED_KM_AN_H;
         estimatedArrivalTime = Timestamp.from(dispatchTime.toInstant().plus(travelDurationHours, ChronoUnit.HOURS));
+        // Make sure this time is never longer than 8 hours, which is the maximum time driver shift length
     }
 
     public Timestamp getEstimatedArrivalTime() {
+        if (estimatedArrivalTime == null) {
+            throw new IllegalStateException("Arrival time was not set");
+        }
         return estimatedArrivalTime;
     }
 }

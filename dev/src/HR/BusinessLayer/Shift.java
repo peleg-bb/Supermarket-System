@@ -196,6 +196,6 @@ public class Shift {
         Timestamp start_timestamp = Timestamp.valueOf(start_localDateTime);
         LocalDateTime end_localDateTime = LocalDateTime.of(shift_date, end);
         Timestamp end_timestamp = Timestamp.valueOf(end_localDateTime);
-        return object.getDeliverygetDeliveryByArrivalTime(start_timestamp, end_timestamp, store).toString();
+        return object.getDeliveryByArrivalTime(start_timestamp, end_timestamp, store).toString();
     }
 }

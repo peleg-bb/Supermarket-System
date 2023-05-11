@@ -44,7 +44,6 @@ class DeliveryIntegrationTests {
 
     @BeforeEach
     void setUp() {
-
         SiteGenerator siteGenerator = new SiteGenerator();
         List<Site> siteList = siteGenerator.getSitesList();
         origin = siteList.get(0);

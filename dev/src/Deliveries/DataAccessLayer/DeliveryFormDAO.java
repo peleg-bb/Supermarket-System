@@ -41,10 +41,18 @@ public class DeliveryFormDAO {
         Timestamp dispatchTime = (Timestamp) deliveryFormRecord.get("dispatch_time");
 //        Timestamp terminationTime = (Timestamp) deliveryFormRecord.get("termination_time");
 //        String status = (String) deliveryFormRecord.get("status");
+
+        // TODO: Add destinations
         String origin = (String) deliveryFormRecord.get("origin");
         Site originSite = getSiteByName(origin);
         List<DeliveryStop> destinations = new ArrayList<>();
-        return new DeliveryForm(id, destinations, originSite, dispatchTime);
+        DeliveryForm deliveryForm;
+        try {
+            deliveryForm = new DeliveryForm(id, destinations, originSite, dispatchTime);
+        } catch (Exception e) {
+            return null;
+        }
+        return deliveryForm;
     }
 
     public boolean addDeliveryForm(DeliveryForm deliveryForm) {

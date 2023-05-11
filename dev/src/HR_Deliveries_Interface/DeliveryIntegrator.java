@@ -5,5 +5,5 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 public interface DeliveryIntegrator {
-    Set<DeliveryStop> getDeliverygetDeliveryByArrivalTime(Timestamp startTime, Timestamp finishTime, String store);
+    Set<DeliveryStop> getDeliveryByArrivalTime(Timestamp startTime, Timestamp finishTime, String store);
 }
