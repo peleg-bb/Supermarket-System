@@ -38,8 +38,9 @@ public class DeliveryStopDAO {
         String destination = stop.getDestination().getName();
         String truckType = stop.getTruckTypeRequired().toString();
         String status = stop.getStatus().toString();
+        String formId = "-1";
         //TODO:String formID = stop.getF();
-        String query = "INSERT INTO Trucks (stop_id, origin_name, destination_name, truck_type, status)" +
+        String query = "INSERT INTO DeliveryStops (stop_id, origin_name, destination_name, truck_type, status)" +
                 " VALUES ('" + stopID + "', '" + origin + "', '" + destination+ "', '" + truckType + "', '" + status + "');";
         try {
             conn.executeUpdate(query);
@@ -70,5 +71,7 @@ public class DeliveryStopDAO {
             return null;
         }
     }
-    }
+
+
+}
 

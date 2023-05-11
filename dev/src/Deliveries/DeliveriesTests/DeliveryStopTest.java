@@ -1,12 +1,14 @@
 package Deliveries.DeliveriesTests;
 
 import Deliveries.BusinessLayer.DeliveryStop;
+import Deliveries.BusinessLayer.DeliveryStopGenerator;
 import Deliveries.BusinessLayer.Site;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -29,6 +31,13 @@ class DeliveryStopTest {
         try {
             deliveryStop1 = new DeliveryStop(true, site1, site2);
         } catch (Exception ignored) {}
+    }
+
+    @Test
+    void testToString() {
+        DeliveryStopGenerator deliveryStopGenerator = new DeliveryStopGenerator();
+        List<DeliveryStop> deliveryStop = deliveryStopGenerator.getDeliveryStops(0, 30);
+        System.out.println(deliveryStop);
     }
 
 
