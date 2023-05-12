@@ -40,7 +40,7 @@ public class DriverController implements DriverSaver {
             String id;
             do {
                 id = String.format("%09d", random.nextInt(1000000000));
-            } while (usedIds.contains(id));
+            } while (usedIds.contains(id) || id.length() != 9);
             usedIds.add(id);
 
             // Create a new driver object and set availability

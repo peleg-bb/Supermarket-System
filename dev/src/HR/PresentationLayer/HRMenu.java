@@ -1284,13 +1284,16 @@ public class HRMenu {
     public void generateDrivers(int numberOfDrivers) {
         Set<String> usedIds = new HashSet<>();
         Random random = new Random();
-        DriverDAO driverDAO = new DriverDAO();
-        driverDAO.deleteAllDrivers();
+        //DriverDAO driverDAO = new DriverDAO();
+        //driverDAO.deleteAllDrivers();
 
         for (int i = 0; i < numberOfDrivers; i++) {
             service.login(111111111, "123456");
             // Generate random driver data
-            String name = "Driver " + i;
+
+            String[] names = {"Noam", "Avigail", "Eliav", "Talia", "Adi", "Gal", "Lior", "Shira", "Itay", "Tamar", "Omer", "Maya", "Yaniv", "Noa", "Yotam", "Dana", "Yael", "Nir", "Liat", "Eran", "Neta", "Yaron", "Yifat", "Guy", "Nitzan", "Shlomi", "Revital", "Nadav", "Inbar", "Nir", "Shiri", "Erez", "Maayan", "Ori", "Roni", "Ran", "Dikla", "Yonatan", "Mor", "Or", "Sivan", "Ofer", "Yuval", "Rivka", "Shimon", "Alon", "Avi", "Gali", "Amir", "Ofir", "Dor", "Lena", "Yishai", "Adva", "Omri", "Lilach", "Asaf", "Michal", "Idan", "Hadar", "Ido", "Oded", "Rina", "Sharon", "Uri", "Tova", "Yoav", "Shani", "Amit", "Ayelet", "Hila", "Niv", "Orly", "Amos", "Keren", "Tzvika", "Dafna", "Yair", "Limor", "Eitan", "Galit", "Shlomit", "Ziv", "Zohar", "Naama", "Tomer", "Yehuda", "Rachel", "Yarden", "Yehudit", "Eli", "Anat", "Avraham", "Haim", "Yehoshua", "Naomi", "Yair", "Shmuel", "Eran", "Adi", "Nati", "Yael", "Yaniv", "Liat", "Boaz", "Ronit", "Shay", "Miri", "Yitzhak", "Yonit", "Dudu", "Adina", "Ari", "Efrat", "Shaul", "Anat", "Avner", "Moriah", "Galina", "Ariel", "Elior", "Bar", "Aya", "Oded", "Hila", "Nissim", "Nava", "Nimrod", "Shaked", "Nitzan", "Dina", "Ofra", "Haim", "Anat", "Hanan", "Lital", "Natan", "Avital", "Yuval", "Eliana", "Elad", "Dror", "Eitan", "Liora", "Ayelet", "Hadas", "Tuvia", "Rami", "Roni", "Ehud", "Lilach", "Tali", "Tzipora", "Almog", "Moria", "Hodaya"};
+
+            String name = names[random.nextInt(names.length)];
             int bank_account = 1111111;
             int salary = 30;
             LocalDate employment = LocalDate.of(2023, 1, 1);
@@ -1301,7 +1304,7 @@ public class HRMenu {
             do {
                 id = String.format("%09d", random.nextInt(1000000000));
                 // add 0 to the left if needed
-            } while (usedIds.contains(id));
+            } while (usedIds.contains(id) || id.length() != 9);
             usedIds.add(id);
             service.add_employee(Integer.parseInt(id), name, bank_account, salary, "None", employment, FamilyStatus.SINGLE, true, "123456");
             service.assign_to_store(Integer.parseInt(id), "drivers");
@@ -1356,7 +1359,7 @@ public class HRMenu {
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "drivers", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
 
         generateEmployees(100);
-        //generateDrivers(60);
+        generateDrivers(100);
         assign_employees();
     }
 
