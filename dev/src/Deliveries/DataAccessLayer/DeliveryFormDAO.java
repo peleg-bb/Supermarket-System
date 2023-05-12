@@ -2,6 +2,7 @@ package Deliveries.DataAccessLayer;
 
 import Deliveries.BusinessLayer.DeliveryForm;
 import Deliveries.BusinessLayer.DeliveryStop;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Site;
 import HR.DataAccessLayer.Connect;
 
@@ -21,8 +22,7 @@ public class DeliveryFormDAO {
         Set<DeliveryForm> deliveryForms = new HashSet<>();
         try {
             List<HashMap<String, Object>> deliveryFormDetails =
-                    conn.executeQuery("SELECT * FROM DeliveryForms" +
-                            " JOIN DeliveryStops ON DeliveryForms.form_id = DeliveryStops.form_id");
+                    conn.executeQuery("SELECT * FROM DeliveryForms" );
             for (HashMap<String, Object> deliveryFormRecord : deliveryFormDetails) {
                 DeliveryForm deliveryForm = getDeliveryForm(deliveryFormRecord);
                 deliveryForms.add(deliveryForm);
@@ -46,6 +46,24 @@ public class DeliveryFormDAO {
         String origin = (String) deliveryFormRecord.get("origin");
         Site originSite = getSiteByName(origin);
         List<DeliveryStop> destinations = new ArrayList<>();
+        try {
+            List<HashMap<String, Object>> deliveryStopDetails = conn.executeQuery("SELECT * FROM DeliveryStops Where form_id =" + id);
+            for (HashMap<String, Object> deliveryStopRecord : deliveryStopDetails) {
+                int stopID = (Integer) deliveryStopRecord.get("stop_id");
+                String originName = (String) deliveryStopRecord.get("origin_name");
+                String destination = (String) deliveryStopRecord.get("destination_name");
+                String truckTypeString = (String) deliveryStopRecord.get("truck_type");
+                TruckType truckType = TruckType.valueOf(truckTypeString);
+                HashMap<String, Integer> items = new HashMap<>();
+                Site originS = getSiteByName(originName);
+                Site destinationSite = getSiteByName(destination);
+                DeliveryStop s = new DeliveryStop(stopID, items,originS,destinationSite,truckType);
+                destinations.add(s);
+            }
+        }
+        catch (Exception e){
+
+        }
         //DeliveryStop
         DeliveryForm deliveryForm;
         try {
@@ -55,6 +73,7 @@ public class DeliveryFormDAO {
         }
         return deliveryForm;
     }
+
 
     public boolean addDeliveryForm(DeliveryForm deliveryForm) {
         int formID = deliveryForm.getFormId();

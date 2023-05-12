@@ -51,7 +51,7 @@ public class DeliveryStopDAO {
         }
     }
 
-    private DeliveryStop getStop(HashMap<String, Object> deliveryStopRecord) {
+    public DeliveryStop getStop(HashMap<String, Object> deliveryStopRecord) {
             int stopID = (Integer) deliveryStopRecord.get("stop_id");
             String origin = (String) deliveryStopRecord.get("origin_name");
             String destination = (String) deliveryStopRecord.get("destination_name");
@@ -72,6 +72,7 @@ public class DeliveryStopDAO {
             return null;
         }
     }
+
 
 
 }
