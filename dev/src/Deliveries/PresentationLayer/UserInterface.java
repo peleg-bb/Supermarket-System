@@ -100,7 +100,13 @@ public class UserInterface {
         int id = scanner.nextInt();
         DeliveryForm deliveryForm = deliveryFormsController.getDeliveryForm(id);
         deliveryFormsController.startDeliveryForm(deliveryForm);
-        System.out.println("Delivery executed successfully!");
+        if (deliveryFormsController.isCompleted(deliveryForm)) {
+            System.out.println("Delivery form " + id + " was completed successfully!");
+        } else {
+            System.out.println("Delivery form " + id + " cancelled, " +
+                    "its unvisited stops were returned to the pool of pending stops");
+        }
+
 
     }
 

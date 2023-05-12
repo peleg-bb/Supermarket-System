@@ -170,4 +170,8 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         deliveryForm.setDriver(driver);
         addDeliveryForm(deliveryForm);
     }
+
+    public boolean isCompleted(DeliveryForm deliveryForm){
+        return completedDeliveryForms.contains(deliveryForm);
+    }
 }
