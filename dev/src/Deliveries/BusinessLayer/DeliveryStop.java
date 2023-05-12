@@ -36,7 +36,7 @@ public class DeliveryStop {
     public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append("DeliveryStop{")
-                    .append("shipmentInstanceID=")
+                    .append("stopID=")
                     .append(shipmentInstanceID)
                     .append(", deliveryItems={");
             for (Map.Entry<String, Integer> entry : items.entrySet()) {
@@ -51,7 +51,7 @@ public class DeliveryStop {
                     .append(", to destination- ")
                     .append(destination)
                     .append(", truckTypeRequired- ")
-                    .append(truckTypeRequired)
+                    .append(truckTypeRequired.toString())
                     .append('}');
             return sb.toString();
     }
@@ -121,6 +121,7 @@ public class DeliveryStop {
     }
 
     public void updateArrivalTime(Timestamp dispatchTime) {
+        // IntelliJ warns for nullptr, it happens due to the test-only constructor so this warning can be ignored
         int distanceKM = origin.computeDistance(destination) + BASE_DISTANCE;
         long travelDurationHours = distanceKM / AVERAGE_TRUCK_SPEED_KM_AN_H;
         estimatedArrivalTime = Timestamp.from(dispatchTime.toInstant().plus(travelDurationHours, ChronoUnit.HOURS));

@@ -15,7 +15,9 @@ public class UserInteractionUtil implements WeightMeasurer, TripReplanner {
     }
     @Override
     public int measureWeight(DeliveryForm form) {
-        System.out.println("What's the current weight of the truck?");
+        String currentSite = form.getDestinationSitesToVisit().get(0).getDestination().getName();
+        System.out.println("Successfully delivered to: " + currentSite);
+        System.out.println("Leaving" + currentSite + "- what's the current weight of the truck?");
         // ask for an int. if not int, ask again
         while (!scanner.hasNextInt()) {
             System.out.println("Enter truck weight: ");

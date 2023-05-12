@@ -47,7 +47,7 @@ public class UserInterface {
     }
 
     private static void menuLoop(Scanner scanner, List<Site> sitesList, DeliveryManagerImpl deliveryManager, DeliveryFormsController deliveryFormsController) {
-        //try {
+        try {
             int ans = getMenuAns(scanner);
             while (ans != 4) {
                 if (ans == 1) {
@@ -59,11 +59,10 @@ public class UserInterface {
                 }
                 ans = getMenuAns(scanner);
             }
-        //} //catch (Exception e) {
-//            throw new RuntimeException(e.getStackTrace());
-            //System.out.println("An error occurred- " + e.getMessage() + ", please try again");
-            //menuLoop(scanner, sitesList, deliveryManager, deliveryFormsController);
-    //    }
+        } catch (Exception e) {
+            System.out.println("An error occurred -" + e.getMessage());
+            menuLoop(scanner, sitesList, deliveryManager, deliveryFormsController);
+        }
     }
 
     private static void removeStop(Scanner scanner, DeliveryManagerImpl deliveryManager) {

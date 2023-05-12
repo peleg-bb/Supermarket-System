@@ -18,9 +18,7 @@ public class Site {
 
     @Override
     public String toString() {
-        return "Site{" +
-                "name='" + name + '\'' +
-                '}';
+        return getName();
     }
 
     public String getName() {
@@ -45,5 +43,18 @@ public class Site {
 
     public int computeDistance(Site otherSite) {
         return KM_BETWEEN_ZONES*Math.abs(otherSite.getDeliveryZone() - this.getDeliveryZone());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Site site)) return false;
+
+        return getName().equals(site.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
     }
 }
