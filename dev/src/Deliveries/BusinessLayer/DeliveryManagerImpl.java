@@ -11,7 +11,7 @@ import java.util.*;
 
 
 public class DeliveryManagerImpl implements DeliveryManager {
-    public static final int PENDING_SIZE = 30;
+    public static final int PENDING_SIZE = 60;
     private final TruckController truckController;
     private final DriverController driverController;
     private Set<DeliveryStop> pendingDeliveryStops;
@@ -59,7 +59,6 @@ public class DeliveryManagerImpl implements DeliveryManager {
     //maybe private
     public void createDeliveryGroup(){
         HashMap<Integer,List<DeliveryStop>> originToZones = createDeliveryLists(pendingDeliveryStops);
-        System.out.println(originToZones);
         for(Map.Entry<Integer,List<DeliveryStop>> entries: originToZones.entrySet()){
             try {
                 deliveryFormsController.createForm(entries.getValue(), entries.getValue().get(0).getOrigin());
