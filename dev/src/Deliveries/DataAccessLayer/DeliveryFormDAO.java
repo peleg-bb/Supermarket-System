@@ -81,7 +81,7 @@ public class DeliveryFormDAO {
         String truckLicensePlate = deliveryForm.getTruck().getLicensePlate();
         String dispatchTime = deliveryForm.getDispatchTime().toString();
         String terminationTime = deliveryForm.getEstimatedTerminationTime().toString();
-        String status = deliveryForm.getDestinationSitesToVisit().isEmpty() ? "Completed" : "PENDING";
+        String status = deliveryForm.getDestinationSitesToVisit().isEmpty() ? "completed" : "pending";
         String origin = deliveryForm.getOriginSite().getName();
         String query = "INSERT INTO DeliveryForms (form_id, driver_id, truck_license_plate, dispatch_time, termination_time, status, origin)" +
                 " VALUES ('" + formID + "', '" + driverID + "', '" + truckLicensePlate + "', '" + dispatchTime + "', '" + terminationTime + "', '" + status + "', '" + origin + "');";

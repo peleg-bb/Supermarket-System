@@ -30,7 +30,7 @@ public class DeliveryStopDAO {
     }
 
 
-    public boolean addStop(DeliveryStop stop) {
+    public boolean addStop(DeliveryStop stop)  {
         int stopID = stop.getShipmentInstanceID();
         String origin = stop.getOrigin().getName();
         String destination = stop.getDestination().getName();
@@ -45,10 +45,13 @@ public class DeliveryStopDAO {
 //                " VALUES ('" + formID + "', '" + itemName + "', '" + quantity+  "');";
         try {
             conn.executeUpdate(query1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
            for(Map.Entry<String,Integer> item : items.entrySet()) {
                String itemName = item.getKey();
                int quantity = item.getValue();
-
                String query2 = "INSERT INTO Items (stop_id, item_name, quantity)" +
                        " VALUES ('" + stop.getShipmentInstanceID() + "', '" + itemName + "', '" + quantity + "');";
                conn.executeUpdate(query2);
@@ -88,7 +91,7 @@ public class DeliveryStopDAO {
             String origin = (String) deliveryStopRecord.get("origin_name");
             String destination = (String) deliveryStopRecord.get("destination_name");
             String truckTypeString = (String) deliveryStopRecord.get("truck_type");
-            TruckType truckType = TruckType.valueOf(truckTypeString);
+            TruckType truckType = TruckType.valueOf(truckTypeString.toUpperCase());
 
             Site originSite = getSiteByName(origin);
             Site destinationSite = getSiteByName(destination);

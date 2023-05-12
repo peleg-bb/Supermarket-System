@@ -5,16 +5,16 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Site;
 import Deliveries.DataAccessLayer.DeliveryStopDAO;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class DeliveryStopGenerator {
-    private static final int MAX_ITEMS = 20; // Maximum number of items per delivery
+    private static final int MAX_ITEMS = 8; // Maximum number of items per delivery
     private static final int MAX_QUANTITY = 500; // Maximum quantity per item
     private static final int MAX_TRUCK_TYPE_ORDINAL = TruckType.values().length; // Maximum ordinal value of a truck type
 
+    private static final String[] sampleGroceryItems = {"Apple", "Banana", "Bread", "Butter", "Cheese",
+            "Eggs", "Milk", "Orange", "Potato", "Tomato", "Watermelon", "Yogurt", "Zucchini", "Pasta",
+            "Rice", "Chicken", "Beef", "Pork", "Fish", "Shrimp", "Salmon", "Tuna", "Crab", "Lobster"};
     private final List<Site> sites;
     private final Random random;
 
@@ -61,17 +61,19 @@ public class DeliveryStopGenerator {
 
     private Map<String, Integer> generateItems() {
         Map<String, Integer> items = new HashMap<>();
-        int numItems = random.nextInt(MAX_ITEMS) + 1; // Generate a random number of items between 1 and MAX_ITEMS
 
-        String[] groceryNames = { "Apple", "Banana", "Bread", "Butter", "Cheese",
-                "Eggs", "Milk", "Orange", "Potato", "Tomato", "Watermelon", "Yogurt", "Zucchini", "Pasta",
-                "Rice", "Chicken", "Beef", "Pork", "Fish", "Shrimp", "Salmon", "Tuna", "Crab", "Lobster"};
 
+
+
+        int numItems = Math.min(random.nextInt(MAX_ITEMS), sampleGroceryItems.length); // Generate a random number of items between 1 and MAX_ITEMS
+        ArrayList<String> groceryNames = new ArrayList<>(Arrays.asList(sampleGroceryItems));
+        Collections.shuffle(groceryNames, random);
         for (int i = 0; i < numItems; i++) {
-            String itemName = groceryNames[random.nextInt(groceryNames.length)];
-            int quantity = random.nextInt(MAX_QUANTITY) + 1; // Generate a random quantity between 1 and MAX_QUANTITY
+            String itemName = groceryNames.get(i);
+            int quantity = random.nextInt(MAX_QUANTITY);
             items.put(itemName, quantity);
         }
+
 
         return items;
     }

@@ -38,9 +38,7 @@ public class DeliveryForm {
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
         updateArrivalTimes();
-        for(DeliveryStop stop : stops){
-            stop.setFormID(formId);
-        }
+        updateFormIDinStops();
 
     }
 
@@ -58,6 +56,13 @@ public class DeliveryForm {
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = hr;
         updateArrivalTimes();
+        updateFormIDinStops();
+    }
+
+    private void updateFormIDinStops() {
+        for(DeliveryStop stop : destinationSitesToVisit){
+            stop.setFormID(formId);
+        }
     }
 
 
@@ -137,6 +142,7 @@ public class DeliveryForm {
         for (DeliveryStop stop : destinationSitesToVisit) {
             if (stop.getTruckTypeRequired() == TruckType.REFRIGERATED) {
                 truckType = TruckType.REFRIGERATED;
+                break;
             }
         }
         return truckType;
