@@ -1,6 +1,7 @@
 package Deliveries.DataAccessLayer;
 
 import Deliveries.BusinessLayer.DeliveryStop;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Site;
 import HR.DataAccessLayer.Connect;
@@ -35,11 +36,11 @@ public class DeliveryStopDAO {
         String destination = stop.getDestination().getName();
         String truckType = stop.getTruckTypeRequired().toString();
         String status = stop.getStatus().toString();
-        int formID = stop.getFormID();
+//        int formID = stop.getFormID();
         //items
         Map<String, Integer> items = stop.getItems();
-        String query1 = "INSERT INTO DeliveryStops (stop_id, origin_name, destination_name, truck_type, status, form_id)" +
-                " VALUES ('" + stopID + "', '" + origin + "', '" + destination+ "', '" + truckType + "', '" + status + "', '" + formID + "');";
+        String query1 = "INSERT INTO DeliveryStops (stop_id, origin_name, destination_name, truck_type, status)" +
+                " VALUES ('" + stopID + "', '" + origin + "', '" + destination+ "', '" + truckType + "', '" + status + "');" ;
 //        String query2 = "INSERT INTO Items (form_id, item_name, quantity)" +
 //                " VALUES ('" + formID + "', '" + itemName + "', '" + quantity+  "');";
         try {
@@ -48,11 +49,33 @@ public class DeliveryStopDAO {
                String itemName = item.getKey();
                int quantity = item.getValue();
 
-               String query2 = "INSERT INTO Items (form_id, item_name, quantity)" +
-                       " VALUES ('" + formID + "', '" + itemName + "', '" + quantity + "');";
+               String query2 = "INSERT INTO Items (stop_id, item_name, quantity)" +
+                       " VALUES ('" + stop.getShipmentInstanceID() + "', '" + itemName + "', '" + quantity + "');";
                conn.executeUpdate(query2);
            }
 
+            return true;
+        }
+        catch (SQLException exception) {
+            return false;
+        }
+    }
+
+    public boolean updateStatus(int stopId, DeliveryStatus status) {
+        String query = "UPDATE DeliveryStops SET status = '" + status.toString() + "' WHERE stop_id = '" + stopId + "';";
+        try {
+            conn.executeUpdate(query);
+            return true;
+        }
+        catch (SQLException exception) {
+            return false;
+        }
+    }
+
+    public boolean updateFormID(int stopId, int formID) {
+        String query = "UPDATE DeliveryStops SET form_id = '" + formID + "' WHERE stop_id = '" + stopId + "';";
+        try {
+            conn.executeUpdate(query);
             return true;
         }
         catch (SQLException exception) {

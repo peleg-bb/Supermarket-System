@@ -2,6 +2,7 @@ package Deliveries.BusinessLayer;
 
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import Deliveries.DataAccessLayer.DeliveryStopDAO;
 
 import java.sql.Timestamp;
 import java.time.temporal.ChronoUnit;
@@ -19,6 +20,7 @@ public class DeliveryStop {
     private int formID;
 
     private Timestamp estimatedArrivalTime;
+    DeliveryStopDAO deliveryStopDAO = new DeliveryStopDAO();
 
     @Override
     public boolean equals(Object o) {
@@ -65,7 +67,9 @@ public class DeliveryStop {
         this.truckTypeRequired = truckTypeRequired;
         this.origin=origin;
         this.status = DeliveryStatus.NOT_STARTED;
+        deliveryStopDAO = new DeliveryStopDAO();
         this.formID = -1;
+
     }
 
     public DeliveryStop(boolean TestEnvironment, Site origin, Site destination) throws Exception {
@@ -120,6 +124,7 @@ public class DeliveryStop {
 
     public void setStatus(DeliveryStatus status) {
         this.status = status;
+        deliveryStopDAO.updateStatus(shipmentInstanceID, status);
     }
 
     public void updateArrivalTime(Timestamp dispatchTime) {
@@ -143,5 +148,6 @@ public class DeliveryStop {
 
     public void setFormID(int formID) {
         this.formID = formID;
+        deliveryStopDAO.updateFormID(shipmentInstanceID, formID);
     }
 }

@@ -69,13 +69,16 @@ public class DriverDAO {
         }
     }
 
-    public void deleteAllDrivers() {
-        try {
-            conn.executeUpdate("DELETE FROM Drivers WHERE (1=1)");
-            conn.executeUpdate("DELETE FROM DriverLicenses WHERE (1=1)");
-        }
-        catch (SQLException exception) {
-            System.out.println("Failed to delete drivers");
-        }
-    }
+//    /*
+//    *  Doesn't work for some reason
+//    */
+//    public void deleteAllDrivers() {
+//        try {
+//            conn.executeUpdate("DELETE FROM Drivers WHERE (1=1)");
+//            conn.executeUpdate("DELETE FROM DriverLicenses WHERE (1=1)");
+//        }
+//        catch (SQLException exception) {
+//            System.out.println("Failed to delete drivers");
+//        }
+//    }
 }
