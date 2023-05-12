@@ -247,7 +247,7 @@ public class Schedule {
                 return shifts.get(pair).get_available_drivers();
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public boolean assign_drivers(int employee_id, Timestamp startTime, Timestamp endTime) {

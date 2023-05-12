@@ -69,19 +69,28 @@ public class DriverController implements DriverSaver {
 
     public Driver pickDriver(Truck truck, Timestamp startTime, Timestamp finishTime) throws DeliveryException {
         List<String> availableDrivers = hrManager.getAvailableDrivers(startTime, finishTime);
+        if (availableDrivers.isEmpty()) {
+            throw new DeliveryException("No available drivers during the requested time");
+        }
         for (Driver driver : drivers) {
-            if (driver.isAvailable() &&
-                    // This 'double check' is not redundant -
-                    // it checks whether the driver is available both in terms of HR and deliveries.
-                    availableDrivers.contains(driver.getId())) {
-                if (driver.isLicensed(truck)) {
-                    driver.setAvailability(Availability.Busy);
-                    notifyHR(startTime, finishTime, driver);
-                    return driver;
-                }
+            if (isAvailable(availableDrivers, driver) && driver.isLicensed(truck)) {
+                assignDriver(startTime, finishTime, driver);
+                return driver;
             }
         }
         throw new DeliveryException("No available drivers with license for truck " + truck);
+    }
+
+    private void assignDriver(Timestamp startTime, Timestamp finishTime, Driver driver) throws DeliveryException {
+        driver.setAvailability(Availability.Busy);
+        notifyHR(startTime, finishTime, driver);
+    }
+
+    private boolean isAvailable(List<String> availableDrivers, Driver driver) {
+        return driver.isAvailable() &&
+                // This 'double check' is not redundant -
+                // it checks whether the driver is available both in terms of HR and deliveries.
+                availableDrivers.contains(driver.getId());
     }
 
     /*
