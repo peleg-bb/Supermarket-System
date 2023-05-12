@@ -52,7 +52,7 @@ class DeliveryIntegrationTests {
         destination = siteList.get(2);
         Timestamp mockTimestamp = new Timestamp(System.currentTimeMillis());
 
-        weightMeasurer = mock(MockWeightMeasurer.class);
+        weightMeasurer = mock(WeightMeasurer.class);
         when(weightMeasurer.measureWeight(any(DeliveryForm.class))).thenReturn(5);
 
 
