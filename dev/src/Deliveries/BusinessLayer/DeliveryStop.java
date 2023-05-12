@@ -16,6 +16,7 @@ public class DeliveryStop {
     private final Site destination;
     private TruckType truckTypeRequired;
     private DeliveryStatus status;
+    private int formID;
 
     private Timestamp estimatedArrivalTime;
 
@@ -64,6 +65,7 @@ public class DeliveryStop {
         this.truckTypeRequired = truckTypeRequired;
         this.origin=origin;
         this.status = DeliveryStatus.NOT_STARTED;
+        this.formID = -1;
     }
 
     public DeliveryStop(boolean TestEnvironment, Site origin, Site destination) throws Exception {
@@ -133,5 +135,13 @@ public class DeliveryStop {
             throw new IllegalStateException("Arrival time was not set");
         }
         return estimatedArrivalTime;
+    }
+
+    public int getFormID() {
+        return formID;
+    }
+
+    public void setFormID(int formID) {
+        this.formID = formID;
     }
 }

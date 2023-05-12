@@ -38,6 +38,9 @@ public class DeliveryForm {
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
         updateArrivalTimes();
+        for(DeliveryStop stop : stops){
+            stop.setFormID(formId);
+        }
 
     }
 
