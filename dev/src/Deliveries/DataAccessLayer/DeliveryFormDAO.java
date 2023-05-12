@@ -62,7 +62,7 @@ public class DeliveryFormDAO {
             }
         }
         catch (Exception e){
-
+            return null;
         }
         //DeliveryStop
         DeliveryForm deliveryForm;

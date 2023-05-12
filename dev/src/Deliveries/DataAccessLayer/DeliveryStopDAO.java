@@ -57,9 +57,21 @@ public class DeliveryStopDAO {
             String destination = (String) deliveryStopRecord.get("destination_name");
             String truckTypeString = (String) deliveryStopRecord.get("truck_type");
             TruckType truckType = TruckType.valueOf(truckTypeString);
-            HashMap<String, Integer> items = new HashMap<>();
+
             Site originSite = getSiteByName(origin);
             Site destinationSite = getSiteByName(destination);
+            HashMap<String, Integer> items = new HashMap<>();
+        try {
+            List<HashMap<String, Object>> itemDetails = conn.executeQuery("SELECT * FROM Items Where stop_id =" + stopID );
+            for (HashMap<String, Object> itemRecord : itemDetails) {
+                String itemName =  (String) itemRecord.get("item_name");
+                int quantity = (Integer) itemRecord.get("origin_name");
+                items.put(itemName,quantity);
+            }
+        }
+        catch (Exception e){
+            return null;
+        }
             return new DeliveryStop(stopID, items,originSite,destinationSite,truckType);
         }
 

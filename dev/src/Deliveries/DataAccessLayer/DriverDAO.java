@@ -14,7 +14,6 @@ public class DriverDAO {
         conn = Connect.getInstance();
     }
 
-    //TODO: delete driver from db
     public Set<Driver> loadData(){
         Set<Driver> drivers = new HashSet<>();
         try {
