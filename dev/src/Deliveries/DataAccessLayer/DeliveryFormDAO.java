@@ -46,7 +46,7 @@ public class DeliveryFormDAO {
         String origin = (String) deliveryFormRecord.get("origin");
         Site originSite = getSiteByName(origin);
         List<DeliveryStop> destinations = new ArrayList<>();
-        DeliveryStop
+        //DeliveryStop
         DeliveryForm deliveryForm;
         try {
             deliveryForm = new DeliveryForm(id, destinations, originSite, dispatchTime);
