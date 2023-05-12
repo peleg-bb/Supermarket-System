@@ -6,10 +6,7 @@ import Deliveries.BusinessLayer.Site;
 import HR.DataAccessLayer.Connect;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DeliveryStopDAO {
     private final Connect conn;
@@ -38,12 +35,24 @@ public class DeliveryStopDAO {
         String destination = stop.getDestination().getName();
         String truckType = stop.getTruckTypeRequired().toString();
         String status = stop.getStatus().toString();
-        //String formId = "-1";
         int formID = stop.getFormID();
-        String query = "INSERT INTO DeliveryStops (stop_id, origin_name, destination_name, truck_type, status, form_id)" +
+        //items
+        Map<String, Integer> items = stop.getItems();
+        String query1 = "INSERT INTO DeliveryStops (stop_id, origin_name, destination_name, truck_type, status, form_id)" +
                 " VALUES ('" + stopID + "', '" + origin + "', '" + destination+ "', '" + truckType + "', '" + status + "', '" + formID + "');";
+//        String query2 = "INSERT INTO Items (form_id, item_name, quantity)" +
+//                " VALUES ('" + formID + "', '" + itemName + "', '" + quantity+  "');";
         try {
-            conn.executeUpdate(query);
+            conn.executeUpdate(query1);
+           for(Map.Entry<String,Integer> item : items.entrySet()) {
+               String itemName = item.getKey();
+               int quantity = item.getValue();
+
+               String query2 = "INSERT INTO Items (form_id, item_name, quantity)" +
+                       " VALUES ('" + formID + "', '" + itemName + "', '" + quantity + "');";
+               conn.executeUpdate(query2);
+           }
+
             return true;
         }
         catch (SQLException exception) {
