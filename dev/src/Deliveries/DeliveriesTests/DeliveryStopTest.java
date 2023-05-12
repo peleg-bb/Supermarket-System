@@ -1,7 +1,7 @@
 package Deliveries.DeliveriesTests;
 
 import Deliveries.BusinessLayer.DeliveryStop;
-import Deliveries.BusinessLayer.DeliveryStopGenerator;
+import Deliveries.BusinessLayer.Generators.DeliveryStopGenerator;
 import Deliveries.BusinessLayer.Site;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

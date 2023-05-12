@@ -1,5 +1,6 @@
-package Deliveries.BusinessLayer;
+package Deliveries.BusinessLayer.Generators;
 
+import Deliveries.BusinessLayer.Site;
 import Deliveries.DataAccessLayer.SiteDAO;
 
 import java.util.ArrayList;

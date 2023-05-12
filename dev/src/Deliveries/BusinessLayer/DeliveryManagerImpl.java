@@ -4,6 +4,7 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryManager;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanner;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import Deliveries.BusinessLayer.Generators.DeliveryStopGenerator;
 import Deliveries.PresentationLayer.UserInteractionUtil;
 
 import java.util.*;
@@ -62,6 +63,7 @@ public class DeliveryManagerImpl implements DeliveryManager {
         for(Map.Entry<Integer,List<DeliveryStop>> entries: originToZones.entrySet()){
             try {
                 deliveryFormsController.createForm(entries.getValue(), entries.getValue().get(0).getOrigin());
+                entries.getValue().forEach(pendingDeliveryStops::remove); // removes the added stops from the pending list
                 // might be a bit messy, couldn't think of a better way to get the origin
             } catch (DeliveryException e) {
                 // Notify UI
@@ -69,7 +71,6 @@ public class DeliveryManagerImpl implements DeliveryManager {
                 System.out.println("Delivery group creation failed for origin " + entries.getValue().get(0).getOrigin());
             }
         }
-        pendingDeliveryStops.clear();
     }
 
 

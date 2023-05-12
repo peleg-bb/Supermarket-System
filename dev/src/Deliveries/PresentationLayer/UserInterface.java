@@ -2,6 +2,7 @@ package Deliveries.PresentationLayer;
 
 import Deliveries.BusinessLayer.*;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import Deliveries.BusinessLayer.Generators.SiteGenerator;
 
 import java.util.HashMap;
 import java.util.List;
