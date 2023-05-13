@@ -1,6 +1,7 @@
 package Deliveries.BusinessLayer;
 
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Generators.StoreAvailabilityChecker;
 import Deliveries.DataAccessLayer.DeliveryFormDAO;
@@ -8,6 +9,7 @@ import HR_Deliveries_Interface.DeliveryIntegrator;
 import HR_Deliveries_Interface.HRIntegrator;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,10 +34,21 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         truckController = TruckController.getInstance();
         driverController = DriverController.getInstance();
         deliveryFormDAO = new DeliveryFormDAO();
-        pendingDeliveryForms.addAll(deliveryFormDAO.loadData());
         TESTING_MODE = false;
         storeAvailabilityChecker = new StoreAvailabilityChecker();
-        // TODO: Implement properly
+        // DO NOT load data here - causes infinite loop
+    }
+
+    public void loadFormsData() {
+        List<DeliveryForm> deliveryForms = new ArrayList<>(deliveryFormDAO.loadData());
+        for (DeliveryForm deliveryForm : deliveryForms) {
+            if (deliveryForm.getStatus() == DeliveryStatus.NOT_STARTED) {
+                pendingDeliveryForms.add(deliveryForm);
+            }
+            else if (deliveryForm.getStatus() == DeliveryStatus.DELIVERED){
+                completedDeliveryForms.add(deliveryForm);
+            }
+        }
 
     }
 
@@ -80,6 +93,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     public void terminateDeliveryForm(DeliveryForm deliveryForm) {
         pendingDeliveryForms.remove(deliveryForm);
         completedDeliveryForms.add(deliveryForm);
+        deliveryFormDAO.setStatus(deliveryForm.getFormId(), DeliveryStatus.DELIVERED);
     }
 
     public DeliveryForm getDeliveryForm(int id) {

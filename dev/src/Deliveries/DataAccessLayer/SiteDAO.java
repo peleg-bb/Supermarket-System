@@ -54,7 +54,6 @@ public class SiteDAO {
         String contactName = (String) siteDetails.get("contact_name");
         String contactPhone = (String) siteDetails.get("contact_phone");
         int deliveryZone = (Integer) siteDetails.get("delivery_zone");
-
         return new Site(name, address, contactName, contactPhone,deliveryZone);
     }
 

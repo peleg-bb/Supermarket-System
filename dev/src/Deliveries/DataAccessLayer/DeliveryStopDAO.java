@@ -15,10 +15,11 @@ public class DeliveryStopDAO {
         conn = Connect.getInstance();
     }
 
-    public Set<DeliveryStop> loadData() {
-        Set<DeliveryStop> stops = new HashSet<>();
+    public List<DeliveryStop> loadPendingStops() {
+        List<DeliveryStop> stops = new ArrayList<>();
         try {
-            List<HashMap<String, Object>> stopDetails = conn.executeQuery("SELECT * FROM DeliveryStops");
+            List<HashMap<String, Object>> stopDetails = conn.executeQuery("SELECT * FROM DeliveryStops " +
+                    "WHERE status = 'NOT_STARTED';");
             for (HashMap<String, Object> stopRecord : stopDetails) {
                 DeliveryStop stop = getStop(stopRecord);
                 stops.add(stop);
@@ -64,8 +65,9 @@ public class DeliveryStopDAO {
         }
     }
 
-    public boolean updateStatus(int stopId, DeliveryStatus status) {
-        String query = "UPDATE DeliveryStops SET status = '" + status.toString() + "' WHERE stop_id = '" + stopId + "';";
+    public boolean updateStatus(int stopId, DeliveryStatus deliveryStatus) {
+        String status = deliveryStatus == DeliveryStatus.DELIVERED ? "DELIVERED" : "NOT_STARTED";
+        String query = "UPDATE DeliveryStops SET status = '" + status + "' WHERE stop_id = '" + stopId + "';";
         try {
             conn.executeUpdate(query);
             return true;
@@ -100,12 +102,12 @@ public class DeliveryStopDAO {
             List<HashMap<String, Object>> itemDetails = conn.executeQuery("SELECT * FROM Items Where stop_id =" + stopID );
             for (HashMap<String, Object> itemRecord : itemDetails) {
                 String itemName =  (String) itemRecord.get("item_name");
-                int quantity = (Integer) itemRecord.get("origin_name");
+                int quantity = (Integer) itemRecord.get("quantity");
                 items.put(itemName,quantity);
             }
         }
         catch (Exception e){
-            return null;
+            throw new RuntimeException(e);
         }
             return new DeliveryStop(stopID, items,originSite,destinationSite,truckType);
         }
@@ -121,6 +123,23 @@ public class DeliveryStopDAO {
     }
 
 
+    public int getCount() {
+        try {
+            List<HashMap<String, Object>> count = conn.executeQuery("SELECT COUNT(*) FROM DeliveryStops;");
+            return (Integer) count.get(0).get("COUNT(*)");
+        } catch (SQLException exception) {
+            return 0;
+        }
 
+    }
+
+    public int getMaxID() {
+        try {
+            List<HashMap<String, Object>> maxID = conn.executeQuery("SELECT MAX(stop_id) FROM DeliveryStops;");
+            return (Integer) maxID.get(0).get("MAX(stop_id)");
+        } catch (SQLException exception) {
+            return 0;
+        }
+    }
 }
 

@@ -27,10 +27,14 @@ public class DeliveryForm {
     private int dispatchWeightTons; // Weight of the truck when it leaves the origin site
     private HRIntegrator hrManager;
 
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime) throws DeliveryException {
+    private DeliveryStatus status;
+
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime) throws
+            DeliveryException {
         this.formId = formId;
         this.destinationSitesToVisit = stops;
         this.destinationSitesVisited = new ArrayList<>();
+        this.status = DeliveryStatus.NOT_STARTED;
         this.dispatchTime = dispatchTime;
         this.originSite = originSite;
         this.weightMeasurer = new UserInteractionUtil();
@@ -39,13 +43,31 @@ public class DeliveryForm {
         hrManager = ShiftController.getInstance();
         updateArrivalTimes();
         updateFormIDinStops();
+    }
 
+    /*
+    * This constructor is used when a delivery form is loaded from the database
+    */
+    public DeliveryForm(int formId, List<DeliveryStop> stopsToVisit,List<DeliveryStop> stopsVisited,
+                        Site originSite, Timestamp dispatchTime, DeliveryStatus status) throws DeliveryException {
+        this.formId = formId;
+        this.destinationSitesToVisit = stopsToVisit;
+        this.destinationSitesVisited = stopsVisited;
+        this.dispatchTime = dispatchTime;
+        this.originSite = originSite;
+        this.weightMeasurer = new UserInteractionUtil();
+        deliveryManager = DeliveryManagerImpl.getInstance();
+        deliveryFormsController = DeliveryFormsController.getInstance();
+        hrManager = ShiftController.getInstance();
+        updateArrivalTimes();
+        setVisitedStopsArrivalTimes();
     }
 
     /*
     To be used for testing purposes only
      */
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime, HRIntegrator hr) throws DeliveryException{
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime, HRIntegrator hr)
+            throws DeliveryException {
         this.formId = formId;
         this.destinationSitesToVisit = stops;
         this.destinationSitesVisited = new ArrayList<>();
@@ -56,7 +78,7 @@ public class DeliveryForm {
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = hr;
         updateArrivalTimes();
-        updateFormIDinStops();
+        //updateFormIDinStops();  // do we actually want to persist if it's a test?
     }
 
     private void updateFormIDinStops() {
@@ -79,7 +101,7 @@ public class DeliveryForm {
             return; // Already visited or cancelled
         }
 
-        deliveryStop.setStatus(DeliveryStatus.DELIVERED);
+        deliveryStop.setStatus(DeliveryStatus.DELIVERED); // update status (also in DB)
         destinationSitesVisited.add(deliveryStop);
         performWeightCheck();
     }
@@ -228,6 +250,12 @@ public class DeliveryForm {
         }
     }
 
+    private void setVisitedStopsArrivalTimes() throws DeliveryException {
+        for (DeliveryStop stop : destinationSitesVisited) {
+            stop.updateArrivalTime(dispatchTime);
+        }
+    }
+
     public List<DeliveryStop> getStopsByTime(Timestamp startTime, Timestamp finishTime, String siteName){
         List<DeliveryStop> stops = new ArrayList<>();
         for (DeliveryStop stop : destinationSitesToVisit) {
@@ -265,6 +293,15 @@ public class DeliveryForm {
             }
         }
         return lastStop;
+    }
+
+    private void setStatus(DeliveryStatus status) {
+        this.status = status;
+        // TODO: notify DB
+    }
+
+    public DeliveryStatus getStatus() {
+        return status;
     }
 
 }

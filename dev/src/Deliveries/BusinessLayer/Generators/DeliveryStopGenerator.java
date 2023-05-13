@@ -26,15 +26,15 @@ public class DeliveryStopGenerator {
 
     /**
      * Generates a list of delivery stops
-     * @param startingIndex The index of the first delivery stop to be generated
      * @param size The number of delivery stops to be generated
      * @return A list of delivery stops
      */
-    public List<DeliveryStop> getDeliveryStops(int startingIndex, int size) {
+    public List<DeliveryStop> getPendingDeliveryStops(int size) {
         DeliveryStopDAO deliveryStopDAO = new DeliveryStopDAO();
-        List<DeliveryStop> deliveryStops = new java.util.ArrayList<>(deliveryStopDAO.loadData().stream().toList());
+        List<DeliveryStop> deliveryStops = new ArrayList<>(deliveryStopDAO.loadPendingStops());
+        int nextDeliveryStopID = deliveryStopDAO.getMaxID() + 1;
         if (deliveryStops.size() < size) {
-            for (int i = startingIndex; i < startingIndex + size; i++) {
+            for (int i = nextDeliveryStopID; i < nextDeliveryStopID + size; i++) {
                 DeliveryStop deliveryStop = generateDeliveryStop(i);
                 deliveryStopDAO.addStop(deliveryStop);
                 deliveryStops.add(deliveryStop);

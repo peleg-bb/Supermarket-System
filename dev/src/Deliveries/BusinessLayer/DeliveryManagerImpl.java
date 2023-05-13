@@ -5,6 +5,7 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryManager;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanner;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Generators.DeliveryStopGenerator;
+import Deliveries.DataAccessLayer.DeliveryStopDAO;
 import Deliveries.PresentationLayer.UserInteractionUtil;
 
 import java.util.*;
@@ -19,16 +20,19 @@ public class DeliveryManagerImpl implements DeliveryManager {
     private TripReplanner tripReplanner;
     private int deliveryCount;
     private static DeliveryManagerImpl instance = null;
+    private DeliveryStopDAO deliveryStopDAO;
     // Singleton Constructor
    private DeliveryManagerImpl() {
-            deliveryCount = 0;
             pendingDeliveryStops = new HashSet<>();
             truckController = TruckController.getInstance();
             driverController = DriverController.getInstance();
             deliveryFormsController = DeliveryFormsController.getInstance();
             tripReplanner = new UserInteractionUtil();
             DeliveryStopGenerator deliveryStopGenerator = new DeliveryStopGenerator();
-            pendingDeliveryStops.addAll(deliveryStopGenerator.getDeliveryStops(deliveryCount, PENDING_SIZE));
+            pendingDeliveryStops.addAll(deliveryStopGenerator.getPendingDeliveryStops(PENDING_SIZE));
+            deliveryStopDAO = new DeliveryStopDAO();
+            deliveryCount = deliveryStopDAO.getCount();
+            // shouldn't add all to the pending list, the completed stops should be added their forms
     }
 
     public static DeliveryManagerImpl getInstance() {

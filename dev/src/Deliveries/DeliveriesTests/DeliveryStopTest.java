@@ -36,7 +36,7 @@ class DeliveryStopTest {
     @Test
     void testToString() {
         DeliveryStopGenerator deliveryStopGenerator = new DeliveryStopGenerator();
-        List<DeliveryStop> deliveryStop = deliveryStopGenerator.getDeliveryStops(0, 30);
+        List<DeliveryStop> deliveryStop = deliveryStopGenerator.getPendingDeliveryStops(30);
         System.out.println(deliveryStop);
     }
 

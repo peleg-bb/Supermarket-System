@@ -69,7 +69,6 @@ public class DeliveryStop {
         this.status = DeliveryStatus.NOT_STARTED;
         deliveryStopDAO = new DeliveryStopDAO();
         this.formID = -1;
-
     }
 
     public DeliveryStop(boolean TestEnvironment, Site origin, Site destination) throws Exception {

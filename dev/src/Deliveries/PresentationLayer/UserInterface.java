@@ -19,6 +19,7 @@ public class UserInterface {
         List<Site> sitesList = siteGenerator.getSitesList();
         DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
         DeliveryFormsController deliveryFormsController = deliveryManager.getDeliveryFormsController();
+        deliveryFormsController.loadFormsData();
         System.out.println("Welcome to the delivery manager!");
         System.out.println("The following sites were auto generated and can be used for this demo: ");
         for (Site site : sitesList) {
