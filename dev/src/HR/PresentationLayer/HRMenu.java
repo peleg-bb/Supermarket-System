@@ -1445,9 +1445,11 @@ public class HRMenu {
     public void add_availability(String store, LocalDate week_start, LocalDate week_end) {
         Random random = new Random();
         ShiftType[] all_shifts = ShiftType.values();
+        int count = 0;
         for (int i = week_start.getDayOfMonth(); i < week_end.getDayOfMonth(); i++) {
             int index = random.nextInt(all_shifts.length);
-            service.add_availability(week_start.plusDays(i), all_shifts[index], store);
+            service.add_availability(week_start.plusDays(count), all_shifts[index], store);
+            count++;
         }
     }
 
