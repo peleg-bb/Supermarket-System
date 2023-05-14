@@ -62,16 +62,18 @@ public class DeliveryManagerImpl implements DeliveryManager {
 
     //maybe private
     public void createDeliveryGroup(){
-        HashMap<Integer,List<DeliveryStop>> originToZones = createDeliveryLists(pendingDeliveryStops);
-        for(Map.Entry<Integer,List<DeliveryStop>> entries: originToZones.entrySet()){
-            try {
-                deliveryFormsController.createForm(entries.getValue(), entries.getValue().get(0).getOrigin());
-                entries.getValue().forEach(pendingDeliveryStops::remove); // removes the added stops from the pending list
-                // might be a bit messy, couldn't think of a better way to get the origin
-            } catch (DeliveryException e) {
-                // Notify UI
-                System.out.println(e.getMessage());
-                System.out.println("Delivery group creation failed for origin " + entries.getValue().get(0).getOrigin());
+        List<HashMap<Site,List<DeliveryStop>>> originToZones = createDeliveryLists(pendingDeliveryStops);
+        for(HashMap<Site,List<DeliveryStop>> siteToStopsSortedByOrigin: originToZones) {
+
+            for (Map.Entry<Site, List<DeliveryStop>> entries : siteToStopsSortedByOrigin.entrySet()) {
+                try {
+                    deliveryFormsController.createForm(entries.getValue(), entries.getKey());
+                    entries.getValue().forEach(pendingDeliveryStops::remove); // removes the added stops from the pending list
+                } catch (DeliveryException e) {
+                    // Notify UI
+                    System.out.println(e.getMessage());
+                    System.out.println("Delivery group creation failed for origin " + entries.getValue().get(0).getOrigin());
+                }
             }
         }
     }
@@ -141,14 +143,16 @@ public class DeliveryManagerImpl implements DeliveryManager {
         return deliveryZonesSorted;
     }
 
-    public HashMap<Integer,List<DeliveryStop>> createDeliveryLists(Set<DeliveryStop> pendingDeliveryStops){
-        HashMap<Integer,List<DeliveryStop>> originToSortedByZones = new HashMap<>();
+    public List<HashMap<Site,List<DeliveryStop>>> createDeliveryLists(Set<DeliveryStop> pendingDeliveryStops){
+        List<HashMap<Site,List<DeliveryStop>>> originToSortedByZones = new ArrayList<>();
         HashMap<Site,List<DeliveryStop>> originSorted = sortStopsByOrigin(pendingDeliveryStops);
         for(Map.Entry<Site,List<DeliveryStop>> originsStops: originSorted.entrySet()){
             List<DeliveryStop> stops = originsStops.getValue();
             HashMap<Integer,List<DeliveryStop>> zoneSorted = sortByDeliveryZones(stops);
             for (Map.Entry<Integer,List<DeliveryStop>> entries: zoneSorted.entrySet()) {
-                originToSortedByZones.put(entries.getKey(),entries.getValue());
+                HashMap<Site,List<DeliveryStop>> newList = new HashMap<>();
+                newList.put(originsStops.getKey(),entries.getValue());
+                originToSortedByZones.add(newList);
             }
         }
         return originToSortedByZones;

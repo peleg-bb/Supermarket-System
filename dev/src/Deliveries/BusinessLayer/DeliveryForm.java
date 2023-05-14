@@ -49,7 +49,8 @@ public class DeliveryForm {
     * This constructor is used when a delivery form is loaded from the database
     */
     public DeliveryForm(int formId, List<DeliveryStop> stopsToVisit,List<DeliveryStop> stopsVisited,
-                        Site originSite, Timestamp dispatchTime, DeliveryStatus status) throws DeliveryException {
+                        Site originSite, Timestamp dispatchTime, DeliveryStatus status)
+            throws DeliveryException {
         this.formId = formId;
         this.destinationSitesToVisit = stopsToVisit;
         this.destinationSitesVisited = stopsVisited;
@@ -61,6 +62,7 @@ public class DeliveryForm {
         hrManager = ShiftController.getInstance();
         updateArrivalTimes();
         setVisitedStopsArrivalTimes();
+        this.status = status;
     }
 
     /*
@@ -103,6 +105,7 @@ public class DeliveryForm {
 
         deliveryStop.setStatus(DeliveryStatus.DELIVERED); // update status (also in DB)
         destinationSitesVisited.add(deliveryStop);
+        destinationSitesToVisit.remove(deliveryStop); //???????????????????????
         performWeightCheck();
     }
 
@@ -240,17 +243,18 @@ public class DeliveryForm {
         this.driver = newDriver;
     }
 
-    private void updateArrivalTimes() throws DeliveryException {
+    private void updateArrivalTimes()  {
         for (DeliveryStop stop : destinationSitesToVisit) {
             stop.updateArrivalTime(dispatchTime);
             if (!hrManager.checkStoreAvailability(stop.getDestination().getName(), stop.getEstimatedArrivalTime())) {
                 // TODO: decide what to do if the site is not available
-                throw new DeliveryException("destination site is not available at the estimated arrival time");
+                //throw new DeliveryException("destination site is not available at the estimated arrival time");
+                System.out.println(stop.getDestination().getName()+" - destination site is not available at the estimated arrival time");
             }
         }
     }
 
-    private void setVisitedStopsArrivalTimes() throws DeliveryException {
+    private void setVisitedStopsArrivalTimes()  {
         for (DeliveryStop stop : destinationSitesVisited) {
             stop.updateArrivalTime(dispatchTime);
         }
