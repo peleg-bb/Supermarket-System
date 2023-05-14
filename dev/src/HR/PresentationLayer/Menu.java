@@ -17,7 +17,7 @@ public class Menu {
     public static void main(String[] args) throws SQLException {
         //Connect.getInstance().deleteRecordsOfTables();
         Menu m = new Menu();
-        m.load_data_example();
+        //m.load_data_example();
         m.run();
     }
 }

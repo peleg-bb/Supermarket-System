@@ -1358,7 +1358,7 @@ public class HRMenu {
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Eilat", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "drivers", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
 
-        generateEmployees(100);
+        generateEmployees(150);
         generateDrivers(100);
         assign_employees();
     }
