@@ -42,10 +42,10 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     public void loadFormsData() {
         List<DeliveryForm> deliveryForms = new ArrayList<>(deliveryFormDAO.loadData());
         for (DeliveryForm deliveryForm : deliveryForms) {
-            if (deliveryForm.getStatus() == DeliveryStatus.NOT_STARTED) {
+            if (deliveryForm.getStatus().equals(DeliveryStatus.NOT_STARTED)) {
                 pendingDeliveryForms.add(deliveryForm);
             }
-            else if (deliveryForm.getStatus() == DeliveryStatus.DELIVERED){
+            else if (deliveryForm.getStatus().equals(DeliveryStatus.DELIVERED)){
                 completedDeliveryForms.add(deliveryForm);
             }
         }

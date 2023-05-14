@@ -61,6 +61,7 @@ public class DeliveryForm {
         hrManager = ShiftController.getInstance();
         updateArrivalTimes();
         setVisitedStopsArrivalTimes();
+        this.status = status;
     }
 
     /*
