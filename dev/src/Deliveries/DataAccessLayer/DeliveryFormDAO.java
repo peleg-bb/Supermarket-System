@@ -86,12 +86,13 @@ public class DeliveryFormDAO {
             throw new RuntimeException(e);
         }
 
-        DeliveryForm deliveryForm;
+        DeliveryForm deliveryForm = null;
         try {
             deliveryForm = new DeliveryForm(id, unvisitedDestinations, visitedDestinations, originSite,
                     dispatchTime, status);
         } catch (DeliveryException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
         return deliveryForm;
     }
