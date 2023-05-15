@@ -85,7 +85,7 @@ public class UserInterface {
 
     private static void executeDeliveries(Scanner scanner, DeliveryManagerImpl deliveryManager, DeliveryFormsController deliveryFormsController) {
         deliveryManager.createDeliveryGroup();
-        if (!deliveryManager.getPendingDeliveryStops().iterator().hasNext()) {
+        if (!deliveryManager.getDeliveryFormsController().getPendingDeliveryForms().iterator().hasNext()) {
             System.out.println("Couldn't create delivery groups due to an illegal combination of delivery stops");
             return;
         }

@@ -29,8 +29,9 @@ public class DeliveryForm {
 
     private DeliveryStatus status;
 
-    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite, Timestamp dispatchTime) throws
-            DeliveryException {
+
+    public DeliveryForm(int formId, List<DeliveryStop> stops, Site originSite,
+                        Timestamp dispatchTime) throws DeliveryException {
         this.formId = formId;
         this.destinationSitesToVisit = stops;
         this.destinationSitesVisited = new ArrayList<>();
@@ -43,13 +44,15 @@ public class DeliveryForm {
         hrManager = ShiftController.getInstance();
         updateArrivalTimes();
         updateFormIDinStops();
+//        this.driver = driver;
+//        this.truck = truck;
     }
 
     /*
     * This constructor is used when a delivery form is loaded from the database
     */
     public DeliveryForm(int formId, List<DeliveryStop> stopsToVisit,List<DeliveryStop> stopsVisited,
-                        Site originSite, Timestamp dispatchTime, DeliveryStatus status)
+                        Site originSite, Timestamp dispatchTime, DeliveryStatus status, Driver driver, Truck truck)
             throws DeliveryException {
         this.formId = formId;
         this.destinationSitesToVisit = stopsToVisit;
@@ -63,6 +66,8 @@ public class DeliveryForm {
         updateArrivalTimes();
         setVisitedStopsArrivalTimes();
         this.status = status;
+        this.truck = truck;
+        this.driver = driver;
     }
 
     /*
@@ -105,7 +110,7 @@ public class DeliveryForm {
 
         deliveryStop.setStatus(DeliveryStatus.DELIVERED); // update status (also in DB)
         destinationSitesVisited.add(deliveryStop);
-        destinationSitesToVisit.remove(deliveryStop); //???????????????????????
+        //destinationSitesToVisit.remove(deliveryStop); //???????????????????????
         performWeightCheck();
     }
 
@@ -187,7 +192,9 @@ public class DeliveryForm {
             if (currentStop.getStatus() == DeliveryStatus.DELIVERED ||
                     currentStop.equals(stopToCancel) ||
                     currentStop.getStatus() == DeliveryStatus.CANCELLED) {
-                iterator.remove();
+                if(iterator.hasNext()) { //TODO:did it to fix a bug - need to check it
+                    iterator.remove();
+                }
                 // Needs testing
             }
         }

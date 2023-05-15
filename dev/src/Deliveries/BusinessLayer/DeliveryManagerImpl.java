@@ -1,9 +1,6 @@
 package Deliveries.BusinessLayer;
 
-import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryManager;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanner;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.*;
 import Deliveries.BusinessLayer.Generators.DeliveryStopGenerator;
 import Deliveries.DataAccessLayer.DeliveryStopDAO;
 import Deliveries.PresentationLayer.UserInteractionUtil;
@@ -12,7 +9,7 @@ import java.util.*;
 
 
 public class DeliveryManagerImpl implements DeliveryManager {
-    public static final int PENDING_SIZE = 15;
+    public static final int PENDING_SIZE = 10;
     private final TruckController truckController;
     private final DriverController driverController;
     private Set<DeliveryStop> pendingDeliveryStops;
@@ -69,6 +66,10 @@ public class DeliveryManagerImpl implements DeliveryManager {
                 try {
                     deliveryFormsController.createForm(entries.getValue(), entries.getKey());
                     entries.getValue().forEach(pendingDeliveryStops::remove); // removes the added stops from the pending list
+//                    for(DeliveryStop stop : entries.getValue()){
+//                        pendingDeliveryStops.remove(stop);
+//                        deliveryStopDAO.updateStatus(stop.getShipmentInstanceID(), DeliveryStatus.DELIVERED);
+//                    }
                 } catch (DeliveryException e) {
                     // Notify UI
                     System.out.println(e.getMessage());

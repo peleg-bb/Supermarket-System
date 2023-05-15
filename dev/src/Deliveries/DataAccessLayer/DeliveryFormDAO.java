@@ -1,11 +1,9 @@
 package Deliveries.DataAccessLayer;
 
-import Deliveries.BusinessLayer.DeliveryForm;
-import Deliveries.BusinessLayer.DeliveryStop;
+import Deliveries.BusinessLayer.*;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
-import Deliveries.BusinessLayer.Site;
 import HR.DataAccessLayer.Connect;
 
 import java.sql.SQLException;
@@ -42,8 +40,10 @@ public class DeliveryFormDAO {
     private DeliveryForm getDeliveryForm(HashMap<String, Object> deliveryFormRecord) {
         String ID = (String) deliveryFormRecord.get("form_id");
         int id = Integer.parseInt(ID);
-//        String driverId = (String) deliveryFormRecord.get("driver_id");
-//        String truckId = (String) deliveryFormRecord.get("truck_id");
+        String driverId = (String) deliveryFormRecord.get("driver_id");
+        Driver driver = getDriver(driverId);
+        String truckId = (String) deliveryFormRecord.get("truck_id");
+        Truck truck = getTruck(truckId);
         Timestamp dispatchTime = Timestamp.valueOf((String) deliveryFormRecord.get("dispatch_time"));
 //        Timestamp terminationTime = (Timestamp) deliveryFormRecord.get("termination_time"); // unnecessary
         String formStatus = (String) deliveryFormRecord.get("status");
@@ -89,7 +89,7 @@ public class DeliveryFormDAO {
         DeliveryForm deliveryForm = null;
         try {
             deliveryForm = new DeliveryForm(id, unvisitedDestinations, visitedDestinations, originSite,
-                    dispatchTime, status);
+                    dispatchTime, status,driver,truck);
         } catch (DeliveryException e) {
             //throw new RuntimeException(e);
             System.out.println(e.getMessage());
@@ -135,5 +135,43 @@ public class DeliveryFormDAO {
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    public Driver getDriver(String driverID){
+        String query = "SELECT * FROM Drivers WHERE driver_id="+driverID;
+        String query2 = "SELECT * FROM DriverLicenses WHERE driver_id="+driverID;
+        try{
+            List<HashMap<String, Object>> driverDetails = conn.executeQuery(query);
+            String name = (String) driverDetails.get(0).get("driver_name");
+            String phone = (String) driverDetails.get(0).get("phone");
+            //license
+            List<HashMap<String, Object>> licenseDetails = conn.executeQuery(query2);
+            int weightAllowed = Integer.parseInt(licenseDetails.get(0).get("weight_allowed_tons").toString());
+            Integer regularAllowed = (Integer) licenseDetails.get(0).get("regular_allowed");
+            Integer refrigeratedAllowed = (Integer) licenseDetails.get(0).get("refrigerated_allowed");
+            License license = new License(weightAllowed, regularAllowed, refrigeratedAllowed);
+            return new Driver(name,driverID,phone,license);
+
+        }
+        catch (SQLException e){
+            return null;
+        }
+    }
+
+    public Truck getTruck(String truckID){
+        String query = "SELECT * FROM Trucks WHERE truck_id="+truckID;
+        try{
+            List<HashMap<String, Object>> truckDetails = conn.executeQuery(query);
+            String model = (String) truckDetails.get(0).get("model");
+            TruckType truckType = (TruckType) truckDetails.get(0).get("truck_type");
+            int maxWeightTons = (Integer) truckDetails.get(0).get("max_weight_tons");
+            int netWeightTons = (Integer) truckDetails.get(0).get("net_weight_tons");
+            return new Truck(model,truckID,truckType,maxWeightTons,netWeightTons);
+
+        }
+        catch (SQLException e){
+            return null;
+        }
+
     }
 }
