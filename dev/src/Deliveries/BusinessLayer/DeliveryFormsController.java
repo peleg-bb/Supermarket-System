@@ -49,6 +49,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
                 completedDeliveryForms.add(deliveryForm);
             }
         }
+        deliveryFormCount = deliveryFormDAO.getNextId();
 
     }
 
