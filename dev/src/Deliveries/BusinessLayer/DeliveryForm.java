@@ -186,6 +186,11 @@ public class DeliveryForm {
         // visit the stops in the order they were added
         performWeightCheck();
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
+
+//        if(!iterator.hasNext()){
+//            iterator.next();
+//        }
+
         while(iterator.hasNext()){
             DeliveryStop currentStop = iterator.next();
             visitDeliveryStop(currentStop);
