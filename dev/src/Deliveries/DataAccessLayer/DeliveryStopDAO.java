@@ -137,7 +137,7 @@ public class DeliveryStopDAO {
         try {
             List<HashMap<String, Object>> maxID = conn.executeQuery("SELECT MAX(stop_id) FROM DeliveryStops;");
             return (Integer) maxID.get(0).get("MAX(stop_id)");
-        } catch (SQLException exception) {
+        } catch (Exception exception) {
             return 0;
         }
     }

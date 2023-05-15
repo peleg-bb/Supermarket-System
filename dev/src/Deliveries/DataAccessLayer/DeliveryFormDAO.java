@@ -136,4 +136,14 @@ public class DeliveryFormDAO {
             throw new RuntimeException(exception);
         }
     }
+
+    public int getNextId() {
+        try {
+            List<HashMap<String, Object>> deliveryFormDetails =
+                    conn.executeQuery("SELECT MAX(form_id) FROM DeliveryForms" );
+            return Integer.parseInt((String) deliveryFormDetails.get(0).get("MAX(form_id)")) + 1;
+        } catch (Exception exception) {
+            return 0;
+        }
+    }
 }
