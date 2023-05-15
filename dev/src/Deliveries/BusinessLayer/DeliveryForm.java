@@ -110,7 +110,6 @@ public class DeliveryForm {
 
         deliveryStop.setStatus(DeliveryStatus.DELIVERED); // update status (also in DB)
         destinationSitesVisited.add(deliveryStop);
-        //destinationSitesToVisit.remove(deliveryStop); //???????????????????????
         performWeightCheck();
     }
 
@@ -184,12 +183,16 @@ public class DeliveryForm {
 
     public void startJourney(){
         // visit the stops in the order they were added
-        performWeightCheck();
+       // performWeightCheck();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Leaving" + originSite + "- what's the current weight of the truck?");
+        while (!scanner.hasNextInt()) {
+            System.out.println("Enter truck weight: ");
+            scanner.next();
+        }
+
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
 
-//        if(!iterator.hasNext()){
-//            iterator.next();
-//        }
 
         while(iterator.hasNext()){
             DeliveryStop currentStop = iterator.next();
