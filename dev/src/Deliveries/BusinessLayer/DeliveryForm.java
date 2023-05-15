@@ -185,7 +185,7 @@ public class DeliveryForm {
         // visit the stops in the order they were added
        // performWeightCheck();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Leaving" + originSite + "- what's the current weight of the truck?");
+        System.out.println("Leaving " + originSite + "- what's the current weight of the truck?");
         while (!scanner.hasNextInt()) {
             System.out.println("Enter truck weight: ");
             scanner.next();
