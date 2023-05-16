@@ -43,7 +43,7 @@ public class DeliveryForm {
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
         updateArrivalTimes();
-        updateFormIDinStops();
+        //updateFormIDinStops();
 //        this.driver = driver;
 //        this.truck = truck;
     }
