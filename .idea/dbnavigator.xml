@@ -13,7 +13,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="a704a75a-f28b-41c1-a3a5-9035a3004bf6">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[delete from Drivers]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[delete from "DeliveryStops"]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
