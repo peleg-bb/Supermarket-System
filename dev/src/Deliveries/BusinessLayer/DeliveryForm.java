@@ -302,6 +302,9 @@ public class DeliveryForm {
 
     public Timestamp getEstimatedTerminationTime() {
         // Returns the estimated arrival time of the last stop
+        if (destinationSitesToVisit.isEmpty()) {
+            return dispatchTime;
+        }
         Timestamp lastStop = destinationSitesToVisit.get(0).getEstimatedArrivalTime();
         for (DeliveryStop stop : destinationSitesToVisit) {
             if (stop.getEstimatedArrivalTime().after(lastStop)) {

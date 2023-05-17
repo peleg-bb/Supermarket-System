@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -50,11 +51,12 @@ class DriverControllerTest {
 // driverController.generateFleet(1);
         List<String> driverIds = driverController.getDriverIds();
         when(hrManager.getAvailableDrivers(startTime, endTime)).thenReturn(driverIds);
+        when(hrManager.assignDrivers(any(), any(), any())).thenReturn(true);
         try {
             Driver driver = driverController.pickDriver(truck1, startTime, endTime);
             assertTrue(driver.isLicensed(truck1));
         } catch (DeliveryException e) {
-            throw new RuntimeException(e);
+            fail();
         }
     }
 

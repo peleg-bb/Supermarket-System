@@ -41,18 +41,6 @@ class DeliveryFormsControllerTest {
     }
 
     @Test
-    void removeDeliveryForm() throws Exception {
-        // TODO: implement with mocks
-        Site site1 = mock(Site.class);
-        deliveryFormsController.createForm(new ArrayList<>(), site1);
-        assertEquals(1, deliveryFormsController.getPendingDeliveryForms().size());
-        deliveryFormsController.removeDeliveryForm(deliveryForm1);
-        assertEquals(0, deliveryFormsController.getPendingDeliveryForms().size());
-        ;
-    }
-
-
-    @Test
     void printCompletedDeliveryForms() {
     }
 

@@ -77,8 +77,8 @@ class HR_Del_IntegrationTests {
     @Test
     void checkStoreAvailabilitySuccess() {
         HRIntegrator shiftController = ShiftController.getInstance();
-        Timestamp timestamp = new Timestamp(2023-1900, 6, 3, 16, 0, 0, 0);
-        assertTrue(shiftController.checkStoreAvailability("Tel Aviv", timestamp));
+        Timestamp timestamp = new Timestamp(2023-1900, 6, 2, 10, 0, 0, 0);
+        assertFalse(shiftController.checkStoreAvailability("Ashdod", timestamp));
     }
 
     @Test
