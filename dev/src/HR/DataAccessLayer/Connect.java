@@ -131,6 +131,89 @@ public class Connect {
                     " ON DELETE CASCADE" +
                     ")";
             statement.execute(query);
+            query = """
+                    CREATE TABLE IF NOT EXISTS "Drivers" (
+                    	"driver_id"	TEXT NOT NULL UNIQUE,
+                    	"driver_name"	TEXT NOT NULL,
+                    	"phone"	TEXT,
+                    	PRIMARY KEY("driver_id"),
+                    	FOREIGN KEY("driver_id") REFERENCES "Drivers"("driver_id")
+                    )""";
+            statement.execute(query);
+
+            query = """
+                    CREATE TABLE IF NOT EXISTS "DeliveryForms" (
+                        "form_id"	TEXT UNIQUE,
+                        "driver_id"	TEXT,
+                        "truck_license_plate"	TEXT,
+                        "dispatch_time"	TEXT,
+                        "termination_time"	TEXT,
+                        "status"	TEXT,
+                        "origin"	TEXT NOT NULL,
+                        FOREIGN KEY("truck_license_plate") REFERENCES "Trucks"("license_plate"),
+                        FOREIGN KEY("driver_id") REFERENCES "Drivers"("driver_id"),
+                        PRIMARY KEY("form_id")
+                    )""";
+            statement.execute(query);
+
+            query = """
+                    CREATE TABLE IF NOT EXISTS "DeliveryStops" (
+                    	"stop_id"	INTEGER NOT NULL,
+                    	"origin_name"	TEXT,
+                    	"destination_name"	TEXT,
+                    	"truck_type"	TEXT,
+                    	"status"	TEXT,
+                    	"form_id"	INTEGER,
+                    	FOREIGN KEY("origin_name") REFERENCES "Sites"("name"),
+                    	FOREIGN KEY("destination_name") REFERENCES "Sites"("name"),
+                    	FOREIGN KEY("form_id") REFERENCES "DeliveryForms"("form_id"),
+                    	PRIMARY KEY("stop_id")
+                    )""";
+            statement.execute(query);
+
+            query = """
+                    CREATE TABLE IF NOT EXISTS "DriverLicenses" (
+                        "driver_id"	INTEGER NOT NULL,
+                        "weight_allowed_tons"	INTEGER NOT NULL,
+                        "regular_allowed"	INTEGER NOT NULL CHECK("regular_allowed" IN (0, 1)),
+                        "refrigerated_allowed"	INTEGER NOT NULL CHECK("refrigerated_allowed" IN (0, 1)),
+                        UNIQUE("driver_id"),
+                        FOREIGN KEY("driver_id") REFERENCES "Drivers"("driver_id"),
+                        PRIMARY KEY("driver_id")
+                    )
+                    """;
+            statement.execute(query);
+
+            query = """
+                    CREATE TABLE IF NOT EXISTS "Items" (
+                    	"stop_id"	INTEGER NOT NULL,
+                    	"item_name"	TEXT NOT NULL,
+                    	"quantity"	INTEGER NOT NULL,
+                    	PRIMARY KEY("stop_id","item_name")
+                    )""";
+            statement.execute(query);
+
+            query = """
+                    CREATE TABLE IF NOT EXISTS "Sites" (
+                    	"name"	TEXT,
+                    	"address"	TEXT,
+                    	"contact_name"	TEXT,
+                    	"contact_phone"	TEXT,
+                    	"delivery_zone"	INTEGER,
+                    	PRIMARY KEY("name")
+                    )""";
+            statement.execute(query);
+
+            query = """
+                    CREATE TABLE IF NOT EXISTS "Trucks" (
+                    	"license_plate"	TEXT NOT NULL,
+                    	"max_weight_tons"	INTEGER NOT NULL,
+                    	"truck_type"	TEXT NOT NULL,
+                    	"model"	TEXT NOT NULL,
+                    	"net_weight_tons"	INTEGER NOT NULL,
+                    	PRIMARY KEY("license_plate")
+                    )""";
+            statement.execute(query);
 
         } finally {
             closeConnect();

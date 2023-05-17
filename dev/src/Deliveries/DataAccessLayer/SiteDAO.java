@@ -26,7 +26,7 @@ public class SiteDAO {
             return sites;
         }
         catch (SQLException exception) {
-            return null;
+            return sites;
         }
     }
 
