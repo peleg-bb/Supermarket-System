@@ -88,7 +88,7 @@ public class DeliveryForm {
         //updateFormIDinStops();  // do we actually want to persist if it's a test?
     }
 
-    private void updateFormIDinStops() {
+    public void updateFormIDinStops() {
         for(DeliveryStop stop : destinationSitesToVisit){
             stop.setFormID(formId);
         }

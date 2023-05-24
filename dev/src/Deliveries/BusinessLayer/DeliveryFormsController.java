@@ -134,6 +134,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
 
         deliveryForm.setDriver(driver);
         addDeliveryForm(deliveryForm);
+        deliveryForm.updateFormIDinStops();
     }
 
 
