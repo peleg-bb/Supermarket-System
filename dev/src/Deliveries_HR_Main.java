@@ -1,13 +1,7 @@
-import Deliveries.PresentationLayer.UserInterface;
-import HR.BusinessLayer.JobType;
-import HR.BusinessLayer.ShiftType;
-import HR.PresentationLayer.HRCommandParser;
-import HR.PresentationLayer.HRMenu;
+import Deliveries.PresentationLayer.CLI.CLI;
 import HR.PresentationLayer.Menu;
-import HR.ServiceLayer.Response;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Deliveries_HR_Main {
@@ -23,7 +17,7 @@ public class Deliveries_HR_Main {
                 Menu.main(args);
             }
             case "2" -> {
-                UserInterface.main(args);
+                CLI.main(args);
             }
         }
     }

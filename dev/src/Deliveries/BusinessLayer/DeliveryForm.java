@@ -4,7 +4,7 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
-import Deliveries.PresentationLayer.UserInteractionUtil;
+import Deliveries.PresentationLayer.CLI.CLIUtil;
 import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.HRIntegrator;
 
@@ -38,7 +38,7 @@ public class DeliveryForm {
         this.status = DeliveryStatus.NOT_STARTED;
         this.dispatchTime = dispatchTime;
         this.originSite = originSite;
-        this.weightMeasurer = new UserInteractionUtil();
+        this.weightMeasurer = new CLIUtil();
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
@@ -60,7 +60,7 @@ public class DeliveryForm {
         this.destinationSitesVisited = stopsVisited;
         this.dispatchTime = dispatchTime;
         this.originSite = originSite;
-        this.weightMeasurer = new UserInteractionUtil();
+        this.weightMeasurer = new CLIUtil();
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
@@ -81,7 +81,7 @@ public class DeliveryForm {
         this.destinationSitesVisited = new ArrayList<>();
         this.dispatchTime = dispatchTime;
         this.originSite = originSite;
-        this.weightMeasurer = new UserInteractionUtil();
+        this.weightMeasurer = new CLIUtil();
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = hr;

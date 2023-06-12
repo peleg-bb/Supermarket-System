@@ -1,4 +1,4 @@
-package Deliveries.PresentationLayer;
+package Deliveries.PresentationLayer.CLI;
 
 import Deliveries.BusinessLayer.DeliveryForm;
 import Deliveries.BusinessLayer.DeliveryStop;
@@ -8,9 +8,9 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserInteractionUtil implements WeightMeasurer, TripReplanner {
+public class CLIUtil implements WeightMeasurer, TripReplanner {
     Scanner scanner;
-    public UserInteractionUtil() {
+    public CLIUtil() {
         this.scanner = new Scanner(System.in);
     }
     @Override

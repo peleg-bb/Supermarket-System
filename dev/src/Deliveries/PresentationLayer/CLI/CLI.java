@@ -1,4 +1,4 @@
-package Deliveries.PresentationLayer;
+package Deliveries.PresentationLayer.CLI;
 
 import Deliveries.BusinessLayer.*;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class UserInterface {
+public class CLI {
     // main method
     public static void main(String[] args) {
         // create a new DeliveryFormsController
