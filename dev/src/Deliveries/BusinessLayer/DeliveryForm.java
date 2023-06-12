@@ -43,7 +43,8 @@ public class DeliveryForm {
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
         updateArrivalTimes();
-        updateFormIDinStops();
+      //  updateFormIDinStops(); // Do not update in constructor -
+      //  fails in DB due to foreign key constraints (form doesn't exist in DB yet)
 //        this.driver = driver;
 //        this.truck = truck;
     }

@@ -64,6 +64,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     private void addDeliveryForm(DeliveryForm deliveryForm) {
         pendingDeliveryForms.add(deliveryForm);
         deliveryFormDAO.addDeliveryForm(deliveryForm);
+        deliveryForm.updateFormIDinStops();
     }
 
     public void removeDeliveryForm(DeliveryForm deliveryForm) {

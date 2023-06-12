@@ -49,7 +49,7 @@ public class DeliveryStopDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        try {
+        try { // TODO: Avoid generating items if they already exist - This doesn't prevent the stop creation as the stop is already created in an earlier try-catch. Can be marked as a low priority issue.
            for(Map.Entry<String,Integer> item : items.entrySet()) {
                String itemName = item.getKey();
                int quantity = item.getValue();
