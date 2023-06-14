@@ -1,16 +1,20 @@
 package Deliveries.PresentationLayer.GUI.View;
+import Deliveries.PresentationLayer.GUI.Model.AbstractModel;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AbstractFrame extends JFrame {
-    private JPanel buttonsPanel;
-    private JPanel errorPanel;
-    private JPanel infoPanel;
+public abstract class AbstractFrame extends JFrame {
+    private final JPanel buttonsPanel;
+    private final JPanel errorPanel;
+    private final JPanel infoPanel;
+    private AbstractModel relatedModel;
 
 
-    public AbstractFrame(int numButtons, ActionListener actionListener) {
+    public AbstractFrame(int numButtons, AbstractModel relatedModel) {
+        this.relatedModel = relatedModel;
+        relatedModel.addFrame(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Deliveries System");
         setLayout(new BorderLayout());
@@ -38,12 +42,12 @@ public class AbstractFrame extends JFrame {
         setVisible(true);
     }
 
-    protected void addBottom(ActionListener actionListener, String buttonText) {
+    protected void addButton(String buttonText) {
         JButton button = new JButton(buttonText);
         buttonsPanel.add(button);
 
         // Button action listener
-        button.addActionListener(actionListener);
+        button.addActionListener(relatedModel);
         button.addActionListener(e -> {
             String buttonText1 = ((JButton) e.getSource()).getText();
             displayInfo(buttonText1 + " clicked");

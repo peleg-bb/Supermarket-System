@@ -1,14 +1,16 @@
 package Deliveries.PresentationLayer.GUI.View;
 
 import Deliveries.BusinessLayer.DeliveryForm;
+import Deliveries.PresentationLayer.GUI.Model.ExecuteDeliveriesModel;
 
 import java.util.Set;
 
 public class ExecuteDeliveriesFrame extends AbstractFrame {
     public ExecuteDeliveriesFrame(Set<DeliveryForm> deliveryForms) {
-        super(deliveryForms.size(), e -> {});
+        super(deliveryForms.size(), new ExecuteDeliveriesModel());
+        addButton("Return to main menu");
         for (DeliveryForm deliveryForm : deliveryForms) {
-            addBottom(e -> {}, deliveryForm.toString());
+            addButton(deliveryForm.toString());
         }
     }
 }

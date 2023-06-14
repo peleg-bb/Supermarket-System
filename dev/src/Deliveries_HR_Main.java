@@ -17,12 +17,13 @@ public class Deliveries_HR_Main {
         if (Objects.equals(args[0], "GUI")) {
             SwingUtilities.invokeLater(MainFrame::new);
         }
-        Scanner scanner = new Scanner(System.in);
-        String option = scanner.nextLine();
-        switch (option) {
-            case "1" -> Menu.main(args);
-            case "2" -> CLI.main(args);
-            case "3" -> SwingUtilities.invokeLater(MainFrame::new);
+        else {
+            Scanner scanner = new Scanner(System.in);
+            String option = scanner.nextLine();
+            switch (option) {
+                case "1" -> Menu.main(args);
+                case "2" -> CLI.main(args);
+            }
         }
     }
 

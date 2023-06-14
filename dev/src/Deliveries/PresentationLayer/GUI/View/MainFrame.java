@@ -11,10 +11,10 @@ public class MainFrame extends AbstractFrame {
         super(4, new MainMenuModel());
         SiteGenerator siteGenerator = new SiteGenerator();
         List<Site> sitesList = siteGenerator.getSitesList(); // Not sure if needed
-        addBottom(e -> {}, "Add a delivery stop");
-        addBottom(e -> {}, "Remove a delivery stop");
-        addBottom(e -> {}, "Execute a delivery");
-        addBottom(e -> {}, "Exit");
+        addButton("Add a delivery stop");
+        addButton("Remove a delivery stop");
+        addButton("Execute a delivery");
+        addButton("Exit");
   }
 
 }

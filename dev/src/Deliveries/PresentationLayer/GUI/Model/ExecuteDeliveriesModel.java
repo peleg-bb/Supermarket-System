@@ -1,4 +1,13 @@
 package Deliveries.PresentationLayer.GUI.Model;
 
-public class ExecuteDeliveriesModel {
+import java.awt.event.ActionEvent;
+
+public class ExecuteDeliveriesModel extends AbstractModel {
+    public ExecuteDeliveriesModel() {
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }
