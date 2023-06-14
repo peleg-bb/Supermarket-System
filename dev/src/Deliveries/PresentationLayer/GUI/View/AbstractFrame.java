@@ -9,6 +9,7 @@ public class AbstractFrame extends JFrame {
     private JPanel errorPanel;
     private JPanel infoPanel;
 
+
     public AbstractFrame(int numButtons, ActionListener actionListener) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Deliveries System");

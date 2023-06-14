@@ -4,6 +4,7 @@ import Deliveries.BusinessLayer.DeliveryFormsController;
 import Deliveries.BusinessLayer.DeliveryManagerImpl;
 import Deliveries.BusinessLayer.Generators.SiteGenerator;
 import Deliveries.BusinessLayer.Site;
+import Deliveries.PresentationLayer.GUI.View.ExecuteDeliveriesFrame;
 
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -19,11 +20,15 @@ public class MainMenuModel implements ActionListener {
     }
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
+        // TODO: Figure out what goes here?
+    }
+
+    public void ExecuteDeliveriesClicked(){
         deliveryManager.createDeliveryGroup();
         if (!deliveryManager.getDeliveryFormsController().getPendingDeliveryForms().iterator().hasNext()) {
             System.out.println("Couldn't create delivery groups due to an illegal combination of delivery stops");
             return;
         }
-
+        new ExecuteDeliveriesFrame(deliveryManager.getDeliveryFormsController().getPendingDeliveryForms());
     }
 }
