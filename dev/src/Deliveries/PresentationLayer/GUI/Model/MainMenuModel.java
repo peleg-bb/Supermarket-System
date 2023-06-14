@@ -21,7 +21,6 @@ public class MainMenuModel extends AbstractModel {
     }
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        relatedFrame.dispose();
         if (e.getActionCommand().equals("Add a delivery stop")) {
             AddDeliveryStopClicked();
         }
@@ -47,10 +46,12 @@ public class MainMenuModel extends AbstractModel {
 
     public void ExecuteDeliveriesClicked(){
         deliveryManager.createDeliveryGroup();
-        if (!deliveryManager.getDeliveryFormsController().getPendingDeliveryForms().iterator().hasNext()) {
-            System.out.println("Couldn't create delivery groups due to an illegal combination of delivery stops");
+        if (deliveryManager.getDeliveryFormsController().getPendingDeliveryForms().size() == 0) {
+            relatedFrame.displayError("Couldn't create delivery groups due to an illegal combination " +
+                    "or unavailable delivery stops");
             return;
         }
+        relatedFrame.dispose();
         new ExecuteDeliveriesFrame(deliveryManager.getDeliveryFormsController().getPendingDeliveryForms());
     }
 }

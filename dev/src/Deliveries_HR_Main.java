@@ -1,5 +1,5 @@
 import Deliveries.PresentationLayer.CLI.CLI;
-import Deliveries.PresentationLayer.GUI.View.MainFrame;
+import Deliveries.PresentationLayer.GUI.View.MainMenuFrame;
 import HR.PresentationLayer.Menu;
 
 import javax.swing.*;
@@ -15,7 +15,7 @@ public class Deliveries_HR_Main {
         System.out.println("2. Deliveries System");
         System.out.println("3. Deliveries GUI");
         if (Objects.equals(args[0], "GUI")) {
-            SwingUtilities.invokeLater(MainFrame::new);
+            SwingUtilities.invokeLater(MainMenuFrame::new);
         }
         else {
             Scanner scanner = new Scanner(System.in);
