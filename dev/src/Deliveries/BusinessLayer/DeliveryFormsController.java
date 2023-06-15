@@ -124,7 +124,9 @@ public class DeliveryFormsController implements DeliveryIntegrator {
      * Creates a delivery form with the given stops and origin
      */
     public void createForm(List<DeliveryStop> stops, Site origin) throws DeliveryException {
-
+        if (stops.size() == 0) {
+            throw new DeliveryException("No stops were given");
+        }
         Timestamp dispatchTime = storeAvailabilityChecker.checkStoreAvailability(stops);
         if (dispatchTime == null) {
             throw new DeliveryException("Couldn't find a time where all stores are available to accept the delivery");

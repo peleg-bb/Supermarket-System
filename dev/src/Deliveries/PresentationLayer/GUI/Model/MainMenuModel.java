@@ -1,5 +1,6 @@
 package Deliveries.PresentationLayer.GUI.Model;
 
+import Deliveries.BusinessLayer.DeliveryForm;
 import Deliveries.BusinessLayer.DeliveryFormsController;
 import Deliveries.BusinessLayer.DeliveryManagerImpl;
 import Deliveries.BusinessLayer.Generators.SiteGenerator;
@@ -10,6 +11,7 @@ import Deliveries.PresentationLayer.GUI.View.ExecuteDeliveriesFrame;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class MainMenuModel extends AbstractModel {
     private DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance();
@@ -46,13 +48,14 @@ public class MainMenuModel extends AbstractModel {
     }
 
     public void ExecuteDeliveriesClicked(){
-        deliveryManager.createDeliveryGroup();
-        if (deliveryManager.getDeliveryFormsController().getPendingDeliveryForms().size() == 0) {
-            relatedFrame.displayError("Couldn't create delivery groups due to an illegal combination " +
-                    "or unavailable delivery stops");
-            return;
+        Set<DeliveryForm> pendingDeliveryForms = deliveryFormsController.getPendingDeliveryForms();
+
+        if (pendingDeliveryForms.isEmpty()) {
+            deliveryManager.createDeliveryGroup();
+            pendingDeliveryForms = deliveryFormsController.getPendingDeliveryForms();
+            // Breaks separation of concerns, should be fixed using a service layer
         }
         relatedFrame.dispose();
-        new ExecuteDeliveriesFrame(deliveryManager.getDeliveryFormsController().getPendingDeliveryForms());
+        new ExecuteDeliveriesFrame(pendingDeliveryForms);
     }
 }
