@@ -9,7 +9,7 @@ public abstract class AbstractFrame extends JFrame {
     private final JPanel buttonsPanel;
     private final JPanel errorPanel;
     private final JPanel infoPanel;
-    private AbstractModel relatedModel;
+    protected AbstractModel relatedModel;
 
 
     public AbstractFrame(int numButtons, AbstractModel relatedModel) {

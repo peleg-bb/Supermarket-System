@@ -9,7 +9,7 @@ import java.util.*;
 
 
 public class DeliveryManagerImpl implements DeliveryManager {
-    public static final int PENDING_SIZE = 10;
+    public static final int PENDING_SIZE = 25;
     private final TruckController truckController;
     private final DriverController driverController;
     private Set<DeliveryStop> pendingDeliveryStops;

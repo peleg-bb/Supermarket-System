@@ -38,7 +38,7 @@ public class DeliveryForm {
         this.status = DeliveryStatus.NOT_STARTED;
         this.dispatchTime = dispatchTime;
         this.originSite = originSite;
-        this.weightMeasurer = new CLIUtil();
+        this.weightMeasurer = new CLIUtil(); // TODO: change according to UI choice
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
@@ -129,13 +129,9 @@ public class DeliveryForm {
 
     @Override
     public String toString() {
-        return "DeliveryForm{" +
-                "formId=" + formId +
-                ", dispatchTime=" + dispatchTime +
-                ", originSite=" + originSite +
-                ", destinationSitesToVisit=" + destinationSitesToVisit +
-                ", dispatchWeightTons=" + dispatchWeightTons +
-                '}';
+        // get destination names
+        return "Form- ID: "  + formId + " from " + originSite.getName() + " to " +
+                destinationSitesToVisit.stream().map(DeliveryStop::getDestination).toList();
     }
 
     /* setDispatchWeightTons() is called when the truck leaves the origin site */

@@ -37,26 +37,28 @@ public class DeliveryStop {
 
     @Override
     public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("DeliveryStop{")
-                    .append("stopID=")
-                    .append(shipmentInstanceID)
-                    .append(", deliveryItems={");
-            for (Map.Entry<String, Integer> entry : items.entrySet()) {
-                sb.append(entry.getKey())
-                        .append(": ")
-                        .append(entry.getValue())
-                        .append(", ");
-            }
-            sb.delete(sb.length() - 2, sb.length());
-            sb.append("}, from origin- ")
-                    .append(origin)
-                    .append(", to destination- ")
-                    .append(destination)
-                    .append(", truckTypeRequired- ")
-                    .append(truckTypeRequired.toString())
-                    .append('}');
-            return sb.toString();
+        assert destination != null;
+        return destination.toString();
+//            StringBuilder sb = new StringBuilder();
+//            sb.append("DeliveryStop{")
+//                    .append("stopID=")
+//                    .append(shipmentInstanceID)
+//                    .append(", deliveryItems={");
+//            for (Map.Entry<String, Integer> entry : items.entrySet()) {
+//                sb.append(entry.getKey())
+//                        .append(": ")
+//                        .append(entry.getValue())
+//                        .append(", ");
+//            }
+//            sb.delete(sb.length() - 2, sb.length());
+//            sb.append("}, from origin- ")
+//                    .append(origin)
+//                    .append(", to destination- ")
+//                    .append(destination)
+//                    .append(", truckTypeRequired- ")
+//                    .append(truckTypeRequired.toString())
+//                    .append('}');
+//            return sb.toString();
     }
 
     public DeliveryStop(int shipmentInstanceID, Map<String, Integer> items, Site origin, Site destination,

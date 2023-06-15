@@ -1,6 +1,7 @@
 package Deliveries.PresentationLayer.GUI.View;
 
 import Deliveries.BusinessLayer.DeliveryForm;
+import Deliveries.PresentationLayer.GUI.Model.AbstractModel;
 import Deliveries.PresentationLayer.GUI.Model.ExecuteDeliveriesModel;
 
 import java.util.Set;
@@ -12,5 +13,7 @@ public class ExecuteDeliveriesFrame extends AbstractFrame {
         for (DeliveryForm deliveryForm : deliveryForms) {
             addButton(deliveryForm.toString());
         }
+
+
     }
 }
