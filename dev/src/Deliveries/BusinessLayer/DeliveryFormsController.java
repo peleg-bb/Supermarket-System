@@ -98,6 +98,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
     public void terminateDeliveryForm(DeliveryForm deliveryForm) {
         pendingDeliveryForms.remove(deliveryForm);
         completedDeliveryForms.add(deliveryForm);
+        deliveryForm.setStatus(DeliveryStatus.DELIVERED);
         deliveryFormDAO.setStatus(deliveryForm.getFormId(), DeliveryStatus.DELIVERED);
     }
 

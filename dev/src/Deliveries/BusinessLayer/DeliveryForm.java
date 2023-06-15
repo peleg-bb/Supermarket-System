@@ -4,12 +4,14 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
-import Deliveries.PresentationLayer.CLI.CLIUtil;
+import Deliveries.DataAccessLayer.DeliveryFormDAO;
 import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.HRIntegrator;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 public class DeliveryForm {
     private final int formId;
@@ -309,9 +311,10 @@ public class DeliveryForm {
         return lastStop;
     }
 
-    private void setStatus(DeliveryStatus status) {
+    void setStatus(DeliveryStatus status) { // package-private
         this.status = status;
-        // TODO: notify DB
+        DeliveryFormDAO deliveryFormDAO = new DeliveryFormDAO();
+        deliveryFormDAO.setStatus(formId, status);
     }
 
     public DeliveryStatus getStatus() {
