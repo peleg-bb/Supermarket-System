@@ -9,7 +9,7 @@ import java.util.*;
 
 
 public class DeliveryManagerImpl implements DeliveryManager {
-    public static final int PENDING_SIZE = 25;
+    public static final int PENDING_SIZE = 55;
     private final TruckController truckController;
     private final DriverController driverController;
     private Set<DeliveryStop> pendingDeliveryStops;
@@ -64,6 +64,9 @@ public class DeliveryManagerImpl implements DeliveryManager {
 
             for (Map.Entry<Site, List<DeliveryStop>> entries : siteToStopsSortedByOrigin.entrySet()) {
                 try {
+                    if (entries.getValue().size() == 0) {
+                        continue; // no stops for this origin, do we ever reach this?
+                    }
                     deliveryFormsController.createForm(entries.getValue(), entries.getKey());
                     entries.getValue().forEach(pendingDeliveryStops::remove); // removes the added stops from the pending list
 //                    for(DeliveryStop stop : entries.getValue()){
