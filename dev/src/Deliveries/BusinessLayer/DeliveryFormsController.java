@@ -10,10 +10,7 @@ import HR_Deliveries_Interface.DeliveryIntegrator;
 import HR_Deliveries_Interface.HRIntegrator;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DeliveryFormsController implements DeliveryIntegrator {
     private final Set<DeliveryForm> pendingDeliveryForms; // Improve to separate by status
@@ -72,8 +69,12 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         this.pendingDeliveryForms.remove(deliveryForm);
     }
 
-    public Set<DeliveryForm> getPendingDeliveryForms() {
-        return pendingDeliveryForms;
+   public Set<DeliveryForm> getPendingDeliveryForms() {
+        // sort the pending forms by ID
+        Comparator<DeliveryForm> idComparator = Comparator.comparingInt(DeliveryForm::getFormId);
+        Set<DeliveryForm> sortedForms = new TreeSet<>(idComparator);
+        sortedForms.addAll(pendingDeliveryForms);
+        return sortedForms;
     }
 
     public void startDeliveryForm(DeliveryForm deliveryForm, WeightMeasurer weightMeasurer) {
@@ -86,6 +87,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
             System.out.println(deliveryForm);
         }
     }
+
 
     public void printCompletedDeliveryForms() {
         for (DeliveryForm deliveryForm : completedDeliveryForms) {
