@@ -37,11 +37,12 @@ public class MainMenuModel extends AbstractModel {
 
     private void AddDeliveryStopClicked() {
         // TODO: Implement this
+        relatedFrame.displayError("Not implemented yet :(");
     }
 
     private void RemoveDeliveryStopClicked() {
         // TODO: Implement this
-
+        relatedFrame.displayError("Not implemented yet :(");
     }
 
     public void ExecuteDeliveriesClicked(){

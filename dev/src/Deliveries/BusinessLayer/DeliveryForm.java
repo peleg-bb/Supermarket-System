@@ -38,7 +38,6 @@ public class DeliveryForm {
         this.status = DeliveryStatus.NOT_STARTED;
         this.dispatchTime = dispatchTime;
         this.originSite = originSite;
-        this.weightMeasurer = new CLIUtil(); // TODO: change according to UI choice
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
@@ -60,7 +59,6 @@ public class DeliveryForm {
         this.destinationSitesVisited = stopsVisited;
         this.dispatchTime = dispatchTime;
         this.originSite = originSite;
-        this.weightMeasurer = new CLIUtil();
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = ShiftController.getInstance();
@@ -81,7 +79,6 @@ public class DeliveryForm {
         this.destinationSitesVisited = new ArrayList<>();
         this.dispatchTime = dispatchTime;
         this.originSite = originSite;
-        this.weightMeasurer = new CLIUtil();
         deliveryManager = DeliveryManagerImpl.getInstance();
         deliveryFormsController = DeliveryFormsController.getInstance();
         hrManager = hr;
@@ -179,8 +176,9 @@ public class DeliveryForm {
         return dispatchWeightTons;
     }
 
-    public void startJourney(){
+    public void startJourney(WeightMeasurer weightMeasurer)  {
         // visit the stops in the order they were added
+        this.weightMeasurer = weightMeasurer;
         performWeightCheck();
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
 

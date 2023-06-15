@@ -24,7 +24,7 @@ public class DeliveryManagerImpl implements DeliveryManager {
             truckController = TruckController.getInstance();
             driverController = DriverController.getInstance();
             deliveryFormsController = DeliveryFormsController.getInstance();
-            tripReplanner = new CLIUtil();
+            tripReplanner = new CLIUtil(); // TODO: change according to the UI chosen
             DeliveryStopGenerator deliveryStopGenerator = new DeliveryStopGenerator();
             pendingDeliveryStops.addAll(deliveryStopGenerator.getPendingDeliveryStops(PENDING_SIZE));
             deliveryStopDAO = new DeliveryStopDAO();

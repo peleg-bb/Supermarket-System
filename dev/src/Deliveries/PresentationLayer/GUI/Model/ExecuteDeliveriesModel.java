@@ -28,8 +28,7 @@ public class ExecuteDeliveriesModel extends AbstractModel {
                 int formId = Integer.parseInt(matcher.group());
                 DeliveryForm form = deliveryFormsController.getDeliveryForm(formId);
                 relatedFrame.dispose();
-                new MakeDeliveryFrame();
-                deliveryFormsController.startDeliveryForm(form);
+                new MakeDeliveryFrame(form);
             }
             else {
                 relatedFrame.displayError("Couldn't find form ID!");
@@ -39,8 +38,5 @@ public class ExecuteDeliveriesModel extends AbstractModel {
 
     }
 
-    private void ReturnToMainMenuClicked() {
-        relatedFrame.dispose();
-        new MainMenuFrame();
-    }
+
 }

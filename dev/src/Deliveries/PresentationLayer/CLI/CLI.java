@@ -15,6 +15,7 @@ public class CLI {
         // create a new DeliveryFormsController
         // DeliveryManagerService deliveryManagerService = new DeliveryManagerService();
         Scanner scanner = new Scanner(System.in);
+        CLIUtil cliUtil = new CLIUtil();
         SiteGenerator siteGenerator = new SiteGenerator();
         List<Site> sitesList = siteGenerator.getSitesList();
         DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
@@ -99,7 +100,7 @@ public class CLI {
         }
         int id = scanner.nextInt();
         DeliveryForm deliveryForm = deliveryFormsController.getDeliveryForm(id);
-        deliveryFormsController.startDeliveryForm(deliveryForm);
+        deliveryFormsController.startDeliveryForm(deliveryForm, new CLIUtil());
         if (deliveryFormsController.isCompleted(deliveryForm)) {
             System.out.println("Delivery form " + id + " was completed successfully!");
         } else {
