@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer {
     DeliveryForm deliveryForm;
     public MakeDeliveryModel(DeliveryForm deliveryForm) {
+        this.deliveryForm = deliveryForm;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -16,6 +17,7 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer {
         }
         else if (e.getActionCommand().equals("Start delivery")) {
             deliveryForm.startJourney(this);
+            relatedFrame.displayInfo("Delivery started!");
         }
         else {
             relatedFrame.displayError("Not implemented yet :(");

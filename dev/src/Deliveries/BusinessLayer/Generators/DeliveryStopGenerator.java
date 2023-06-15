@@ -17,6 +17,7 @@ public class DeliveryStopGenerator {
             "Rice", "Chicken", "Beef", "Pork", "Fish", "Shrimp", "Salmon", "Tuna", "Crab", "Lobster"};
     private final List<Site> sites;
     private final Random random;
+    private List<DeliveryStop> pendingDeliveryStops;
 
     public DeliveryStopGenerator() {
         SiteGenerator siteGenerator = new SiteGenerator();
@@ -26,30 +27,48 @@ public class DeliveryStopGenerator {
 
     /**
      * Generates a list of delivery stops
-     * @param size The number of delivery stops to be generated
+     * @param size The number of delivery stops to be generated, must be smaller than the number of possible pairs of sites
      * @return A list of delivery stops
      */
     public List<DeliveryStop> getPendingDeliveryStops(int size) {
+        assert size < sites.size() * sites.size()-1 : "Cannot generate more delivery stops than the number" +
+                " of possible pairs of sites";
+        // Warning: If called without a plausible solution - will cause an infinite loop
+        // From the pigeonhole principle, will happen when trying to create
+        // more delivery stops than the number of possible pairs of sites
+        // The assertion above is to prevent this from happening (not sure if mathematically guaranteed to work)
         DeliveryStopDAO deliveryStopDAO = new DeliveryStopDAO();
-        List<DeliveryStop> deliveryStops = new ArrayList<>(deliveryStopDAO.loadPendingStops());
+        pendingDeliveryStops = new ArrayList<>(deliveryStopDAO.loadPendingStops());
         int nextDeliveryStopID = deliveryStopDAO.getMaxID() + 1;
-        if (deliveryStops.size() < size) {
+        if (pendingDeliveryStops.size() < size) {
             for (int i = nextDeliveryStopID; i < nextDeliveryStopID + size; i++) {
                 DeliveryStop deliveryStop = generateDeliveryStop(i);
                 deliveryStopDAO.addStop(deliveryStop);
-                deliveryStops.add(deliveryStop);
+                pendingDeliveryStops.add(deliveryStop);
             }
         }
-        return deliveryStops;
+        return pendingDeliveryStops;
     }
 
     private DeliveryStop generateDeliveryStop(int shipmentInstanceID) {
-        Site origin = sites.get(random.nextInt(sites.size()));
+        Set<Map.Entry<String, String>> existingStops = pendingDeliveryStops.stream().map(deliveryStop ->
+                new AbstractMap.SimpleEntry<>(deliveryStop.getOrigin().getName(), deliveryStop.getDestination().getName()))
+                .collect(HashSet::new, HashSet::add, HashSet::addAll);
+        // add pending delivery stops to the set of existing stops
+//        for (DeliveryStop deliveryStop : pendingDeliveryStops) {
+//            existingStops.add(new AbstractMap.SimpleEntry<>(deliveryStop.getOrigin().getName(), deliveryStop.getDestination().getName()));
+//        }
+
+        Site origin;
         // Generate a site that is different from the origin
         Site destination;
         do {
+            origin = sites.get(random.nextInt(sites.size()));
             destination = sites.get(random.nextInt(sites.size()));
-        } while (destination.equals(origin));
+            // The while checks that the destination is different from the origin
+            // and that the pair of sites has not been generated before
+            // currently inefficient, needs optimization
+        } while (destination.equals(origin) || existingStops.contains(new AbstractMap.SimpleEntry<>(origin.getName(), destination.getName())));
 
         Map<String, Integer> items = generateItems();
 
