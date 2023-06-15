@@ -19,7 +19,6 @@ public class MainMenuModel extends AbstractModel {
     public MainMenuModel() {
         deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
         deliveryFormsController = deliveryManager.getDeliveryFormsController();
-        deliveryFormsController.loadFormsData();
     }
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {

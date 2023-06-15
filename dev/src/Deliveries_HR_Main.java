@@ -1,3 +1,5 @@
+import Deliveries.BusinessLayer.DeliveryFormsController;
+import Deliveries.BusinessLayer.DeliveryManagerImpl;
 import Deliveries.PresentationLayer.CLI.CLI;
 import Deliveries.PresentationLayer.GUI.View.MainMenuFrame;
 import HR.PresentationLayer.Menu;
@@ -10,6 +12,7 @@ import java.util.Scanner;
 public class Deliveries_HR_Main {
 
     public static void main(String[] args) throws SQLException {
+        loadData();
         if (Objects.equals(args[0], "GUI")) {
             SwingUtilities.invokeLater(MainMenuFrame::new);
         }
@@ -25,6 +28,13 @@ public class Deliveries_HR_Main {
                 case "2" -> CLI.main(args);
             }
         }
+    }
+
+    private static void loadData() {
+        DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance();
+        DeliveryFormsController deliveryFormsController = DeliveryFormsController.getInstance();
+        deliveryFormsController.loadFormsData();
+        // TODO: Add HR data loading?
     }
 
 

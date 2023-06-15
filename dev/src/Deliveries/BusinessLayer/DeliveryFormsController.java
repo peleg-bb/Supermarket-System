@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 public class DeliveryFormsController implements DeliveryIntegrator {
-    private final Set<DeliveryForm> pendingDeliveryForms; // Improve to separate by status
+    private final Set<DeliveryForm> pendingDeliveryForms;
     private final Set<DeliveryForm> completedDeliveryForms;
     // singleton
     private static DeliveryFormsController instance;
@@ -43,7 +43,7 @@ public class DeliveryFormsController implements DeliveryIntegrator {
             if (deliveryForm.getStatus().equals(DeliveryStatus.NOT_STARTED)) {
                 pendingDeliveryForms.add(deliveryForm);
             }
-            else if (deliveryForm.getStatus().equals(DeliveryStatus.DELIVERED)){
+            else if (deliveryForm.getStatus().equals(DeliveryStatus.DELIVERED)) {
                 completedDeliveryForms.add(deliveryForm);
             }
         }
