@@ -1,12 +1,12 @@
 package Deliveries.PresentationLayer.GUI.View;
+
 import Deliveries.PresentationLayer.GUI.Model.AbstractModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public abstract class AbstractFrame extends JFrame {
-    private final JPanel buttonsPanel;
+    protected final JPanel buttonsPanel;
     private final JPanel errorPanel;
     private final JPanel infoPanel;
     protected AbstractModel relatedModel;
@@ -22,7 +22,7 @@ public abstract class AbstractFrame extends JFrame {
         // Create buttons panel
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(numButtons, 1));
-        add(buttonsPanel, BorderLayout.WEST);
+        add(buttonsPanel, BorderLayout.CENTER);
 
         // Create error panel
         errorPanel = new JPanel();

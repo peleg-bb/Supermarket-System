@@ -1,15 +1,9 @@
 package Deliveries.PresentationLayer.GUI.Model;
 
+import Deliveries.PresentationLayer.GUI.View.AddDeliveryFrame;
 import Deliveries.BusinessLayer.DeliveryFormsController;
 import Deliveries.BusinessLayer.DeliveryManagerImpl;
-import Deliveries.BusinessLayer.Generators.SiteGenerator;
-import Deliveries.BusinessLayer.Site;
-import Deliveries.PresentationLayer.GUI.View.AbstractFrame;
 import Deliveries.PresentationLayer.GUI.View.ExecuteDeliveriesFrame;
-
-import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.Scanner;
 
 public class MainMenuModel extends AbstractModel {
     private DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance();
@@ -37,11 +31,15 @@ public class MainMenuModel extends AbstractModel {
 
     private void AddDeliveryStopClicked() {
         // TODO: Implement this
-        relatedFrame.displayError("Not implemented yet :(");
+        //relatedFrame.displayError("Not implemented yet :(");
+        relatedFrame.dispose();
+        new AddDeliveryFrame(deliveryManager.getDeliveryFormsController().getPendingDeliveryForms());
+
     }
 
     private void RemoveDeliveryStopClicked() {
         // TODO: Implement this
+        relatedFrame.dispose();
         relatedFrame.displayError("Not implemented yet :(");
     }
 

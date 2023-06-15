@@ -1,13 +1,8 @@
 package Deliveries.PresentationLayer.GUI.Model;
 
-import Deliveries.BusinessLayer.DeliveryForm;
 import Deliveries.BusinessLayer.DeliveryFormsController;
-import Deliveries.PresentationLayer.GUI.View.MainMenuFrame;
-import Deliveries.PresentationLayer.GUI.View.MakeDeliveryFrame;
 
 import java.awt.event.ActionEvent;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ExecuteDeliveriesModel extends AbstractModel {
     DeliveryFormsController deliveryFormsController;
@@ -21,22 +16,32 @@ public class ExecuteDeliveriesModel extends AbstractModel {
             ReturnToMainMenuClicked();
         }
         else {
+//            String buttonText = e.getActionCommand();
+//            Pattern pattern = Pattern.compile("\\d+");
+//            Matcher matcher = pattern.matcher(buttonText);
+//            if (matcher.find()) {
+//                int formId = Integer.parseInt(matcher.group());
+//                DeliveryForm form = deliveryFormsController.getDeliveryForm(formId);
+//                relatedFrame.dispose();
+//                new MakeDeliveryFrame(form);
             String buttonText = e.getActionCommand();
-            Pattern pattern = Pattern.compile("\\d+");
-            Matcher matcher = pattern.matcher(buttonText);
-            if (matcher.find()) {
-                int formId = Integer.parseInt(matcher.group());
-                DeliveryForm form = deliveryFormsController.getDeliveryForm(formId);
-                relatedFrame.dispose();
-                new MakeDeliveryFrame(form);
+            executeDelivery(buttonText);
             }
-            else {
-                relatedFrame.displayError("Couldn't find form ID!");
-            }
+
 
         }
+    private void executeDelivery(String buttonText) {
+        // Extract the delivery ID from the button text
+        String deliveryId = buttonText.substring(6); // Assuming the button text is in the format "FormX"
 
+        // Perform the execution of the delivery based on the delivery ID
+        // TODO: Implement the logic to execute the delivery
+
+        // Show a message dialog indicating the execution
+        String message = "Executing delivery with ID: " + deliveryId;
+        relatedFrame.displayInfo(message);
+        //JOptionPane.showMessageDialog(null, message);
+    }
     }
 
 
-}
