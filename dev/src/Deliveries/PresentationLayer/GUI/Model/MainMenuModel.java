@@ -1,34 +1,14 @@
 package Deliveries.PresentationLayer.GUI.Model;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-import Deliveries.PresentationLayer.GUI.View.AddDeliveryFrame;
-=======
+
 import Deliveries.BusinessLayer.DeliveryForm;
->>>>>>> 6f8c36f5266d5abf22ef1352c9833c229bbffe6c
-=======
-import Deliveries.BusinessLayer.DeliveryForm;
->>>>>>> 6f8c36f5266d5abf22ef1352c9833c229bbffe6c
-=======
-import Deliveries.BusinessLayer.DeliveryForm;
->>>>>>> 6f8c36f5266d5abf22ef1352c9833c229bbffe6c
-=======
-import Deliveries.BusinessLayer.DeliveryForm;
->>>>>>> 6f8c36f5266d5abf22ef1352c9833c229bbffe6c
 import Deliveries.BusinessLayer.DeliveryFormsController;
 import Deliveries.BusinessLayer.DeliveryManagerImpl;
+import Deliveries.PresentationLayer.GUI.View.AddDeliveryFrame;
 import Deliveries.PresentationLayer.GUI.View.ExecuteDeliveriesFrame;
 
-<<<<<<< HEAD
-=======
-import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
->>>>>>> 6f8c36f5266d5abf22ef1352c9833c229bbffe6c
 public class MainMenuModel extends AbstractModel {
     private DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance();
     private final DeliveryFormsController deliveryFormsController;
