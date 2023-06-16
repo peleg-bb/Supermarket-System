@@ -1,17 +1,28 @@
 package Deliveries.PresentationLayer.GUI.Model;
 
+<<<<<<< HEAD
 import Deliveries.PresentationLayer.GUI.View.AddDeliveryFrame;
+=======
+import Deliveries.BusinessLayer.DeliveryForm;
+>>>>>>> 6f8c36f5266d5abf22ef1352c9833c229bbffe6c
 import Deliveries.BusinessLayer.DeliveryFormsController;
 import Deliveries.BusinessLayer.DeliveryManagerImpl;
 import Deliveries.PresentationLayer.GUI.View.ExecuteDeliveriesFrame;
 
+<<<<<<< HEAD
+=======
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+
+>>>>>>> 6f8c36f5266d5abf22ef1352c9833c229bbffe6c
 public class MainMenuModel extends AbstractModel {
     private DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance();
     private final DeliveryFormsController deliveryFormsController;
     public MainMenuModel() {
         deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
         deliveryFormsController = deliveryManager.getDeliveryFormsController();
-        deliveryFormsController.loadFormsData();
     }
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -44,13 +55,14 @@ public class MainMenuModel extends AbstractModel {
     }
 
     public void ExecuteDeliveriesClicked(){
-        deliveryManager.createDeliveryGroup();
-        if (deliveryManager.getDeliveryFormsController().getPendingDeliveryForms().size() == 0) {
-            relatedFrame.displayError("Couldn't create delivery groups due to an illegal combination " +
-                    "or unavailable delivery stops");
-            return;
+        Set<DeliveryForm> pendingDeliveryForms = deliveryFormsController.getPendingDeliveryForms();
+
+        if (pendingDeliveryForms.isEmpty()) {
+            deliveryManager.createDeliveryGroup();
+            pendingDeliveryForms = deliveryFormsController.getPendingDeliveryForms();
+            // Breaks separation of concerns, should be fixed using a service layer
         }
         relatedFrame.dispose();
-        new ExecuteDeliveriesFrame(deliveryManager.getDeliveryFormsController().getPendingDeliveryForms());
+        new ExecuteDeliveriesFrame(pendingDeliveryForms);
     }
 }
