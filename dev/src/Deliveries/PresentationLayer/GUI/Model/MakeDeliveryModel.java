@@ -16,8 +16,8 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer {
             ReturnToMainMenuClicked();
         }
         else if (e.getActionCommand().equals("Start delivery")) {
-            deliveryForm.startJourney(this);
             relatedFrame.displayInfo("Delivery started!");
+            deliveryForm.startJourney(this);
         }
         else {
             relatedFrame.displayError("Not implemented yet :(");

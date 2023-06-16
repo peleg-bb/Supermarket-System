@@ -46,7 +46,7 @@ public class MainMenuModel extends AbstractModel {
 
     private void RemoveDeliveryStopClicked() {
         // TODO: Implement this
-        relatedFrame.dispose();
+        //relatedFrame.dispose();
         relatedFrame.displayError("Not implemented yet :(");
     }
 
