@@ -1,7 +1,11 @@
 package Deliveries.PresentationLayer.GUI.Model;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Deliveries.PresentationLayer.GUI.View.AddDeliveryFrame;
+=======
+import Deliveries.BusinessLayer.DeliveryForm;
+>>>>>>> 6f8c36f5266d5abf22ef1352c9833c229bbffe6c
 =======
 import Deliveries.BusinessLayer.DeliveryForm;
 >>>>>>> 6f8c36f5266d5abf22ef1352c9833c229bbffe6c
