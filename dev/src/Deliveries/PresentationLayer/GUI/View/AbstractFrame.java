@@ -7,8 +7,8 @@ import java.awt.*;
 
 public abstract class AbstractFrame extends JFrame {
     protected final JPanel buttonsPanel;
-    private final JPanel errorPanel;
-    private final JPanel infoPanel;
+    protected final JPanel errorPanel;
+    protected final JPanel infoPanel;
     protected AbstractModel relatedModel;
 
 

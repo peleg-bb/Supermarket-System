@@ -9,7 +9,7 @@ public abstract class AbstractModel implements java.awt.event.ActionListener{
         relatedFrame = frame;
     }
 
-    protected void ReturnToMainMenuClicked() {
+    public void ReturnToMainMenuClicked() {
         relatedFrame.dispose();
         new MainMenuFrame();
     }
