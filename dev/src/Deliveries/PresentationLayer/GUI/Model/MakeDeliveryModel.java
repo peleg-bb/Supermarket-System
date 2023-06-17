@@ -6,6 +6,7 @@ import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanAction;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanner;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
         }
         else if (e.getActionCommand().equals("Start delivery")) {
             relatedFrame.displayInfo("Delivery started!");
+            ((JButton)e.getSource()).setVisible(false);
             deliveryForm.startJourney(this, this);
         }
         else {
@@ -30,9 +32,22 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
 
     @Override
     public int measureWeight(DeliveryForm form) {
-        relatedFrame.displayError("Measure weight called but not implemented yet!");
-        relatedFrame.displayInfo("Returning 4 as a placeholder for weight measurement");
-        return 4;
+        String currentSite = form.getDestinationSitesToVisit().get(0).getDestination().getName();
+        relatedFrame.displayInfo("Successfully delivered to " + currentSite + "!");
+        String weightString = JOptionPane.showInputDialog(relatedFrame, "The truck is leaving " + currentSite
+                + " and needs to be weighed, please enter weight", "Enter weight:", JOptionPane.QUESTION_MESSAGE);
+        if (weightString != null) {
+            try {
+                return Integer.parseInt(weightString);
+            } catch (NumberFormatException ex) {
+                relatedFrame.displayError("Invalid weight entered!");
+                return measureWeight(form);
+            }
+        }
+        // TODO: Handle cancel button
+
+        relatedFrame.displayError("Invalid weight entered!");
+        return measureWeight(form);
     }
 
     @Override

@@ -9,6 +9,5 @@ public class MakeDeliveryFrame extends AbstractFrame {
         // TODO: display the delivery form
         addButton("Return to main menu");
         addButton("Start delivery");
-        addButton("Provide weight");
     }
 }

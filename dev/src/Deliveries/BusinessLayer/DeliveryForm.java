@@ -66,6 +66,7 @@ public class DeliveryForm {
         setVisitedStopsArrivalTimes();
         this.status = status;
         this.truck = truck;
+        maxWeightAllowed = truck.getMaxWeightTons();
         this.driver = driver;
     }
 
@@ -115,7 +116,7 @@ public class DeliveryForm {
     public void performWeightCheck() {
         int currentWeight = measureWeight();
         setDispatchWeightTons(currentWeight);
-        if (currentWeight > maxWeightAllowed) {
+        if (currentWeight > getMaxWeightAllowed()) {
             deliveryManager.replanDelivery(this, tripReplanner);
         }
     }
@@ -238,7 +239,7 @@ public class DeliveryForm {
 
 
     public int getMaxWeightAllowed() {
-        return maxWeightAllowed;
+        return truck.getMaxWeightTons();
     }
 
     public void setTruck(Truck newTruck) {

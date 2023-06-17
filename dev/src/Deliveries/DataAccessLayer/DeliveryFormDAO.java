@@ -32,7 +32,7 @@ public class DeliveryFormDAO {
             }
             return deliveryForms;
         } catch (SQLException exception) {
-            return null;
+            return null; // I hate this
         }
 
     }
@@ -42,7 +42,7 @@ public class DeliveryFormDAO {
         int id = Integer.parseInt(ID);
         String driverId = (String) deliveryFormRecord.get("driver_id");
         Driver driver = getDriver(driverId);
-        String truckId = (String) deliveryFormRecord.get("truck_id");
+        String truckId = (String) deliveryFormRecord.get("truck_license_plate");
         Truck truck = getTruck(truckId);
         Timestamp dispatchTime = Timestamp.valueOf((String) deliveryFormRecord.get("dispatch_time"));
 //        Timestamp terminationTime = (Timestamp) deliveryFormRecord.get("termination_time"); // unnecessary
@@ -83,10 +83,10 @@ public class DeliveryFormDAO {
             }
         }
         catch (SQLException e){
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); // I hate this
         }
 
-        DeliveryForm deliveryForm = null;
+        DeliveryForm deliveryForm = null; // I hate this
         try {
             deliveryForm = new DeliveryForm(id, unvisitedDestinations, visitedDestinations, originSite,
                     dispatchTime, status,driver,truck);
@@ -159,11 +159,11 @@ public class DeliveryFormDAO {
     }
 
     public Truck getTruck(String truckID){
-        String query = "SELECT * FROM Trucks WHERE truck_id="+truckID;
+        String query = "SELECT * FROM Trucks WHERE license_plate="+ '"' + truckID + '"';
         try{
             List<HashMap<String, Object>> truckDetails = conn.executeQuery(query);
             String model = (String) truckDetails.get(0).get("model");
-            TruckType truckType = (TruckType) truckDetails.get(0).get("truck_type");
+            TruckType truckType = TruckType.valueOf(((String) truckDetails.get(0).get("truck_type")).toUpperCase());
             int maxWeightTons = (Integer) truckDetails.get(0).get("max_weight_tons");
             int netWeightTons = (Integer) truckDetails.get(0).get("net_weight_tons");
             return new Truck(model,truckID,truckType,maxWeightTons,netWeightTons);
