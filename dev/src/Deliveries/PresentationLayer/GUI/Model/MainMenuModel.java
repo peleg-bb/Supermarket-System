@@ -4,17 +4,17 @@ package Deliveries.PresentationLayer.GUI.Model;
 import Deliveries.BusinessLayer.DeliveryForm;
 import Deliveries.BusinessLayer.DeliveryFormsController;
 import Deliveries.BusinessLayer.DeliveryManagerImpl;
+import Deliveries.BusinessLayer.DeliveryStop;
 import Deliveries.PresentationLayer.GUI.View.AddDeliveryFrame;
 import Deliveries.PresentationLayer.GUI.View.ExecuteDeliveriesFrame;
 
-
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
 
 public class MainMenuModel extends AbstractModel {
-    private DeliveryManagerImpl deliveryManager = DeliveryManagerImpl.getInstance();
+    private final DeliveryManagerImpl deliveryManager;
     private final DeliveryFormsController deliveryFormsController;
     public MainMenuModel() {
         deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
@@ -45,9 +45,27 @@ public class MainMenuModel extends AbstractModel {
     }
 
     private void RemoveDeliveryStopClicked() {
-        // TODO: Implement this
-        //relatedFrame.dispose();
-        relatedFrame.displayError("Not implemented yet :(");
+        List<DeliveryStop> stops = new ArrayList<>();
+        for (DeliveryStop stop : deliveryManager.getPendingDeliveryStops()) {
+            stops.add(stop);
+        }
+        stops.sort(Comparator.comparing((DeliveryStop stop) -> stop.getOrigin().getName()).thenComparing(stop -> stop.getDestination().getName()));
+        JComboBox<DeliveryStop> stopsComboBox = new JComboBox<>(stops.toArray(new DeliveryStop[0]));
+        stopsComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                if (value instanceof DeliveryStop stop) {
+                    String text = stop.getOrigin() + " to " + stop.getDestination();
+                    return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
+                } else {
+                    return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    }
+                }
+            });
+        JOptionPane.showMessageDialog(null, stopsComboBox, "Select a delivery stop to remove", JOptionPane.QUESTION_MESSAGE);
+        DeliveryStop deliveryStop = (DeliveryStop) stopsComboBox.getSelectedItem();
+        deliveryManager.removeDeliveryStop(Objects.requireNonNull(deliveryStop).getShipmentInstanceID());
+        relatedFrame.displayInfo("Delivery stop removed successfully!");
     }
 
     public void ExecuteDeliveriesClicked(){

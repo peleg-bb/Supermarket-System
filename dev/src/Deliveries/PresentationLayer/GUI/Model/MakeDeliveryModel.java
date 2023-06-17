@@ -5,6 +5,7 @@ import Deliveries.BusinessLayer.DeliveryStop;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanAction;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanner;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
+import Deliveries.PresentationLayer.GUI.View.MainMenuFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -39,7 +40,8 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
             relatedFrame.displayInfo("Leaving the origin site- " + currentStop + "!");
         }
         String weightString = JOptionPane.showInputDialog(relatedFrame, "The truck is leaving " + currentStop
-                + " and needs to be weighed, please enter weight", "Enter weight:", JOptionPane.QUESTION_MESSAGE);
+                + " and needs to be weighed, please enter weight.\n" +
+                " Hitting cancel will cancel the delivery form.", "Enter weight:", JOptionPane.QUESTION_MESSAGE);
         if (weightString != null) {
             try {
                 return Integer.parseInt(weightString);
@@ -48,9 +50,10 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
                 return measureWeight(form, currentStop);
             }
         }
-        // TODO: Handle cancel button
         relatedFrame.displayError("Invalid weight entered!"); // Do we ever reach this line?
-        return measureWeight(form, currentStop);
+        relatedFrame.dispose();
+        new MainMenuFrame();
+        return -1;
     }
 
     @Override

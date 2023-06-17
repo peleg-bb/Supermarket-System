@@ -141,5 +141,15 @@ public class DeliveryStopDAO {
             return 0;
         }
     }
+
+    public void deleteStop(int deliveryId) {
+        String query = "DELETE FROM DeliveryStops WHERE stop_id = '" + deliveryId + "';";
+        try {
+            conn.executeUpdate(query);
+        }
+        catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 }
 

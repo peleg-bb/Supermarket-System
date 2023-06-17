@@ -116,6 +116,9 @@ public class DeliveryForm {
     public void performWeightCheck(String currentStop) {
         int currentWeight = measureWeight(currentStop);
         setDispatchWeightTons(currentWeight);
+        if (currentWeight == -1) {
+            cancelForm();
+        }
         if (currentWeight > getMaxWeightAllowed()) {
             deliveryManager.replanDelivery(this, tripReplanner);
         }
@@ -201,7 +204,6 @@ public class DeliveryForm {
             }
         }
         completeJourney();
-
     }
 
     private void completeJourney() {

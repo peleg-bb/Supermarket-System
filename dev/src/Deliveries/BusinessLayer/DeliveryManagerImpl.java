@@ -54,6 +54,7 @@ public class DeliveryManagerImpl implements DeliveryManager {
     @Override
     public void removeDeliveryStop(int deliveryId) {
         pendingDeliveryStops.remove(deliveryId);
+        deliveryStopDAO.deleteStop(deliveryId);
     }
 
 
