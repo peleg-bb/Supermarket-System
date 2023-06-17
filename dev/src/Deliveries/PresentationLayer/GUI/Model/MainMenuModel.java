@@ -62,10 +62,13 @@ public class MainMenuModel extends AbstractModel {
                     }
                 }
             });
-        JOptionPane.showMessageDialog(null, stopsComboBox, "Select a delivery stop to remove", JOptionPane.QUESTION_MESSAGE);
-        DeliveryStop deliveryStop = (DeliveryStop) stopsComboBox.getSelectedItem();
-        deliveryManager.removeDeliveryStop(Objects.requireNonNull(deliveryStop).getShipmentInstanceID());
-        relatedFrame.displayInfo("Delivery stop removed successfully!");
+        int result = JOptionPane.showConfirmDialog(null, stopsComboBox, "Select a delivery stop to remove", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            DeliveryStop deliveryStop = (DeliveryStop) stopsComboBox.getSelectedItem();
+            deliveryManager.removeDeliveryStop(Objects.requireNonNull(deliveryStop).getShipmentInstanceID());
+            relatedFrame.displayInfo("Delivery stop removed successfully!");
+        }
+        else relatedFrame.displayInfo("Removal cancelled, no delivery stop was removed");
     }
 
     public void ExecuteDeliveriesClicked(){
