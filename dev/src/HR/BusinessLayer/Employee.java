@@ -65,6 +65,10 @@ public class Employee {
         if (roles.contains(role)) {
             String res = employeeDAO.remove_role(this.id, role.toString());
             if (res.equals("")) {
+                if (role.equals(JobType.DRIVER)) {
+                    DriverSaver object = DriverController.getInstance();
+                    object.DeleteDriverFromSystem(this.id.toString());
+                }
                 roles.remove(role);
                 return res;
             }
