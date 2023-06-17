@@ -1,9 +1,6 @@
 package Deliveries.BusinessLayer;
 
-import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.*;
 import Deliveries.BusinessLayer.Generators.StoreAvailabilityChecker;
 import Deliveries.DataAccessLayer.DeliveryFormDAO;
 import HR_Deliveries_Interface.DeliveryIntegrator;
@@ -77,8 +74,8 @@ public class DeliveryFormsController implements DeliveryIntegrator {
         return sortedForms;
     }
 
-    public void startDeliveryForm(DeliveryForm deliveryForm, WeightMeasurer weightMeasurer) {
-        deliveryForm.startJourney(weightMeasurer);
+    public void startDeliveryForm(DeliveryForm deliveryForm, WeightMeasurer weightMeasurer, TripReplanner tripReplanner) {
+        deliveryForm.startJourney(weightMeasurer, tripReplanner);
     }
 
     // print deliveries

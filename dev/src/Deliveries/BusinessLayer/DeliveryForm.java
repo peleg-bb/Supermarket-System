@@ -1,9 +1,6 @@
 package Deliveries.BusinessLayer;
 
-import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryException;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.DeliveryStatus;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.TruckType;
-import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.*;
 import Deliveries.DataAccessLayer.DeliveryFormDAO;
 import HR.BusinessLayer.ShiftController;
 import HR_Deliveries_Interface.HRIntegrator;
@@ -17,6 +14,7 @@ public class DeliveryForm {
     private final int formId;
     private Timestamp dispatchTime;
     private WeightMeasurer weightMeasurer;
+    private TripReplanner tripReplanner;
     private List<DeliveryStop> destinationSitesToVisit;
     private List<DeliveryStop> destinationSitesVisited;
     private int maxWeightAllowed;
@@ -118,7 +116,7 @@ public class DeliveryForm {
         int currentWeight = measureWeight();
         setDispatchWeightTons(currentWeight);
         if (currentWeight > maxWeightAllowed) {
-            deliveryManager.replanDelivery(this);
+            deliveryManager.replanDelivery(this, tripReplanner);
         }
     }
 
@@ -142,7 +140,7 @@ public class DeliveryForm {
     private void setMaxWeightAllowed(int maxWeightAllowed) {
         this.maxWeightAllowed = maxWeightAllowed;
         if (dispatchWeightTons > maxWeightAllowed) {
-            deliveryManager.replanDelivery(this);
+            deliveryManager.replanDelivery(this, tripReplanner);
         }
     }
 
@@ -178,8 +176,9 @@ public class DeliveryForm {
         return dispatchWeightTons;
     }
 
-    public void startJourney(WeightMeasurer weightMeasurer)  {
+    public void startJourney(WeightMeasurer weightMeasurer, TripReplanner tripReplanner)  {
         // visit the stops in the order they were added
+        this.tripReplanner = tripReplanner;
         this.weightMeasurer = weightMeasurer;
         performWeightCheck();
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
@@ -230,6 +229,11 @@ public class DeliveryForm {
     public void setWeightMeasurer(WeightMeasurer weightMeasurer) {
         // This is used for testing
         this.weightMeasurer = weightMeasurer;
+    }
+
+    public void setTripReplanner(TripReplanner tripReplanner) {
+        // This is used for testing
+        this.tripReplanner = tripReplanner;
     }
 
 

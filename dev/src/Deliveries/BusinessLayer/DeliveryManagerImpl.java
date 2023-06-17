@@ -84,7 +84,8 @@ public class DeliveryManagerImpl implements DeliveryManager {
 
 
 
-    public void replanDelivery(DeliveryForm form) {
+    public void replanDelivery(DeliveryForm form, TripReplanner tripReplanner) {
+       this.tripReplanner = tripReplanner;
         try {
             replaceTruck(form);
         } catch (DeliveryException e) {
@@ -92,16 +93,16 @@ public class DeliveryManagerImpl implements DeliveryManager {
             System.out.println("Truck is overweight for delivery " + form
                     + ". Tried to find a new truck but " + e.getMessage());
         }
-        int action = tripReplanner.chooseAction(form.getDestinationSitesToVisit());
-        if (action == 1) {
+        TripReplanAction action = tripReplanner.chooseAction(form.getDestinationSitesToVisit());
+        if (action == TripReplanAction.REMOVE_STOP) {
             DeliveryStop stopToCancel = tripReplanner.removeStop(form.getDestinationSitesToVisit());
             form.cancelStop(stopToCancel);
             pendingDeliveryStops.add(stopToCancel);
         }
-        else if (action == 2) {
+        else if (action == TripReplanAction.CANCEL_FORM) {
             form.cancelForm();
         }
-        else if (action == 3) {
+        else if (action == TripReplanAction.REWEIGH_TRUCK) {
             form.performWeightCheck();
         }
         // else do nothing, will be handled by the UI according to submission 1

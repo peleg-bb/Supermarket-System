@@ -2,6 +2,7 @@ package Deliveries.PresentationLayer.CLI;
 
 import Deliveries.BusinessLayer.DeliveryForm;
 import Deliveries.BusinessLayer.DeliveryStop;
+import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanAction;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.TripReplanner;
 import Deliveries.BusinessLayer.Enums_and_Interfaces.WeightMeasurer;
 
@@ -23,9 +24,8 @@ public class CLIUtil implements WeightMeasurer, TripReplanner {
             System.out.println("Enter truck weight: ");
             scanner.next();
         }
-        int quantity = scanner.nextInt();
 
-        return quantity;
+        return scanner.nextInt();
     }
 
     @Override
@@ -48,28 +48,9 @@ public class CLIUtil implements WeightMeasurer, TripReplanner {
         return stops.get(indexToRemove-1);
     }
 
-    @Override
-    public DeliveryStop removeItems(List<DeliveryStop> stops) {
-        System.out.println("The truck is overloaded, and we couldn't arrange a larger truck." +
-                " There is only one stop left so you can remove some items.");
-        System.out.println("These are the stops you have to visit: ");
-        int i = 0;
-        for (DeliveryStop stop : stops) {
-            i++;
-            System.out.println("Stop number " + i + ": " + stop);
-        }
-        System.out.println("Which stops would you like to remove?");
-        // ask for an int. if not int, ask again
-        while (!scanner.hasNextInt()) {
-            System.out.println("Enter the stop index you'd like to remove: ");
-            scanner.next();
-        }
-        int quantity = scanner.nextInt();
-        return stops.get(quantity-1);
-    }
 
     @Override
-    public int chooseAction(List<DeliveryStop> stops) {
+    public TripReplanAction chooseAction(List<DeliveryStop> stops) {
         System.out.println("The truck is overloaded, and we couldn't arrange a larger truck.");
         System.out.println("These are the stops you have to visit: ");
         int i = 0;
@@ -82,10 +63,22 @@ public class CLIUtil implements WeightMeasurer, TripReplanner {
         System.out.println("2. Cancel delivery");
         System.out.println("3. Reweigh truck");
         // ask for an int. if not int, ask again
-        while (!scanner.hasNextInt()) {
+        while (!scanner.hasNextInt() || scanner.nextInt() > 3 || scanner.nextInt() < 1) {
             System.out.println("Enter the stop index you'd like to remove: ");
             scanner.next();
         }
-        return scanner.nextInt();
+        if (scanner.nextInt() == 1) {
+            return TripReplanAction.REMOVE_STOP;
+        }
+        else if (scanner.nextInt() == 2) {
+            return TripReplanAction.CANCEL_FORM;
+        }
+        else if (scanner.nextInt() == 3) {
+            return TripReplanAction.REWEIGH_TRUCK;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid input");
+        }
+
     }
 }

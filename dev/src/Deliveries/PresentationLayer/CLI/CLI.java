@@ -100,7 +100,8 @@ public class CLI {
         }
         int id = scanner.nextInt();
         DeliveryForm deliveryForm = deliveryFormsController.getDeliveryForm(id);
-        deliveryFormsController.startDeliveryForm(deliveryForm, new CLIUtil());
+        CLIUtil cliUtil = new CLIUtil();
+        deliveryFormsController.startDeliveryForm(deliveryForm, cliUtil, cliUtil);
         if (deliveryFormsController.isCompleted(deliveryForm)) {
             System.out.println("Delivery form " + id + " was completed successfully!");
         } else {
