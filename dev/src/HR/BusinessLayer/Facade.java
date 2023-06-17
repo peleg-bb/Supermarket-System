@@ -5,6 +5,7 @@ import HR_Deliveries_Interface.DriverSaver;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Facade {
@@ -397,5 +398,14 @@ public class Facade {
 
     public String certify_driver(int hr_id, int employee_id, String phone, int maxWeight, boolean regularAllowed, boolean refrigeratedAllowed) {
         return employeeController.certify_driver(hr_id, employee_id, phone, maxWeight, regularAllowed, refrigeratedAllowed);
+    }
+
+    public List<String> getJobs(int id) {
+        List<JobType> jobs = employeeController.get_certified_roles(id);
+        List<String> output = new LinkedList<>();
+        for (JobType job: jobs) {
+            output.add(job.toString());
+        }
+        return output;
     }
 }

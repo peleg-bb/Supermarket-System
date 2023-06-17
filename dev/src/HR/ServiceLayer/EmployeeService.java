@@ -450,4 +450,8 @@ public class EmployeeService {
     public List<ShiftPair> getAssignedShiftsDates(int id, LocalDate week_start) {
         return facade.getAssignedShiftsDates(id, week_start);
     }
+
+    public List<String> getJobs(int id) {
+        return facade.getJobs(id);
+    }
 }
