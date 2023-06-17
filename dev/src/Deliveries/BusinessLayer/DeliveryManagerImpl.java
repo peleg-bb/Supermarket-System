@@ -43,6 +43,7 @@ public class DeliveryManagerImpl implements DeliveryManager {
     public int addDeliveryStop(Map<String, Integer> items, Site origin, Site destination, TruckType truckType) {
         DeliveryStop deliveryStop = new DeliveryStop(++deliveryCount, items, origin, destination, truckType);
         pendingDeliveryStops.add(deliveryStop);
+        deliveryStopDAO.addStop(deliveryStop);
         // decide how to manage the origin.
         return deliveryStop.getShipmentInstanceID();
     }

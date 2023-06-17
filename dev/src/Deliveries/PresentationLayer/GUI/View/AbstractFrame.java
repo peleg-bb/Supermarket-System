@@ -93,4 +93,12 @@ public abstract class AbstractFrame extends JFrame {
         infoPanel.repaint();
     }
 
+    public String getItemName() {
+        return null;
+    }
+
+
+    public int getItemAmount() {
+        return 0;
+    }
 }
