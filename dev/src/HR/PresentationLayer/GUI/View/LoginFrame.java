@@ -4,7 +4,6 @@ import HR.PresentationLayer.GUI.Model.LoginModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class LoginFrame extends AbstractFrame {
     protected final JTextField usernameField;
@@ -21,7 +20,6 @@ public class LoginFrame extends AbstractFrame {
         JPanel usernamePanel = new JPanel();
         usernamePanel.add(usernameLabel);
         usernamePanel.add(usernameField);
-        add(usernamePanel);
 
         // Create password label and password field
         JLabel passwordLabel = new JLabel("Password:");
@@ -29,7 +27,26 @@ public class LoginFrame extends AbstractFrame {
         JPanel passwordPanel = new JPanel();
         passwordPanel.add(passwordLabel);
         passwordPanel.add(passwordField);
-        add(passwordPanel);
+
+        // Create main content panel with BoxLayout
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        setContentPane(contentPanel);
+
+        // Add the username panel to the content panel
+        contentPanel.add(usernamePanel);
+
+        // Add some vertical spacing between panels
+        contentPanel.add(Box.createVerticalStrut(10));
+
+        // Add the password panel to the content panel
+        contentPanel.add(passwordPanel);
+
+        // Add some vertical spacing between panels
+        contentPanel.add(Box.createVerticalStrut(10));
+
+        // Add the buttons panel to the content panel
+        contentPanel.add(buttonsPanel);
 
         // Create login button
         addButton("Login");

@@ -7,7 +7,7 @@ import HR.ServiceLayer.EmployeeService;
 
 public abstract class AbstractModel implements java.awt.event.ActionListener{
     protected AbstractFrame relatedFrame;
-    protected EmployeeService employeeService;
+    protected static EmployeeService employeeService = new EmployeeService();
     public void addFrame(AbstractFrame frame){
         relatedFrame = frame;
     }
