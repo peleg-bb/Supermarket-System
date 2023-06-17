@@ -52,8 +52,9 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
 
     @Override
     public DeliveryStop removeStop(List<DeliveryStop> stops) {
-        relatedFrame.displayError("Trip re-plan action called but not implemented yet!");
-        return stops.get(0);
+        JComboBox<DeliveryStop> stopsComboBox = new JComboBox<>(stops.toArray(new DeliveryStop[0]));
+        JOptionPane.showMessageDialog(relatedFrame, stopsComboBox, "Choose stop to remove:", JOptionPane.QUESTION_MESSAGE);
+        return (DeliveryStop) stopsComboBox.getSelectedItem();
     }
 
     @Override
