@@ -59,7 +59,8 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
     @Override
     public DeliveryStop removeStop(List<DeliveryStop> stops) {
         JComboBox<DeliveryStop> stopsComboBox = new JComboBox<>(stops.toArray(new DeliveryStop[0]));
-        JOptionPane.showMessageDialog(relatedFrame, stopsComboBox, "Choose stop to remove:", JOptionPane.QUESTION_MESSAGE);
+        JOptionPane.showMessageDialog(relatedFrame, stopsComboBox,
+                "Choose stop to remove:", JOptionPane.QUESTION_MESSAGE);
         return (DeliveryStop) stopsComboBox.getSelectedItem();
     }
 
@@ -68,7 +69,8 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
         relatedFrame.displayError("The truck is overloaded," +
                 " and we couldn't arrange a larger truck. You must choose how to proceed.");
         JComboBox<TripReplanAction> actions = new JComboBox<>(TripReplanAction.values());
-        JOptionPane.showMessageDialog(relatedFrame, actions, "Choose re-plan action:", JOptionPane.QUESTION_MESSAGE);
+        JOptionPane.showMessageDialog(relatedFrame, actions,
+                "Choose re-plan action:", JOptionPane.QUESTION_MESSAGE);
         return (TripReplanAction) actions.getSelectedItem();
     }
 }

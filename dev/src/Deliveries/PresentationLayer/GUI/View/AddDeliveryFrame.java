@@ -15,64 +15,64 @@ import java.util.*;
 
 public class AddDeliveryFrame extends AbstractFrame {
     private List<Site> chosenSites;
+    private Site origin;
     private JPanel sitesPanel;
     private JPanel destinationsPanel;
     private Map<String, Integer> itemsMap;
     private String truckType; //TODO: turn to enum when handling logic
 
-    public AddDeliveryFrame(Set<DeliveryForm> deliveryForms) {
-        super(deliveryForms.size() + 1, new AddDeliveryModel());
+    public AddDeliveryFrame(Set<DeliveryForm> deliveryForms, List<Site> sitesList) {
+
+        super(deliveryForms.size() + 1, new AddDeliveryModel(sitesList));
+        setTitle("Choose Origin:");
         chosenSites = new ArrayList<>();
         itemsMap = new HashMap<>();
-
         JPanel mainPanel = new JPanel(new BorderLayout());
-
-        addButton("Return to main menu", mainPanel, BorderLayout.NORTH, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                relatedModel.ReturnToMainMenuClicked();
-            }
-        });
-
-        setLayout(new BorderLayout());
-        sitesPanel = new JPanel(new GridLayout(0, 1));
-        JScrollPane scrollPanel = new JScrollPane(sitesPanel);
-        mainPanel.add(scrollPanel, BorderLayout.CENTER);
-        mainPanel.add(Box.createVerticalStrut(20), BorderLayout.SOUTH);
-        chooseOrigin(mainPanel, scrollPanel);
-
-        add(mainPanel, BorderLayout.CENTER);
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
-    private void chooseOrigin(JPanel mainPanel, JScrollPane siteScrollPanel) {
-        JLabel label = new JLabel("Pick an origin");
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        mainPanel.add(label, BorderLayout.NORTH);
-
-        SiteGenerator siteGenerator = new SiteGenerator();
-        List<Site> sitesList = siteGenerator.getSitesList();
-
+        addButton("Return to main menu");
         for (Site site : sitesList) {
-            addButton(site.toString(), sitesPanel, site, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    handleOriginSelection(site);
-                    mainPanel.remove(label);  // Remove the origin selection label
-                    mainPanel.remove(siteScrollPanel);  // Remove the site scroll panel
-                    mainPanel.revalidate();
-                    mainPanel.repaint();
-                    chooseDestinations(mainPanel);  // Move to destination selection
-                }
-            });
+            addButton(site.toString());
         }
-
-        mainPanel.add(siteScrollPanel, BorderLayout.CENTER);
-        add(mainPanel, BorderLayout.CENTER);
     }
+//
+//        setLayout(new BorderLayout());
+//        sitesPanel = new JPanel(new GridLayout(0, 1));
+//        JScrollPane scrollPanel = new JScrollPane(sitesPanel);
+//        mainPanel.add(scrollPanel, BorderLayout.CENTER);
+//        mainPanel.add(Box.createVerticalStrut(20), BorderLayout.SOUTH);
+//        chooseOrigin(mainPanel, scrollPanel);
+//
+//        add(mainPanel, BorderLayout.CENTER);
+//
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        pack();
+//        setLocationRelativeTo(null);
+//        setVisible(true);
+
+//    private void chooseOrigin(JPanel mainPanel, JScrollPane siteScrollPanel) {
+//        JLabel label = new JLabel("Pick an origin");
+//        label.setHorizontalAlignment(SwingConstants.CENTER);
+//        mainPanel.add(label, BorderLayout.NORTH);
+//
+//        SiteGenerator siteGenerator = new SiteGenerator();
+//        List<Site> sitesList = siteGenerator.getSitesList();
+//
+//        for (Site site : sitesList) {
+//            addButton(site.toString(), sitesPanel, site, new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    handleOriginSelection(site);
+//                    mainPanel.remove(label);  // Remove the origin selection label
+//                    mainPanel.remove(siteScrollPanel);  // Remove the site scroll panel
+//                    mainPanel.revalidate();
+//                    mainPanel.repaint();
+//                    chooseDestinations(mainPanel);  // Move to destination selection
+//                }
+//            });
+//        }
+//
+//        mainPanel.add(siteScrollPanel, BorderLayout.CENTER);
+//        add(mainPanel, BorderLayout.CENTER);
+//    }
 
 //    private void chooseOrigin(JPanel mainPanel, JScrollPane siteScrollPanel) {
 //        JLabel label = new JLabel("Pick an origin");

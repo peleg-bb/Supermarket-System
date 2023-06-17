@@ -1,10 +1,8 @@
 package Deliveries.PresentationLayer.GUI.Model;
 
 
-import Deliveries.BusinessLayer.DeliveryForm;
-import Deliveries.BusinessLayer.DeliveryFormsController;
-import Deliveries.BusinessLayer.DeliveryManagerImpl;
-import Deliveries.BusinessLayer.DeliveryStop;
+import Deliveries.BusinessLayer.*;
+import Deliveries.BusinessLayer.Generators.SiteGenerator;
 import Deliveries.PresentationLayer.GUI.View.AddDeliveryFrame;
 import Deliveries.PresentationLayer.GUI.View.ExecuteDeliveriesFrame;
 
@@ -16,9 +14,11 @@ import java.util.List;
 public class MainMenuModel extends AbstractModel {
     private final DeliveryManagerImpl deliveryManager;
     private final DeliveryFormsController deliveryFormsController;
+    private final List<Site> sitesList;
     public MainMenuModel() {
         deliveryManager = DeliveryManagerImpl.getInstance(); //removed the use of service class
         deliveryFormsController = deliveryManager.getDeliveryFormsController();
+        sitesList = new SiteGenerator().getSitesList();
     }
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -40,7 +40,8 @@ public class MainMenuModel extends AbstractModel {
         // TODO: Implement this
         //relatedFrame.displayError("Not implemented yet :(");
         relatedFrame.dispose();
-        new AddDeliveryFrame(deliveryManager.getDeliveryFormsController().getPendingDeliveryForms());
+
+        new AddDeliveryFrame(deliveryManager.getDeliveryFormsController().getPendingDeliveryForms(), sitesList);
 
     }
 
@@ -49,26 +50,32 @@ public class MainMenuModel extends AbstractModel {
         for (DeliveryStop stop : deliveryManager.getPendingDeliveryStops()) {
             stops.add(stop);
         }
-        stops.sort(Comparator.comparing((DeliveryStop stop) -> stop.getOrigin().getName()).thenComparing(stop -> stop.getDestination().getName()));
+        // sort by origin name, then by destination name alphabetically
+        stops.sort(Comparator.comparing((DeliveryStop stop) -> stop.getOrigin().getName()).
+                thenComparing(stop -> stop.getDestination().getName()));
         JComboBox<DeliveryStop> stopsComboBox = new JComboBox<>(stops.toArray(new DeliveryStop[0]));
         stopsComboBox.setRenderer(new DefaultListCellRenderer() {
+            // This block makes the combobox display the origin and destination of the delivery stop
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
                 if (value instanceof DeliveryStop stop) {
                     String text = stop.getOrigin() + " to " + stop.getDestination();
                     return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
                 } else {
                     return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    }
                 }
-            });
-        int result = JOptionPane.showConfirmDialog(null, stopsComboBox, "Select a delivery stop to remove", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            }
+        });
+        int result = JOptionPane.showConfirmDialog(relatedFrame, stopsComboBox,
+                "Select a delivery stop to remove", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             DeliveryStop deliveryStop = (DeliveryStop) stopsComboBox.getSelectedItem();
             deliveryManager.removeDeliveryStop(Objects.requireNonNull(deliveryStop).getShipmentInstanceID());
             relatedFrame.displayInfo("Delivery stop removed successfully!");
         }
         else relatedFrame.displayInfo("Removal cancelled, no delivery stop was removed");
+        // A little ugly to manage it all in 1 function, but it has very little logic so it's fine
     }
 
     public void ExecuteDeliveriesClicked(){

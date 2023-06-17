@@ -54,6 +54,13 @@ public abstract class AbstractFrame extends JFrame {
         });
     }
 
+
+    public void clearButtonsPanel() {
+        buttonsPanel.removeAll();
+        buttonsPanel.revalidate();
+        buttonsPanel.repaint();
+    }
+
     public void displayError(String errorMessage) {
         errorPanel.removeAll();
         JLabel errorLabel = new JLabel(errorMessage);
