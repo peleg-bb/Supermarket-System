@@ -32,7 +32,7 @@ public abstract class AbstractFrame extends JFrame {
         // Create info panel
         infoPanel = new JPanel();
         infoPanel.setBorder(BorderFactory.createTitledBorder("Information Panel"));
-        infoPanel.setPreferredSize(new Dimension(200, 90));
+        infoPanel.setPreferredSize(new Dimension(200, 120));
         add(infoPanel, BorderLayout.SOUTH);
 
 

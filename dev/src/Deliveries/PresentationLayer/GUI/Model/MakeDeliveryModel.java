@@ -26,7 +26,7 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
             deliveryForm.startJourney(this, this);
         }
         else {
-            relatedFrame.displayError("Not implemented yet :(");
+            relatedFrame.displayError("Clicked a button which is not yet implemented :(");
         }
     }
 
@@ -58,7 +58,10 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
 
     @Override
     public TripReplanAction chooseAction(List<DeliveryStop> stops) {
-        relatedFrame.displayError("Trip re-plan action called but not implemented yet!");
-        return TripReplanAction.REWEIGH_TRUCK;
+        relatedFrame.displayError("The truck is overloaded," +
+                " and we couldn't arrange a larger truck. You must choose how to proceed.");
+        JComboBox<TripReplanAction> actions = new JComboBox<>(TripReplanAction.values());
+        JOptionPane.showMessageDialog(relatedFrame, actions, "Choose re-plan action:", JOptionPane.QUESTION_MESSAGE);
+        return (TripReplanAction) actions.getSelectedItem();
     }
 }

@@ -15,12 +15,6 @@ public class ExecuteDeliveriesFrame extends AbstractFrame {
 
         addButton("Return to main menu");
 
-//        setLayout(new BorderLayout());
-//
-//        JPanel topPanel = new JPanel(new FlowLayout());
-//        topPanel.add(buttonsPanel);
-//        add(topPanel, BorderLayout.NORTH);
-//
         for (DeliveryForm deliveryForm : deliveryForms) {
                 addButton(deliveryForm.toString());
         }
