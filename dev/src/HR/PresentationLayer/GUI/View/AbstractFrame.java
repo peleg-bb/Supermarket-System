@@ -15,12 +15,12 @@ public abstract class AbstractFrame extends JFrame {
         this.relatedModel = relatedModel;
         relatedModel.addFrame(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Deliveries System");
+        setTitle("HR System");
         setLayout(new BorderLayout());
 
         // Create buttons panel
         buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(numButtons, 1));
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
 
         // Create info panel
         infoPanel = new JPanel();
@@ -68,7 +68,6 @@ public abstract class AbstractFrame extends JFrame {
         infoPanel.revalidate();
         infoPanel.repaint();
     }
-
 
     public void clearError() {
         infoPanel.removeAll();

@@ -229,6 +229,9 @@ public class Employee {
         for (String store: certified_stores) {
             output.append(store).append(", ");
         }
+        if (output.isEmpty()) {
+            return "";
+        }
         return output.substring(0, output.length() - 2);
     }
 

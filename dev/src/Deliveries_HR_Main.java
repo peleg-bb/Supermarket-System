@@ -3,6 +3,7 @@ import Deliveries.BusinessLayer.DeliveryManagerImpl;
 import Deliveries.PresentationLayer.CLI.CLI;
 import Deliveries.PresentationLayer.GUI.View.MainMenuFrame;
 import HR.PresentationLayer.GUI.View.LoginFrame;
+import HR.PresentationLayer.HRMenu;
 import HR.PresentationLayer.Menu;
 
 import javax.swing.*;
@@ -41,6 +42,8 @@ public class Deliveries_HR_Main {
         DeliveryFormsController deliveryFormsController = DeliveryFormsController.getInstance();
         deliveryFormsController.loadFormsData();
         // TODO: Add HR data loading?
+        HR.PresentationLayer.HRMenu hrMENU = new HRMenu();
+        hrMENU.load_example_data();
     }
 
 
