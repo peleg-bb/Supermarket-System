@@ -103,7 +103,8 @@ public class DeliveryManagerImpl implements DeliveryManager {
             form.cancelForm();
         }
         else if (action == TripReplanAction.REWEIGH_TRUCK) {
-            form.performWeightCheck();
+            form.performWeightCheck(form.getDestinationSitesToVisit().get(0).toString());
+            // TODO: check that this is the correct currentStop
         }
         // else do nothing, will be handled by the UI according to submission 1
     }

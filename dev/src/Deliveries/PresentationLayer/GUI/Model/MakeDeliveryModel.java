@@ -31,23 +31,26 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
     }
 
     @Override
-    public int measureWeight(DeliveryForm form) {
-        String currentSite = form.getDestinationSitesToVisit().get(0).getDestination().getName();
-        relatedFrame.displayInfo("Successfully delivered to " + currentSite + "!");
-        String weightString = JOptionPane.showInputDialog(relatedFrame, "The truck is leaving " + currentSite
+    public int measureWeight(DeliveryForm form, String currentStop) {
+        if (!form.getOriginSite().getName().equals(currentStop)) {
+            relatedFrame.displayInfo("Successfully delivered to " + currentStop + "!");
+        }
+        else {
+            relatedFrame.displayInfo("Leaving the origin site- " + currentStop + "!");
+        }
+        String weightString = JOptionPane.showInputDialog(relatedFrame, "The truck is leaving " + currentStop
                 + " and needs to be weighed, please enter weight", "Enter weight:", JOptionPane.QUESTION_MESSAGE);
         if (weightString != null) {
             try {
                 return Integer.parseInt(weightString);
             } catch (NumberFormatException ex) {
                 relatedFrame.displayError("Invalid weight entered!");
-                return measureWeight(form);
+                return measureWeight(form, currentStop);
             }
         }
         // TODO: Handle cancel button
-
-        relatedFrame.displayError("Invalid weight entered!");
-        return measureWeight(form);
+        relatedFrame.displayError("Invalid weight entered!"); // Do we ever reach this line?
+        return measureWeight(form, currentStop);
     }
 
     @Override

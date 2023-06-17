@@ -15,7 +15,7 @@ public class CLIUtil implements WeightMeasurer, TripReplanner {
         this.scanner = new Scanner(System.in);
     }
     @Override
-    public int measureWeight(DeliveryForm form) {
+    public int measureWeight(DeliveryForm form, String currentStop) {
         String currentSite = form.getDestinationSitesToVisit().get(0).getDestination().getName();
         System.out.println("Successfully delivered to: " + currentSite);
         System.out.println("Leaving" + currentSite + "- what's the current weight of the truck?");

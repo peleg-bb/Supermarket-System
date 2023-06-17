@@ -110,19 +110,19 @@ public class DeliveryForm {
         deliveryStop.setStatus(DeliveryStatus.DELIVERED); // update status (also in DB)
         destinationSitesVisited.add(deliveryStop);
         //destinationSitesToVisit.remove(deliveryStop); //???????????????????????
-        performWeightCheck();
+        performWeightCheck(deliveryStop.toString());
     }
 
-    public void performWeightCheck() {
-        int currentWeight = measureWeight();
+    public void performWeightCheck(String currentStop) {
+        int currentWeight = measureWeight(currentStop);
         setDispatchWeightTons(currentWeight);
         if (currentWeight > getMaxWeightAllowed()) {
             deliveryManager.replanDelivery(this, tripReplanner);
         }
     }
 
-    private int measureWeight() {
-        return weightMeasurer.measureWeight(this);
+    private int measureWeight(String currentStop) {
+        return weightMeasurer.measureWeight(this, currentStop);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class DeliveryForm {
         // visit the stops in the order they were added
         this.tripReplanner = tripReplanner;
         this.weightMeasurer = weightMeasurer;
-        performWeightCheck();
+        performWeightCheck(originSite.toString());
         ListIterator<DeliveryStop> iterator = destinationSitesToVisit.listIterator();
 
 //        if(!iterator.hasNext()){
