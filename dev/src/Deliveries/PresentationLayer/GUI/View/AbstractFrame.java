@@ -58,6 +58,7 @@ public abstract class AbstractFrame extends JFrame {
         errorPanel.removeAll();
         JLabel errorLabel = new JLabel(errorMessage);
         errorLabel.setForeground(Color.RED);
+        errorLabel.setFont(new Font("Arial", Font.BOLD, 18)); // set the font to Arial, bold, size 16
         errorPanel.add(errorLabel);
         errorPanel.revalidate();
         errorPanel.repaint();
@@ -72,6 +73,8 @@ public abstract class AbstractFrame extends JFrame {
     public void displayInfo(String infoMessage) {
         infoPanel.removeAll();
         JLabel infoLabel = new JLabel(infoMessage);
+        infoLabel.setForeground(Color.BLUE);
+        infoLabel.setFont(new Font("Arial", Font.BOLD, 18)); // set the font to Arial, bold, size 16
         infoPanel.add(infoLabel);
         infoPanel.revalidate();
         infoPanel.repaint();
