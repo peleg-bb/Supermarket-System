@@ -69,6 +69,19 @@ public class DriverDAO {
         }
     }
 
+    public boolean deleteDriver(String id) {
+        String query = "DELETE FROM Drivers WHERE driver_id = '" + id + "';";
+        String query2 = "DELETE FROM DriverLicenses WHERE driver_id = '" + id + "';";
+        try {
+            conn.executeUpdate(query);
+            conn.executeUpdate(query2);
+            return true;
+        }
+        catch (SQLException exception) {
+            return false;
+        }
+    }
+
 //    /*
 //    *  Doesn't work for some reason
 //    */

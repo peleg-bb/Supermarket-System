@@ -153,5 +153,14 @@ public class DriverController implements DriverSaver {
         return false;
     }
 
+    @Override
+    public boolean DeleteDriverFromSystem(String id) {
+        if (driverDAO.deleteDriver(id)){
+            drivers.removeIf(driver -> driver.getId().equals(id));
+            return true;
+        }
+        return false;
+    }
+
 }
 
