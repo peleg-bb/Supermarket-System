@@ -1420,7 +1420,7 @@ public class HRMenu {
             int index;
             do {
                 index = random.nextInt(all_jobs.length);
-            } while (usedIndexes.contains(index) && all_jobs[index] == JobType.DRIVER && all_jobs[index] == JobType.HRMANAGER);
+            } while (usedIndexes.contains(index) || all_jobs[index] == JobType.DRIVER || all_jobs[index] == JobType.HRMANAGER);
             jobs.add(all_jobs[index]);
             usedIndexes.add(index);
         }
