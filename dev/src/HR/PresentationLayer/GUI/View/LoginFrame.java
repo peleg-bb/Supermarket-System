@@ -15,7 +15,7 @@ public class LoginFrame extends AbstractFrame {
         setResizable(false);
 
         // Create username label and text field
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel usernameLabel = new JLabel("ID:");
         usernameField = new JTextField(20);
         JPanel usernamePanel = new JPanel();
         usernamePanel.add(usernameLabel);

@@ -43,7 +43,9 @@ public abstract class AbstractFrame extends JFrame {
     protected void addButton(String buttonText) {
         JButton button = new JButton(buttonText);
         buttonsPanel.add(button);
-
+        button.setForeground(Color.DARK_GRAY);
+        button.setBackground(Color.LIGHT_GRAY);
+        button.setFont(new Font("Century Gothic", Font.BOLD, 12));
         // Button action listener
         button.addActionListener(relatedModel);
     }
