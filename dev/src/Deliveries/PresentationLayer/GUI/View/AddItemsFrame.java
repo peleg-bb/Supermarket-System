@@ -4,8 +4,6 @@ import Deliveries.PresentationLayer.GUI.Model.AddDeliveryModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,15 +21,23 @@ public class AddItemsFrame extends AbstractFrame {
         JTextField itemNameField = new JTextField();
         JFormattedTextField amountField = new JFormattedTextField(NumberFormat.getIntegerInstance());
         amountField.setValue(0);
+        itemNameField.setSize(400, 200);
+        amountField.setSize(400, 200);
+        inputPanel.setSize(800, 400);
 
         inputPanel.add(new JLabel("Item Name:"));
         inputPanel.add(itemNameField);
         inputPanel.add(new JLabel("Amount:"));
         inputPanel.add(amountField);
 
-        buttonsPanel.add(inputPanel, BorderLayout.CENTER);
+        buttonsPanel.add(inputPanel, BorderLayout.NORTH);
 
         JButton addItemButton = new JButton("Add Item");
+        addItemButton.setSize(800, 30);
+        //place button south
+        addItemButton.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+        addItemButton.setForeground(Color.darkGray);
+        addItemButton.setBackground(Color.lightGray);
         addItemButton.addActionListener(e -> {
             String itemName = itemNameField.getText();
             int amount = Integer.parseInt(amountField.getValue().toString());
@@ -45,10 +51,14 @@ public class AddItemsFrame extends AbstractFrame {
         });
 
         JButton doneButton = new JButton("Done");
+        doneButton.setSize(800, 30);
+        doneButton.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+        doneButton.setForeground(Color.darkGray);
+        doneButton.setBackground(Color.lightGray);
         doneButton.addActionListener(e -> relatedModel.addItems(itemsMap));
 
-        buttonsPanel.add(doneButton);
         buttonsPanel.add(addItemButton, BorderLayout.SOUTH);
+        buttonsPanel.add(doneButton, BorderLayout.SOUTH);
 
     }
 

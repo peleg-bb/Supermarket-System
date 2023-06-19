@@ -41,7 +41,7 @@ public class MainMenuModel extends AbstractModel {
         //relatedFrame.displayError("Not implemented yet :(");
         relatedFrame.dispose();
 
-        new AddDeliveryFrame(deliveryManager.getDeliveryFormsController().getPendingDeliveryForms(), sitesList);
+        new AddDeliveryFrame(sitesList);
 
     }
 
