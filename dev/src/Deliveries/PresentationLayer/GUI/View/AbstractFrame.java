@@ -22,17 +22,19 @@ public abstract class AbstractFrame extends JFrame {
         // Create buttons panel
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(numButtons, 1));
-        add(buttonsPanel, BorderLayout.CENTER);
+        JScrollPane buttonsScrollPane = new JScrollPane(buttonsPanel);
+        add(buttonsScrollPane, BorderLayout.CENTER);
+        //add(buttonsPanel, BorderLayout.CENTER);
 
         // Create error panel
         errorPanel = new JPanel();
         errorPanel.setBorder(BorderFactory.createTitledBorder("Error Panel"));
-        errorPanel.setPreferredSize(new Dimension(200, 90));
+        errorPanel.setPreferredSize(new Dimension(800, 90));
         add(errorPanel, BorderLayout.NORTH);
         // Create info panel
         infoPanel = new JPanel();
         infoPanel.setBorder(BorderFactory.createTitledBorder("Information Panel"));
-        infoPanel.setPreferredSize(new Dimension(200, 120));
+        infoPanel.setPreferredSize(new Dimension(800, 120));
         add(infoPanel, BorderLayout.SOUTH);
 
 
@@ -45,7 +47,19 @@ public abstract class AbstractFrame extends JFrame {
     protected void addButton(String buttonText) {
         JButton button = new JButton(buttonText);
         buttonsPanel.add(button);
-
+        if(buttonText.equals("Return to main menu")) {
+            //add space between the buttons
+            buttonsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+            button.setSize(800, 40);
+        }
+        if(buttonText.equals("Next")) {
+            //add space between the checkboxes and the buttons
+            button.setSize(800, 40);
+        }
+        button.setForeground(Color.darkGray);
+        button.setBackground(Color.lightGray);
+        button.setSize(800, 40);
+        button.setFont(new Font("Century Gothic", Font.BOLD, 12)); // set the font to Arial, bold, size 16
         // Button action listener
         button.addActionListener(relatedModel);
         button.addActionListener(e -> {
@@ -65,7 +79,7 @@ public abstract class AbstractFrame extends JFrame {
         errorPanel.removeAll();
         JLabel errorLabel = new JLabel(errorMessage);
         errorLabel.setForeground(Color.RED);
-        errorLabel.setFont(new Font("Arial", Font.BOLD, 18)); // set the font to Arial, bold, size 16
+        errorLabel.setFont(new Font("Century Gothic", Font.BOLD, 18)); // set the font to Arial, bold, size 16
         errorPanel.add(errorLabel);
         errorPanel.revalidate();
         errorPanel.repaint();
@@ -80,8 +94,8 @@ public abstract class AbstractFrame extends JFrame {
     public void displayInfo(String infoMessage) {
         infoPanel.removeAll();
         JLabel infoLabel = new JLabel(infoMessage);
-        infoLabel.setForeground(Color.BLUE);
-        infoLabel.setFont(new Font("Arial", Font.BOLD, 18)); // set the font to Arial, bold, size 16
+        infoLabel.setForeground(Color.darkGray);
+        infoLabel.setFont(new Font("Century Gothic", Font.BOLD, 18)); // set the font to Arial, bold, size 16
         infoPanel.add(infoLabel);
         infoPanel.revalidate();
         infoPanel.repaint();

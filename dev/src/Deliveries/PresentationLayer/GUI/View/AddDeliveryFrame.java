@@ -1,6 +1,5 @@
 package Deliveries.PresentationLayer.GUI.View;
 
-import Deliveries.BusinessLayer.DeliveryForm;
 import Deliveries.BusinessLayer.Generators.SiteGenerator;
 import Deliveries.BusinessLayer.Site;
 import Deliveries.PresentationLayer.GUI.Model.AddDeliveryModel;
@@ -10,8 +9,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
 
 public class AddDeliveryFrame extends AbstractFrame {
     private List<Site> chosenSites;
@@ -21,9 +22,9 @@ public class AddDeliveryFrame extends AbstractFrame {
     private Map<String, Integer> itemsMap;
     private String truckType; //TODO: turn to enum when handling logic
 
-    public AddDeliveryFrame(Set<DeliveryForm> deliveryForms, List<Site> sitesList) {
+    public AddDeliveryFrame(List<Site> sitesList) {
 
-        super(deliveryForms.size() + 1, new AddDeliveryModel(sitesList));
+        super(sitesList.size() + 3, new AddDeliveryModel(sitesList));
         setTitle("Choose Origin:");
         chosenSites = new ArrayList<>();
         itemsMap = new HashMap<>();
@@ -112,7 +113,8 @@ public class AddDeliveryFrame extends AbstractFrame {
             JCheckBox checkBox = new JCheckBox(site.toString());
             destinationsPanel.add(checkBox);
         }
-
+        //add space before the next button
+        mainPanel.add(Box.createVerticalStrut(20), BorderLayout.SOUTH);
         JButton finishButton = new JButton("Next");
         finishButton.addActionListener(new ActionListener() {
             @Override

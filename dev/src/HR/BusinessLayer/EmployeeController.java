@@ -69,7 +69,10 @@ public class EmployeeController {
     }
 
     public List<String> get_certified_stores(Integer employee_id) {
-        return employees.get(employee_id).get_stores();
+        if (employees.containsKey(employee_id)) {
+            return employees.get(employee_id).get_stores();
+        }
+        return new LinkedList<>();
     }
 
     public String add_employee(Integer hr_id, int employee_id, String name, int bank_account_num, double salary_num, String terms_of_employment, LocalDate date_object, FamilyStatus family_status, boolean student, String password) {
@@ -178,7 +181,10 @@ public class EmployeeController {
     }
 
     public List<JobType> get_certified_roles(Integer employee_id) {
-        return employees.get(employee_id).get_roles();
+        if (employees.containsKey(employee_id)) {
+            return employees.get(employee_id).get_roles();
+        }
+        return new LinkedList<>();
     }
 
     public String get_name(Integer employee_id) {

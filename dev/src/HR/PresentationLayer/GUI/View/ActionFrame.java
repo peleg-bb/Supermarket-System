@@ -3,8 +3,9 @@ package HR.PresentationLayer.GUI.View;
 import HR.PresentationLayer.GUI.Model.ActionModel;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class ActionFrame extends AbstractFrame{
+public class ActionFrame extends AbstractFrame {
     private JTextField[] fieldsText;
 
     public ActionFrame(String title, int fieldsNum, String[] fields) {
@@ -13,16 +14,17 @@ public class ActionFrame extends AbstractFrame{
         setTitle(title);
         setResizable(false);
 
+        JPanel fieldsPanel = new JPanel(new GridLayout(fieldsNum, 2)); // Container panel for the fields
 
         for (int i = 0; i < fieldsNum; i++) {
-            JLabel Label = new JLabel(fields[i] + ":");
+            JLabel label = new JLabel(fields[i] + ": ");
             JTextField field = new JTextField(20);
             fieldsText[i] = field;
-            JPanel x = new JPanel();
-            x.add(Label);
-            x.add(field);
-            add(x);
+            fieldsPanel.add(label);
+            fieldsPanel.add(field);
         }
+
+        add(fieldsPanel, BorderLayout.NORTH); // Add the fields panel to the top of the frame
 
         addButton("Done");
         addButton("Back");

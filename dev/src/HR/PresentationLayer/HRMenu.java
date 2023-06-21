@@ -1358,8 +1358,8 @@ public class HRMenu {
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "Eilat", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
         service.create_weekly_schedule(LocalDate.of(2023,7,2), "drivers", LocalTime.of(8,0), LocalTime.of(14,0), LocalTime.of(14,0), LocalTime.of(22,0));
 
-        generateEmployees(150);
-        generateDrivers(100);
+        generateEmployees(100);
+        generateDrivers(60);
         assign_employees();
     }
 
@@ -1420,7 +1420,7 @@ public class HRMenu {
             int index;
             do {
                 index = random.nextInt(all_jobs.length);
-            } while (usedIndexes.contains(index) && all_jobs[index] == JobType.DRIVER && all_jobs[index] == JobType.HRMANAGER);
+            } while (usedIndexes.contains(index) || all_jobs[index] == JobType.DRIVER || all_jobs[index] == JobType.HRMANAGER);
             jobs.add(all_jobs[index]);
             usedIndexes.add(index);
         }

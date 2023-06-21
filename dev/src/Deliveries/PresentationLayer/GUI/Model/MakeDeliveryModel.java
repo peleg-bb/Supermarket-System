@@ -42,6 +42,7 @@ public class MakeDeliveryModel extends AbstractModel implements WeightMeasurer, 
         String weightString = JOptionPane.showInputDialog(relatedFrame, "The truck is leaving " + currentStop
                 + " and needs to be weighed, please enter weight.\n" +
                 " Hitting cancel will cancel the delivery form.", "Enter weight:", JOptionPane.QUESTION_MESSAGE);
+
         if (weightString != null) {
             try {
                 return Integer.parseInt(weightString);

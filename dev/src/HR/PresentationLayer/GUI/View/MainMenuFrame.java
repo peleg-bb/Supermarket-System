@@ -35,19 +35,22 @@ public class MainMenuFrame extends AbstractFrame{
                 addButton("Show scheduled deliveries");
             }
 
-            if (jobs.contains("SHIFTManager")) {
-                addButton("ancel a product");
+            if (jobs.contains("SHIFTMANAGER")) {
+                addButton("Cancel a product");
             }
 
             addButton("Add an availability");
             addButton("Remove an availability");
             addButton("Show my shifts");
             addButton("Show my availability");
-            addButton("Change personal information");
             addButton("Show my role certifications");
             addButton("Show my assigned stores");
             addButton("Show my personal information");
             addButton("Show my current expected salary");
+            addButton("Change name");
+            addButton("Change bank account");
+            addButton("Change family status");
+            addButton("Change student status");
             addButton("Logout");
 
         }

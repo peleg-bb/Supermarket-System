@@ -65,6 +65,10 @@ public class Employee {
         if (roles.contains(role)) {
             String res = employeeDAO.remove_role(this.id, role.toString());
             if (res.equals("")) {
+                if (role.equals(JobType.DRIVER)) {
+                    DriverSaver object = DriverController.getInstance();
+                    object.DeleteDriverFromSystem(this.id.toString());
+                }
                 roles.remove(role);
                 return res;
             }
@@ -228,6 +232,9 @@ public class Employee {
         StringBuilder output = new StringBuilder();
         for (String store: certified_stores) {
             output.append(store).append(", ");
+        }
+        if (output.isEmpty()) {
+            return "";
         }
         return output.substring(0, output.length() - 2);
     }
