@@ -15,28 +15,32 @@ import java.util.Scanner;
 public class Deliveries_HR_Main {
 
     public static void main(String[] args) throws SQLException {
+        System.out.println("Starting system...");
         loadData();
-        new GUI.View.MainFrame();
-//        if (Objects.equals(args[0], "GUI") && Objects.equals(args[1], "Deliveries")) {
-//            SwingUtilities.invokeLater(MainMenuFrame::new);
-//        } else if (Objects.equals(args[0], "GUI") && Objects.equals(args[1], "HR")) {
-//            SwingUtilities.invokeLater(LoginFrame::new);
-//        } else if (Objects.equals(args[0], "CLI") && Objects.equals(args[1], "Deliveries")) {
-//            CLI.main(args);
-//        } else if (Objects.equals(args[0], "CLI") && Objects.equals(args[1], "HR")) {
-//            Menu.main(args);
-//        } else {
+        if (Objects.equals(args[0], "GUI") && Objects.equals(args[1], "Deliveries")) {
+            SwingUtilities.invokeLater(MainMenuFrame::new);
+        } else if (Objects.equals(args[0], "GUI") && Objects.equals(args[1], "HR")) {
+            SwingUtilities.invokeLater(LoginFrame::new);
+        } else if (Objects.equals(args[0], "CLI") && Objects.equals(args[1], "Deliveries")) {
+            CLI.main(args);
+        } else if (Objects.equals(args[0], "CLI") && Objects.equals(args[1], "HR")) {
+            Menu.main(args);
+        } else {
+            new GUI.View.MainFrame();
+            System.out.println("System started!");
+            System.out.println("To run the CLI version, run the program with the following arguments:\n " +
+                    "[CLI Deliveries] or [CLI HR]");
 //            System.out.println("Welcome! Please choose which system you'd like to enter:");
 //            System.out.println("1. HR System");
 //            System.out.println("2. Deliveries System");
-//            System.out.println("To run the GUI, please run the program with the argument 'GUI' ");
+//
 //            Scanner scanner = new Scanner(System.in);
 //            String option = scanner.nextLine();
 //            switch (option) {
 //                case "1" -> Menu.main(args);
 //                case "2" -> CLI.main(args);
 //            }
-//        }
+        }
     }
 
     private static void loadData() throws SQLException {

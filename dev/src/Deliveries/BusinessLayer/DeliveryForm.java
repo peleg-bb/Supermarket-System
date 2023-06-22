@@ -264,8 +264,8 @@ public class DeliveryForm {
             stop.updateArrivalTime(dispatchTime);
             if (!hrManager.checkStoreAvailability(stop.getDestination().getName(), stop.getEstimatedArrivalTime())) {
                 // TODO: decide what to do if the site is not available
-                //throw new DeliveryException("destination site is not available at the estimated arrival time");
-                System.out.println(stop.getDestination().getName()+" - destination site is not available at the estimated arrival time");
+                // throw new DeliveryException("destination site is not available at the estimated arrival time");
+               // System.out.println(stop.getDestination().getName()+" - destination site is not available at the estimated arrival time");
             }
         }
     }
